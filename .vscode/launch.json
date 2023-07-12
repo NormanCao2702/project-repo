@@ -8,6 +8,13 @@
             "type": "java",
             "name": "SwiftPoApplication",
             "request": "launch",
+            "mainClass": "com.swift_po.SwiftPoApplication",
+            "projectName": "swift_po"
+        },
+        {
+            "type": "java",
+            "name": "SwiftPoApplication",
+            "request": "launch",
             "mainClass": "com.swift_po.swift_po.SwiftPoApplication",
             "projectName": ""
         },

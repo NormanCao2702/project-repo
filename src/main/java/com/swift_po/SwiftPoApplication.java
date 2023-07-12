@@ -1,4 +1,4 @@
-package com.swift_po.swift_po;
+package com.swift_po;
 
 
 import org.springframework.boot.SpringApplication;
