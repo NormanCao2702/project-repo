@@ -37,11 +37,16 @@ public class UserController {
     @PostMapping("users/add")
     public String addUser(@RequestParam Map<String, String> newuser, HttpServletResponse response, Model model){
         System.out.println("ADD user");
-        String newName = newuser.get("username");
         String newPwd = newuser.get("password");
-        String newUName = newuser.get("name");
+        String newEmail = newuser.get("email");
+        String newFName = newuser.get("fName");
+        String newLName = newuser.get("lName");
+        String newPN = newuser.get("phoneNumber");
+        String newPph = newuser.get("passPhrase");
+        String newUtype = newuser.get("uType");
+
         // Check if email is already in use
-        List<users> existingUsers = userRepo.findByName(newName);
+        List<users> existingUsers = userRepo.findByEmail(newEmail);
         if (!existingUsers.isEmpty()) {
             String error = "Email already in use. Please choose a different email.";
             model.addAttribute("error", error);
@@ -52,7 +57,7 @@ public class UserController {
             model.addAttribute("error", "Password should be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.");
             return "users/signup";
         }
-        userRepo.save(new users(newName,newPwd,newUName));
+        userRepo.save(new users(newPwd, newEmail, newFName, newLName, newPN, newPph, newUtype));
         response.setStatus(201);
         return "users/login";
     }
@@ -78,9 +83,9 @@ public class UserController {
     @PostMapping("/login")
     public String login(@RequestParam Map<String,String> formData, Model model, HttpServletRequest request, HttpSession session){
         // processing login
-        String name = formData.get("username");
+        String uname = formData.get("username");
         String pwd = formData.get("password");
-        List<users> userlist = userRepo.findByNameAndPassword(name, pwd);
+        List<users> userlist = userRepo.findByEmailAndPassword(uname, pwd);
         if (userlist.isEmpty()){
             model.addAttribute("error", "Invalid username or password");
             return "users/login";

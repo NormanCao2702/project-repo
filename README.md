@@ -70,3 +70,14 @@ different solutions and enhances them with innovative features.
 3. (Iteration 3) David, an IS team lead, requires a specialized piece of hardware to enhance the network infrastructure. He accesses the IS PO Request page and selects "Electric" as the type of request. He fills in the vendor details, including the legal name, address, and contact information. As it is a new vendor, David ensures that AP is notified to set up the vendor in SAP. He attaches the quotation for the hardware and submits the request. The VMO reviews the request, approves it, and creates a purchase order in SAP. David receives a notification that his request has been processed and the vendor is being engaged.
 
 
+
+# information for development:
+
+## setting up psql with render.
+- create a psql on render 
+- link it to web app
+- code: psql -h "external link: everthing from dpg-example.com " -u "username" -d "databasename"
+- enter password given from render database.
+
+
+

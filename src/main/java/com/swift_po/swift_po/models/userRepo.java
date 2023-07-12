@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface userRepo extends JpaRepository<users,Integer> {
-    List<users> findByNameAndPassword(String name, String password);
-
-    List<users> findByName(String name);
+    List<users> findByEmail(String email);
+    List<users> findByEmailAndPassword(String email, String password);
 }
