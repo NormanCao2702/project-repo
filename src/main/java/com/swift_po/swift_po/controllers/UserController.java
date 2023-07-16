@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import com.swift_po.swift_po.models.users;
+import com.swift_po.swift_po.models.User;
 import com.swift_po.swift_po.models.userRepo;
 
 @Controller
@@ -37,16 +37,15 @@ public class UserController {
     @PostMapping("users/add")
     public String addUser(@RequestParam Map<String, String> newuser, HttpServletResponse response, Model model){
         System.out.println("ADD user");
-        String newPwd = newuser.get("password");
+    
         String newEmail = newuser.get("email");
         String newFName = newuser.get("fName");
         String newLName = newuser.get("lName");
-        String newPN = newuser.get("phoneNumber");
-        String newPph = newuser.get("passPhrase");
-        String newUtype = newuser.get("uType");
+        String newPwd = newuser.get("password");
+        String newuserType = newuser.get("userType");
 
         // Check if email is already in use
-        List<users> existingUsers = userRepo.findByEmail(newEmail);
+        List<User> existingUsers = userRepo.findByEmail(newEmail);
         if (!existingUsers.isEmpty()) {
             String error = "Email already in use. Please choose a different email.";
             model.addAttribute("error", error);
@@ -57,7 +56,7 @@ public class UserController {
             model.addAttribute("error", "Password should be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.");
             return "users/signup";
         }
-        userRepo.save(new users(newPwd, newEmail, newFName, newLName, newPN, newPph, newUtype));
+        userRepo.save(new User( newEmail, newFName, newLName, newPwd, newuserType));
         response.setStatus(201);
         return "users/login";
     }
@@ -69,7 +68,7 @@ public class UserController {
     }
     @GetMapping("/login")
     public String getLogin(Model model, HttpServletRequest request, HttpSession session){
-        users user = (users) session.getAttribute("session_user");
+        User user = (User) session.getAttribute("session_user");
         if (user == null){
             return "users/login";
         }
@@ -85,14 +84,14 @@ public class UserController {
         // processing login
         String uname = formData.get("username");
         String pwd = formData.get("password");
-        List<users> userlist = userRepo.findByEmailAndPassword(uname, pwd);
+        List<User> userlist = userRepo.findByEmailAndPassword(uname, pwd);
         if (userlist.isEmpty()){
             model.addAttribute("error", "Invalid username or password");
             return "users/login";
         }
         else {
             // success
-            users user = userlist.get(0);
+            User user = userlist.get(0);
             request.getSession().setAttribute("session_user", user);
             model.addAttribute("user", user);
             return "users/form";

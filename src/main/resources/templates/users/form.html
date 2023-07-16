@@ -14,7 +14,7 @@ datatorage/addnew -->
   <body>
     <div class="bg-[url('https://images.pexels.com/photos/531880/pexels-photo-531880.jpeg')] bg-cover relative w-screen h-screen">
       
-      <nav class="flex">
+      <nav class="fixed">
 
         <div id="topnav" class=" z-10 bg-black bg-opacity-30 p-4 text-center content-center w-screen h-[10%] fixed top-0 left-0 ">
           <div class=" items-center flex p-2.5 text-gray-100">
@@ -29,17 +29,18 @@ datatorage/addnew -->
           </div>
         </div>
 
-        <div id="sidenav" class=" z-0 flex-grow fixed bg-black bg-opacity-30 p-6 pt-6 text-center w-72 bottom-0 h-[90%] ">
+        <div id="sidenav" class=" z-0  fixed bg-black bg-opacity-30 p-6 pt-6 text-center w-72 bottom-0 h-[90%] ">
           <div class="text-gray-100 text-xl">
             
             <div id="navcontent">
                
               
               <a href="/login">
-              <div class="p-2.5 item-center mt-3 flex rounded-md px-4 cursor-pointer hover:bg-gray-700 bg-opacity-50 text-white ">
-                <i class="bi bi-star"></i>
-                <span class="text-[16px] ml-4 text-gray-200">Favourites</span>
-              </div> </a>
+                <div class="p-2.5 item-center mt-3 flex rounded-md px-4 cursor-pointer hover:bg-gray-700 bg-opacity-50 text-white ">
+                  <i class="bi bi-star"></i>
+                  <span class="text-[16px] ml-4 text-gray-200">Favourites</span>
+                </div> 
+              </a>
               <hr class=" my-3 ">
               <div class="p-2.5 item-center mt-3 flex rounded-md px-4 cursor-pointer hover:bg-gray-700 bg-opacity-50 text-white" onclick="dropdown()">
                 <i class="bi bi-file-earmark"></i>
