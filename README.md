@@ -72,6 +72,13 @@ different solutions and enhances them with innovative features.
 
 
 # information for development:
+### gmails:
+- username: cmptuser1@gmail.com
+- password: cmpt276!
+
+- username: cmptuser2@gmail.com
+- password: cmpt276!
+
 
 ## setting up psql with render.
 - create a psql on render 
