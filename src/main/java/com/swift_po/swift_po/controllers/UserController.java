@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+// import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -18,12 +18,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import com.swift_po.swift_po.models.users;
+import com.swift_po.swift_po.services.userServices;
 import com.swift_po.swift_po.models.userRepo;
 
 @Controller
 public class UserController {
     @Autowired
     private userRepo userRepo;
+
+    @Autowired
+    private userServices UserServices;
 
     @GetMapping("/")
     public String index(){
@@ -69,6 +73,7 @@ public class UserController {
             return "users/signup";
         }
         userRepo.save(new users(newPwd, newEmail, newFName, newLName, newPN, newPph, newUtype));
+        UserServices.registerUser(new users(newPwd, newEmail, newFName, newLName, newPN, newPph, newUtype));
         response.setStatus(201);
         return "users/login";
     }
