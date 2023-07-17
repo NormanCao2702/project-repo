@@ -52,8 +52,10 @@ datatorage/addnew -->
                 </div>
               </div>
               <div class="text-left text-sm font-thin mt-2 w-4/5 max-auto" id="pomenu">
-                <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1"> 
-                  <i class="bi bi-file-earmark-plus"> New Purchase Order</i>
+                <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
+                  <a th:href="@{/pr/{id}(id=${user.id})}"> 
+                    <i class="bi bi-file-earmark-plus"> New Purchase Order</i>
+                  </a>
                 </div>
                 <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1"> 
                   <i class="bi bi-file-earmark-plus"> Edit Purchase Order</i>

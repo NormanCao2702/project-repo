@@ -15,7 +15,7 @@ public class UserServices {
         // Send registration email to the user
         String to = user.getEmail();
         String subject = " Swift Purchase Orders!";
-        String content = "Dear " + user.getfName() + " "+ user. getlName() + ",\n\nWelcome to Swift Purchase Orders!";
+        String content = "Dear " + user.getName() + ",\n\nWelcome to Swift Purchase Orders!";
         emailService.sendEmail(to, subject, content);
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,22 +28,30 @@ public class UserController {
 
     @GetMapping("/")
     public String index(){
-        return "users/index";
+        return "/users/index";
     }
 
     @GetMapping("/signup")
     public String getSignUp() {
-        return "users/signup";
+        return "/users/signup";
     }
     
+    @GetMapping("/pr")
+    public String getPr(){
+        return "users/pr";
+    }
+
+    @RequestMapping("/src")
+    public String getSrc(){
+        return "users/srcJustification";
+    }
 
     @PostMapping("users/add")
     public String addUser(@RequestParam Map<String, String> newuser, HttpServletResponse response, Model model){
         System.out.println("ADD user");
     
         String newEmail = newuser.get("email");
-        String newFName = newuser.get("fName");
-        String newLName = newuser.get("lName");
+        String newName = newuser.get("name");;
         String newPwd = newuser.get("password");
         String newuserType = newuser.get("userType");
 
@@ -51,18 +60,18 @@ public class UserController {
         if (!existingUsers.isEmpty()) {
             String error = "Email already in use. Please choose a different email.";
             model.addAttribute("error", error);
-            return "users/signup";
+            return "/users/signup";
         }
         // Password policy validation
         if (!isStrongPassword(newPwd)) {
             model.addAttribute("error", "Password should be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.");
             return "users/signup";
         }
-        userRepo.save(new User( newEmail, newFName, newLName, newPwd, newuserType));
-        User tempuser = new User( newEmail, newFName, newLName, newPwd, newuserType);
+        userRepo.save(new User( newEmail, newName, newPwd, newuserType));
+        User tempuser = new User( newEmail, newName, newPwd, newuserType);
         UserServices.registerUser(tempuser);
         response.setStatus(201);
-        return "users/login";
+        return "/users/login";
     }
     
     // Helper method to check password strength
@@ -74,14 +83,37 @@ public class UserController {
     public String getLogin(Model model, HttpServletRequest request, HttpSession session){
         User user = (User) session.getAttribute("session_user");
         if (user == null){
-            return "users/login";
+            return "/users/login";
         }
         else {
             model.addAttribute("user",user);
-            return "users/form";
+            return "/users/form";
         }
     }
 
+    @GetMapping("/form")
+    public String getForm(Model model, HttpServletRequest request, HttpSession session){
+        User user = (User) session.getAttribute("session_user");
+        if (user == null)   {
+            return "/users/login";
+        }
+        else {
+            model.addAttribute("user",user);
+            return "/users/form";
+        }
+    }
+
+    @GetMapping("/pr/{id}")
+    public String getPr(Model model, HttpServletRequest request, HttpSession session){
+        User user = (User) session.getAttribute("session_user");
+        if (user == null)   {
+            return "/users/login";
+        }
+        else {
+            model.addAttribute("user",user);
+            return "/users/pr";
+        }
+    }
 
     @PostMapping("/login")
     public String login(@RequestParam Map<String,String> formData, Model model, HttpServletRequest request, HttpSession session){
@@ -91,17 +123,16 @@ public class UserController {
         List<User> userlist = userRepo.findByEmailAndPassword(uname, pwd);
         if (userlist.isEmpty()){
             model.addAttribute("error", "Invalid username or password");
-            return "users/login";
+            return "/users/login";
         }
         else {
             // success
             User user = userlist.get(0);
             request.getSession().setAttribute("session_user", user);
             model.addAttribute("user", user);
-            return "users/form";
+            return "redirect:/form";
         }
     }
-
 
     @GetMapping("/logout")
     public String destroySession(HttpServletRequest request){
