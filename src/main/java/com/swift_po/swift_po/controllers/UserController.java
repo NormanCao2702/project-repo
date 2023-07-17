@@ -10,18 +10,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import com.swift_po.swift_po.models.User;
 import com.swift_po.swift_po.models.userRepo;
+import com.swift_po.swift_po.services.UserServices;
 
 @Controller
 public class UserController {
     @Autowired
     private userRepo userRepo;
+    @Autowired
+    private UserServices UserServices;
+    
 
     @GetMapping("/")
     public String index(){
@@ -57,6 +59,8 @@ public class UserController {
             return "users/signup";
         }
         userRepo.save(new User( newEmail, newFName, newLName, newPwd, newuserType));
+        User tempuser = new User( newEmail, newFName, newLName, newPwd, newuserType);
+        UserServices.registerUser(tempuser);
         response.setStatus(201);
         return "users/login";
     }
@@ -105,3 +109,6 @@ public class UserController {
         return "/users/login";
     }
 }
+
+
+
