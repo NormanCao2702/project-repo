@@ -94,15 +94,18 @@ different solutions and enhances them with innovative features.
 - two new forms created
 - functionaility to navigation. and new animation.
 - password is now hashed at sign up
+- checks the password at login to see if it mathces with hashshed password
 
 
 # still to do for iteration 2
-- checks the password at login to see if it mathces with hashshed password
 - profile icon and profile page
 - vmo and is user pages different pages
 - dashboard shows reauests that have been made
 - implementing the table repository and everything 
 
+# APIs we have used:
+- Javaxmail
+- BCryptPasswordEncoder
 
 
 
