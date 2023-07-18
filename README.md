@@ -33,7 +33,8 @@ also populating the required fields in our application with the help of Microsof
 
 - Existing systems (APIs):
 
-   - Azure API: https://learn.microsoft.com/en-us/rest/api/azure/
+   - JavaxMail API: https://learn.microsoft.com/en-us/rest/api/azure/
+   - BCryptEncoder API:
    - Other Possible APIs: 
         - SAP and Digital Signature API
 

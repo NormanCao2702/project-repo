@@ -31,7 +31,7 @@ public class UserController {
 
     @GetMapping("/")
     public String index(){
-        return "/users/index";
+        return "users/index";
     }
 
     @GetMapping("/signup")
@@ -86,6 +86,7 @@ public class UserController {
         String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
         return password.matches(regex);
     }
+
     @GetMapping("/login")
     public String getLogin(Model model, HttpServletRequest request, HttpSession session){
         User user = (User) session.getAttribute("session_user");
@@ -110,6 +111,18 @@ public class UserController {
         }
     }
 
+    @GetMapping("/form/pr/{id}")
+    public String showForm(Model model, HttpServletRequest request, HttpSession session){
+        User user = (User) session.getAttribute("session_user");
+        if (user == null)   {
+            return "/users/login";
+        }
+        else {
+            model.addAttribute("user",user);
+            return "/users/formpr";
+        }
+    }
+
     @GetMapping("/pr/{id}")
     public String getPr(Model model, HttpServletRequest request, HttpSession session){
         User user = (User) session.getAttribute("session_user");
@@ -119,6 +132,18 @@ public class UserController {
         else {
             model.addAttribute("user",user);
             return "/users/pr";
+        }
+    }
+
+    @PostMapping("/src/{id}")
+    public String getSrc(Model model, HttpServletRequest request, HttpSession session){
+        User user = (User) session.getAttribute("session_user");
+        if (user == null)   {
+            return "/users/login";
+        }
+        else {
+            model.addAttribute("user",user);
+            return "/users/srcJustification";
         }
     }
 
@@ -136,8 +161,6 @@ public class UserController {
         else {
             // success
             User user = userlist.get(0);
-            //crypt new pass
-            String loginpass = UserServices.cryptpass(pwd);
             //get user pass
             String storedHashPass = user.getPassword();
             //check is they match
