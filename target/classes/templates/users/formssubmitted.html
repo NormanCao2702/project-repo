@@ -54,7 +54,6 @@ datatorage/addnew -->
                     <i class="bi bi-file-earmark-plus"> Submitted Orders </i>
                   </a>
                 </div>
-              </div>
             </div>
           </div>
           <a href="/logout">
@@ -63,20 +62,43 @@ datatorage/addnew -->
               <i class="bi bi-box-arrow-in-right "></i>
               <span id="logouttext" class="text-[16px] ml-4 text-gray-200">Logout</span>
           
-            </div>         
+            </div> 
           </a>
         </div>
-
-
       </nav>
-      <div class="content">
+      <div class="w-4/6 float-right mr-24 pt-24 pb-20"> 
+        <div class="flex flex-col">
+            <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                    <div class="overflow-hidden">
+                        <table class="min-w-full text-left text-sm font-light bg-blue-100">
+                            <thead class="border-b font-medium dark:border-neutral-500 bg-blue-200 text-center">
+                                <tr>
+                                    <th scope="col" class="px-6 py-4">Request ID</th>
+                                    <th scope="col" class="px-6 py-4">Company Code</th>
+                                    <th scope="col" class="px-6 py-4">ProjectName</th>
+                                    <th scope="col" class="px-6 py-4">Date</th>
+                                    <th scope="col" class="px-6 py-4">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="request:${requests}" th:if="${request.status == 'submitted' && request.userID == user.id}" class=" font-medium border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600 text-center">
+                                    <!-- if the status of the request is draft -->
+                                    <td class="whitespace-nowrap px-6 py-4 font-medium" th:text="${request.rid}"></td>
+                                    <td class="whitespace-nowrap px-6 py-4" th:text="${request.companyCode}"></td>
+                                    <td class="whitespace-nowrap px-6 py-4" th:text="${request.projectName}"></td>
+                                    <td class="whitespace-nowrap px-6 py-4" th:text="${request.date}"></td>
+                                    <td class="whitespace-nowrap px-6 py-4" th:text="${request.status}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>      
         
       </div>
-    </div>
-  </div>
-    
-    
-    
+  </div>   
 </body>
 </html>
 
