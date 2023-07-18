@@ -1,17 +1,7 @@
 # FortisBC x SwiftPO
 
-
-## Requirements for iteration 2:
-<span style="background-color: #FFFF00">
-
-1. Sign Up feature:
-   - associated database for user.
-   - associated 
-2. Databse integration for user.
-   - 
-</span>
-          
-A landing page for SwiftPO resembling FortisBC’s Connector website’s style and structure.
+## Requirements for the first iteration:
+1. A landing page for SwiftPO resembling FortisBC’s Connector website’s style and structure. 
 2. The ability to sign up, and then login with the information provided during sign up.
 3. On successful login, user is guided to the area where they will eventually place/track/edit(for next iterations) order requests.
 
@@ -43,13 +33,9 @@ also populating the required fields in our application with the help of Microsof
 
 - Existing systems (APIs):
 
-<div class=" text-color">
-</div>
    - JavaxMail API:
         https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/mail/javamail/JavaMailSender.html
    - BCryptEncoder API:
-   - Other Possible APIs: 
-        - SAP and Digital Signature API
 
 ## Customer 
 The customers for this web app would primarily be the IS (Information Systems) users within the company who need to engage with external parties (contractors) and request Purchase Orders (POs). The intended recipients and utilizers of the IS PO Request web application are
@@ -118,8 +104,9 @@ different solutions and enhances them with innovative features.
 - implementing the table repository and everything 
 
 # APIs we have used:
-- Javaxmail
-- BCryptPasswordEncoder
+- javaxmail
+- BCryptEncoder API:
+-
 
 
 
