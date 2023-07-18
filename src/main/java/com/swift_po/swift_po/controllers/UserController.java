@@ -17,7 +17,6 @@ import jakarta.servlet.http.HttpSession;
 import com.swift_po.swift_po.models.User;
 import com.swift_po.swift_po.models.userRepo;
 import com.swift_po.swift_po.services.UserServices;
-import com.swift_po.swift_po.configurations.SecurityConfig;
 
 @Controller
 public class UserController {
@@ -36,7 +35,7 @@ public class UserController {
 
     @GetMapping("/signup")
     public String getSignUp() {
-        return "/users/signup";
+        return "users/signup";
     }
     
     @GetMapping("/pr")
@@ -65,7 +64,7 @@ public class UserController {
         if (!existingUsers.isEmpty()) {
             String error = "Email already in use. Please choose a different email.";
             model.addAttribute("error", error);
-            return "/users/signup";
+            return "users/signup";
         }
         // Password policy validation
         if (!isStrongPassword(newPwd)) {
@@ -77,8 +76,7 @@ public class UserController {
         User tempuser = new User( newEmail, newName, newCryptedPass, newuserType);
         UserServices.registerUser(tempuser);
         response.setStatus(201);
-        return "/users/login";
-        
+        return "users/login";
     }
     
     // Helper method to check password strength
@@ -91,11 +89,11 @@ public class UserController {
     public String getLogin(Model model, HttpServletRequest request, HttpSession session){
         User user = (User) session.getAttribute("session_user");
         if (user == null){
-            return "/users/login";
+            return "users/login";
         }
         else {
             model.addAttribute("user",user);
-            return "/users/form";
+            return "users/form";
         }
     }
 
@@ -103,11 +101,11 @@ public class UserController {
     public String getForm(Model model, HttpServletRequest request, HttpSession session){
         User user = (User) session.getAttribute("session_user");
         if (user == null)   {
-            return "/users/login";
+            return "users/login";
         }
         else {
             model.addAttribute("user",user);
-            return "/users/form";
+            return "users/form";
         }
     }
 
@@ -115,11 +113,11 @@ public class UserController {
     public String showForm(Model model, HttpServletRequest request, HttpSession session){
         User user = (User) session.getAttribute("session_user");
         if (user == null)   {
-            return "/users/login";
+            return "users/login";
         }
         else {
             model.addAttribute("user",user);
-            return "/users/formpr";
+            return "users/formpr";
         }
     }
 
@@ -127,11 +125,11 @@ public class UserController {
     public String getPr(Model model, HttpServletRequest request, HttpSession session){
         User user = (User) session.getAttribute("session_user");
         if (user == null)   {
-            return "/users/login";
+            return "users/login";
         }
         else {
             model.addAttribute("user",user);
-            return "/users/pr";
+            return "users/pr";
         }
     }
 
@@ -139,11 +137,11 @@ public class UserController {
     public String getSrc(Model model, HttpServletRequest request, HttpSession session){
         User user = (User) session.getAttribute("session_user");
         if (user == null)   {
-            return "/users/login";
+            return "users/login";
         }
         else {
             model.addAttribute("user",user);
-            return "/users/srcJustification";
+            return "users/srcJustification";
         }
     }
 
@@ -155,8 +153,8 @@ public class UserController {
         
         List<User> userlist = userRepo.findByEmail(uname);
         if (userlist.isEmpty()){
-            model.addAttribute("error", "Invalid Username");
-            return "/users/login";
+            model.addAttribute("error", "Invalid username or password");
+            return "users/login";
         }
         else {
             // success
@@ -182,7 +180,7 @@ public class UserController {
     @GetMapping("/logout")
     public String destroySession(HttpServletRequest request){
         request.getSession().invalidate();
-        return "/users/login";
+        return "users/login";
     }
 }
 
