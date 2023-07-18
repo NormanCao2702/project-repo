@@ -87,4 +87,24 @@ different solutions and enhances them with innovative features.
 - enter password given from render database.
 
 
+# roughdraft of changes for iteration 2
+- changes for database to include user types.
+- user is sent email when signing up
+- requestor informtaion autofills
+- two new forms created
+- functionaility to navigation. and new animation.
+- password is now hashed at sign up
+
+
+# still to do for iteration 2
+- checks the password at login to see if it mathces with hashshed password
+- profile icon and profile page
+- vmo and is user pages different pages
+- dashboard shows reauests that have been made
+- implementing the table repository and everything 
+
+
+
+
+
 

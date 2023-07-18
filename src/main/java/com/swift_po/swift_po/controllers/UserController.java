@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import com.swift_po.swift_po.models.User;
 import com.swift_po.swift_po.models.userRepo;
 import com.swift_po.swift_po.services.UserServices;
+import com.swift_po.swift_po.configurations.SecurityConfig;
 
 @Controller
 public class UserController {
@@ -24,6 +25,8 @@ public class UserController {
     private userRepo userRepo;
     @Autowired
     private UserServices UserServices;
+    @Autowired
+    // private BCryptPasswordEncoder encoder;
     
 
     @GetMapping("/")
@@ -54,6 +57,8 @@ public class UserController {
         String newName = newuser.get("name");;
         String newPwd = newuser.get("password");
         String newuserType = newuser.get("userType");
+        String newCryptedPass = UserServices.cryptpass(newPwd);
+
 
         // Check if email is already in use
         List<User> existingUsers = userRepo.findByEmail(newEmail);
@@ -67,11 +72,13 @@ public class UserController {
             model.addAttribute("error", "Password should be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.");
             return "users/signup";
         }
-        userRepo.save(new User( newEmail, newName, newPwd, newuserType));
-        User tempuser = new User( newEmail, newName, newPwd, newuserType);
+        
+        userRepo.save(new User( newEmail, newName, newCryptedPass, newuserType));
+        User tempuser = new User( newEmail, newName, newCryptedPass, newuserType);
         UserServices.registerUser(tempuser);
         response.setStatus(201);
         return "/users/login";
+        
     }
     
     // Helper method to check password strength
@@ -120,17 +127,32 @@ public class UserController {
         // processing login
         String uname = formData.get("username");
         String pwd = formData.get("password");
-        List<User> userlist = userRepo.findByEmailAndPassword(uname, pwd);
+        
+        List<User> userlist = userRepo.findByEmail(uname);
         if (userlist.isEmpty()){
-            model.addAttribute("error", "Invalid username or password");
+            model.addAttribute("error", "Invalid Username");
             return "/users/login";
         }
         else {
             // success
             User user = userlist.get(0);
-            request.getSession().setAttribute("session_user", user);
-            model.addAttribute("user", user);
-            return "redirect:/form";
+            //crypt new pass
+            String loginpass = UserServices.cryptpass(pwd);
+            //get user pass
+            String storedHashPass = user.getPassword();
+            //check is they match
+            
+            if (UserServices.logincryptpassmatch(pwd,storedHashPass)) {
+                //if they match then login
+                request.getSession().setAttribute("session_user", user);
+                model.addAttribute("user", user);
+                return "redirect:/form";
+                
+            } else {
+                //if they do not match then giev them prompt saying that it does match
+                model.addAttribute("error", "Invalid Username or Password");
+                return "/users/login";
+            }
         }
     }
 
