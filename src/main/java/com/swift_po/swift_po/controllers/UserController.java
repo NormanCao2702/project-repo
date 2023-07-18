@@ -79,6 +79,7 @@ public class UserController {
         String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
         return password.matches(regex);
     }
+
     @GetMapping("/login")
     public String getLogin(Model model, HttpServletRequest request, HttpSession session){
         User user = (User) session.getAttribute("session_user");
@@ -103,6 +104,18 @@ public class UserController {
         }
     }
 
+    @GetMapping("/form/pr/{id}")
+    public String showForm(Model model, HttpServletRequest request, HttpSession session){
+        User user = (User) session.getAttribute("session_user");
+        if (user == null)   {
+            return "/users/login";
+        }
+        else {
+            model.addAttribute("user",user);
+            return "/users/formpr";
+        }
+    }
+
     @GetMapping("/pr/{id}")
     public String getPr(Model model, HttpServletRequest request, HttpSession session){
         User user = (User) session.getAttribute("session_user");
@@ -112,6 +125,18 @@ public class UserController {
         else {
             model.addAttribute("user",user);
             return "/users/pr";
+        }
+    }
+
+    @PostMapping("/src/{id}")
+    public String getSrc(Model model, HttpServletRequest request, HttpSession session){
+        User user = (User) session.getAttribute("session_user");
+        if (user == null)   {
+            return "/users/login";
+        }
+        else {
+            model.addAttribute("user",user);
+            return "/users/srcJustification";
         }
     }
 
