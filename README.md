@@ -1,7 +1,17 @@
 # FortisBC x SwiftPO
 
-## Requirements for the first iteration:
-1. A landing page for SwiftPO resembling FortisBC’s Connector website’s style and structure. 
+
+## Requirements for iteration 2:
+<span style="background-color: #FFFF00">
+
+1. Sign Up feature:
+   - associated database for user.
+   - associated 
+2. Databse integration for user.
+   - 
+</span>
+          
+A landing page for SwiftPO resembling FortisBC’s Connector website’s style and structure.
 2. The ability to sign up, and then login with the information provided during sign up.
 3. On successful login, user is guided to the area where they will eventually place/track/edit(for next iterations) order requests.
 
@@ -33,7 +43,10 @@ also populating the required fields in our application with the help of Microsof
 
 - Existing systems (APIs):
 
-   - JavaxMail API: https://learn.microsoft.com/en-us/rest/api/azure/
+<div class=" text-color">
+</div>
+   - JavaxMail API:
+        https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/mail/javamail/JavaMailSender.html
    - BCryptEncoder API:
    - Other Possible APIs: 
         - SAP and Digital Signature API
