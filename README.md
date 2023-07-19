@@ -33,9 +33,9 @@ also populating the required fields in our application with the help of Microsof
 
 - Existing systems (APIs):
 
-   - Azure API: https://learn.microsoft.com/en-us/rest/api/azure/
-   - Other Possible APIs: 
-        - SAP and Digital Signature API
+   - JavaxMail API:
+        https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/mail/javamail/JavaMailSender.html
+   - BCryptEncoder API:
 
 ## Customer 
 The customers for this web app would primarily be the IS (Information Systems) users within the company who need to engage with external parties (contractors) and request Purchase Orders (POs). The intended recipients and utilizers of the IS PO Request web application are
@@ -85,6 +85,30 @@ different solutions and enhances them with innovative features.
 - link it to web app
 - code: psql -h "external link: everthing from dpg-example.com " -u "username" -d "databasename"
 - enter password given from render database.
+
+
+# roughdraft of changes for iteration 2
+- changes for database to include user types.
+- user is sent email when signing up
+- requestor informtaion autofills
+- two new forms created
+- functionaility to navigation. and new animation.
+- password is now hashed at sign up
+- checks the password at login to see if it mathces with hashshed password
+
+
+# still to do for iteration 2
+- profile icon and profile page
+- vmo and is user pages different pages
+- dashboard shows reauests that have been made
+- implementing the table repository and everything 
+
+# APIs we have used:
+- javaxmail
+- BCryptEncoder API:
+-
+
+
 
 
 
