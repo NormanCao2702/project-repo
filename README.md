@@ -1,6 +1,6 @@
 # FortisBC x SwiftPO
 
-## Requirements for the first iteration:
+## Requirements for the second iteration:
 1. A landing page for SwiftPO resembling FortisBC’s Connector website’s style and structure. 
 2. The ability to sign up, and then login with the information provided during sign up.
 3. On successful login, user is guided to the area where they will eventually place/track/edit(for next iterations) order requests.
