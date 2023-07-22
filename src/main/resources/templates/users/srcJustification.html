@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sourcing Justification</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script  src="/js/script.js"></script>
+</head>
+<body>
+    <div class="w-screen h-fit flex justify-center bg-white">
+        <div class="h-fit w-11/12 bg-white border border-cyan-900 rounded">
+            <h1 class="text-cyan-900 text-3xl text-center font-bold pt-5">Sourcing justification</h1>
+        </br>
+            <div class="relative pl-10 max-w-7xl italic">
+                <p>
+                    Sourcing justification and the retention of the information is the responsibility of each business unit. This form is a tool for each business unit to collect Sourcing justification information. The retention of this information is subject to audit.
+                </p>
+                <p1>
+                    This form is used to capture the reason "why" a vendor was selected in cases where a competitive bid process was not undertaken with Procurement.
+                </p1>
+                <div class="bg-black not-italic">
+                    <p class="font-bold text-white pl-2">Definitions</p>
+                </div>
+                <div class="border border-cyan-900 rounded not-italic mt-1.5 pl-2">
+                    <p> <b>Sole Source:</b> only <b>one</b> vendor is <b>capable</b> of providing a particular item or service.</p>
+                </div>
+                <div class="border border-cyan-900 rounded not-italic mt-1.5 pl-2">
+                    <p> <b>Single Source:</b> a product or service is available from more than one source, but for <b>particular reasons</b>, it must be purchased from a specific vendor.</p>
+                </div>
+                <div class="border border-cyan-900 rounded not-italic mt-1.5 pl-2">
+                    <p> <b>Competitive Bid: </b> wherein more than one proposal, tender, bid or quote has been collected and evaluated based on value provided. Where a competitive bid has been done through Procurement, this form is not required.</p>
+                </div>
+                <p class="not-italic mt-1">The justification needs to explain how the organization is receiving fair market value and how financial risk is mitigated. <i class="fa fa-exclamation-circle" aria-hidden="true"></i></p>
+                <br/>
+                <p class="not-italic font-bold bg-yellow-100 pl-2 border-t border-b border-black mb-2.5">The questions below need to be considered and documented in support of the sourcing requirements. Check all that apply:</p>
+
+                <form action="users/justification" method="post">
+                    <ul>
+                        <li class="not-italic mb-1.5"><input type="checkbox" id="check1"><label class="pl-2 hover:text-blue-800" name="OEM" for="check1"><b>OEM parts:</b> Repair or maintenance parts are only available from original equipment manufacturer or their designated service dealer.</label></li>
+                        <li class="not-italic mb-1.5"><input type="checkbox" id="check2"><label class="pl-2 hover:text-blue-800" name="s&s" for="check2"><b>Software & systems:</b> Upgrade/ modification or support to existing software or systems: available only from this software or systems producer.</label></li>
+                        <li class="not-italic mb-1.5"><input type="checkbox" id="check3"><label class="pl-2 hover:text-blue-800" name="license" for="check3"><b>License or patent:</b> Sole provider of a patented or licensed product.</label></li>
+                        <li class="not-italic mb-1.5"><input type="checkbox" id="check4"><label class="pl-2 hover:text-blue-800" name="operation" for="check4"><b>Operation of equipment systems:</b> Matches existing equipment systems. Provide brand & model of existing equipment and explain why:</label><br/> <div class="pl-4 pt-2"><textarea class="resize-none rounded border border-black h-20 w-5/6 pl-2"></textarea></div> </li>
+                        <li class="not-italic mb-1.5"><input type="checkbox" id="check5"><label class="pl-2 hover:text-blue-800" name="used/refurbished" for="check5"><b>Used or refurbished:</b> Used, reconditioned or demonstration equipment available at lower-than-new cost. Show cost comparison and attach pricing information.</label></li>
+                        <li class="not-italic mb-1.5"><input type="checkbox" id="check6"><label class="pl-2 hover:text-blue-800" name="provider" for="check6"><b>Only provider in marketplace:</b> Sole provider of service/maintenance/product. No other supplier exists within the marketplace that can provide the good/service.</label></li>
+                        <li class="not-italic mb-1.5"><input type="checkbox" id="check7"><label class="pl-2 hover:text-blue-800" name="r&d/technology" for="check7"><b>R&D or new technology:</b> Service/commodity is new technology or otherwise unique.</label></li>
+                        <li class="not-italic mb-1.5"><input type="checkbox" id="check8"><label class="pl-2 hover:text-blue-800" name="vendor/community" for="check8"><b>Vendor and/or community relations.</b></label></li>
+                        <li class="not-italic mb-1.5"><input type="checkbox" id="check9"><label class="pl-2 hover:text-blue-800" name="certified" for="check9"><b>Certified:</b> Only this vendor is certified under an authorized body to provide this good/service.</label></li>
+                        <li class="not-italic mb-1.5"><input type="checkbox" id="check10"><label class="pl-2 hover:text-blue-800" name="costOfChange" for="check10"><b>Cost of change is highly prohibitive:</b> The continuation of an existing contract cumulatively over 5 years old and cost of changing vendors is prohibitive: </label><br/><div class="pl-4 pt-2"><textarea class="resize-none rounded border border-black h-7 w-32 pl-2"></textarea></div></li>
+                        <li class="mb-1.5 pl-4"> <p>Note: Justification on the basis that a long term contractual arrangement exists is insufficient. Contract continuation must be rationalized in relation to the current market conditions.</p></li>
+                        <li class="not-italic mb-1.5"><input type="checkbox" id="check11"><label class="pl-2 hover:text-blue-800" name="directNego" for="check11">Direct negotiation with one or more suppliers where value provided is equal to or better than market</label></li>
+                        <li class="not-italic mb-1.5"><input type="checkbox" id="check12"><label class="pl-2 hover:text-blue-800" name="other" for="check12">Other reason(s):</label><br/><div class="pl-4 pt-2"><textarea class="resize-none rounded border border-black h-20 w-5/6 pl-2 placeholder:italic" placeholder="Explanation/details: "></textarea></div></li>
+
+                        <li class="not-italic mb-1.5"><p>Is there an existing business relationship between FortisBC and the vendor?</p>
+                            <input type="checkbox" name="yes" id="yes"><label class="pl-2 pr-6 text-lg" for="yes">Yes</label>
+                            <input type="checkbox" name="no"  id="no"><label class="pl-2 text-lg" for="no">No</label>
+                        </li>
+                        
+                        <li class="not-italic mb-1.5 pl-10">
+                            <p><b><u>Yes</u>:</b> Procurement will proceed with processing your request.</p></li>
+                        <li class="not-italic mb-1.5 pl-10">
+                            <p><b><u>No</u>:</b> The business unit will need to contact the vendor to obtain expressed consent under CASL (Canadian Anti-Spamming Legislation) before Procurement can process your request.</p>
+                        </li>
+                        <li class="not-italic mb-1.5"><input type="checkbox" id="check13"><label class="pl-2 hover:text-blue-800" name="confirm" for="check13">Confirm by checking this box that no conflict of interest exists with the vendor.</label></li>
+                        <li class="mb-1.5"><p>Note: If a conflict of interest exists or is perceived to exist - a party independent of the conflict within the business should do the sourcing.</p></li>
+                        <li class="not-italic mb-1.5">Vendor name* <!-- <i class="fa-regular fa-circle-question opacity-50 hover:opacity-100 duration-300"></i> --><br/><input type="text" name="vendorName" class="h-10 w-5/6 border border-grey-100 rounded-md pl-2 mt-1.5" placeholder="Vendor Name" required></li>
+                        <li class="not-italic mb-1.5">Value* <!-- <i class="fa-regular fa-circle-question opacity-50 hover:opacity-100 duration-300"></i> --><br/><input type="text" name="value" class="h-10 w-5/6 border border-grey-100 rounded-md pl-2 mt-1.5" placeholder="Value" required></li>
+                        <li class="not-italic mb-1.5">Submitted by* <!-- <i class="fa-regular fa-circle-question opacity-50 hover:opacity-100 duration-300"></i> --><br/><input type="text" name="submitted" class="h-10 w-5/6 border border-grey-100 rounded-md pl-2 mt-1.5" placeholder="Submitted by" required></li>
+                        <li class="not-italic mb-1.5">Name (print or type)* <!-- <i class="fa-regular fa-circle-question opacity-50 hover:opacity-100 duration-300"></i> --><br/><input name="uname" type="text" class="h-10 w-5/6 border border-grey-100 rounded-md pl-2 mt-1.5" placeholder="Name" required></li>
+                        <li class="not-italic mb-1.5">Title* <!-- <i class="fa-regular fa-circle-question opacity-50 hover:opacity-100 duration-300"></i> --><br/><input type="text" name="title" class="h-10 w-5/6 border border-grey-100 rounded-md pl-2 mt-1.5" placeholder="Title" required></li>
+                        <li class="not-italic mb-1.5">Date* <!-- <i class="fa-regular fa-circle-question opacity-50 hover:opacity-100 duration-300"></i> --><br/><input type="date" name="date" class="h-10 w-5/6 border border-grey-100 rounded-md pl-2 mt-1.5" placeholder="Date" required></li>
+                        <li class="not-italic mb-1.5">Signature*<br/><input name="signature" type="file" class="h-10 w-60 mt-1.5" name="Upload" accept="application/pdf" required></li>
+                        <li class="not-italic mb-1.5 font-bold">Approval is based upon the signing authority as outlined in the Corporate Authorities policy. If the request is for an extension or renewal beyond an initial 5-year period, Executive approval is required and shall accompany this form.</li>
+                    </ul>
+                    <br/><br/><br/>
+                <div>
+                    <button class="absolute bottom-5 right-0 h-10 w-32 ring-offset-1 ring-1 border border-white bg-sky-500 hover:opacity-80 duration-300 rounded-md text-xl text-center text-white font-bold">
+                        Submit
+                    </button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
