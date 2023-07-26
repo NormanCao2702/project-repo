@@ -24,6 +24,8 @@ public class UserController {
     private userRepo userRepo;
     @Autowired
     private UserServices UserServices;
+    @Autowired
+    // private BCryptPasswordEncoder encoder;
     
 
     @GetMapping("/")
@@ -54,24 +56,27 @@ public class UserController {
         String newName = newuser.get("name");;
         String newPwd = newuser.get("password");
         String newuserType = newuser.get("userType");
+        String newCryptedPass = UserServices.cryptpass(newPwd);
+
 
         // Check if email is already in use
         List<User> existingUsers = userRepo.findByEmail(newEmail);
         if (!existingUsers.isEmpty()) {
             String error = "Email already in use. Please choose a different email.";
             model.addAttribute("error", error);
-            return "/users/signup";
+            return "users/signup";
         }
         // Password policy validation
         if (!isStrongPassword(newPwd)) {
             model.addAttribute("error", "Password should be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.");
             return "users/signup";
         }
-        userRepo.save(new User( newEmail, newName, newPwd, newuserType));
-        User tempuser = new User( newEmail, newName, newPwd, newuserType);
+        
+        userRepo.save(new User( newEmail, newName, newCryptedPass, newuserType));
+        User tempuser = new User( newEmail, newName, newCryptedPass, newuserType);
         UserServices.registerUser(tempuser);
         response.setStatus(201);
-        return "/users/login";
+        return "users/login";
     }
     
     // Helper method to check password strength
@@ -84,11 +89,11 @@ public class UserController {
     public String getLogin(Model model, HttpServletRequest request, HttpSession session){
         User user = (User) session.getAttribute("session_user");
         if (user == null){
-            return "/users/login";
+            return "users/login";
         }
         else {
             model.addAttribute("user",user);
-            return "/users/form";
+            return "users/form";
         }
     }
 
@@ -96,11 +101,11 @@ public class UserController {
     public String getForm(Model model, HttpServletRequest request, HttpSession session){
         User user = (User) session.getAttribute("session_user");
         if (user == null)   {
-            return "/users/login";
+            return "users/login";
         }
         else {
             model.addAttribute("user",user);
-            return "/users/form";
+            return "users/form";
         }
     }
 
@@ -108,11 +113,11 @@ public class UserController {
     public String showForm(Model model, HttpServletRequest request, HttpSession session){
         User user = (User) session.getAttribute("session_user");
         if (user == null)   {
-            return "/users/login";
+            return "users/login";
         }
         else {
             model.addAttribute("user",user);
-            return "/users/formpr";
+            return "users/formpr";
         }
     }
 
@@ -120,11 +125,11 @@ public class UserController {
     public String getPr(Model model, HttpServletRequest request, HttpSession session){
         User user = (User) session.getAttribute("session_user");
         if (user == null)   {
-            return "/users/login";
+            return "users/login";
         }
         else {
             model.addAttribute("user",user);
-            return "/users/pr";
+            return "users/pr";
         }
     }
 
@@ -132,11 +137,11 @@ public class UserController {
     public String getSrc(Model model, HttpServletRequest request, HttpSession session){
         User user = (User) session.getAttribute("session_user");
         if (user == null)   {
-            return "/users/login";
+            return "users/login";
         }
         else {
             model.addAttribute("user",user);
-            return "/users/srcJustification";
+            return "users/srcJustification";
         }
     }
 
@@ -145,24 +150,37 @@ public class UserController {
         // processing login
         String uname = formData.get("username");
         String pwd = formData.get("password");
-        List<User> userlist = userRepo.findByEmailAndPassword(uname, pwd);
+        
+        List<User> userlist = userRepo.findByEmail(uname);
         if (userlist.isEmpty()){
             model.addAttribute("error", "Invalid username or password");
-            return "/users/login";
+            return "users/login";
         }
         else {
             // success
             User user = userlist.get(0);
-            request.getSession().setAttribute("session_user", user);
-            model.addAttribute("user", user);
-            return "redirect:/form";
+            //get user pass
+            String storedHashPass = user.getPassword();
+            //check is they match
+            
+            if (UserServices.logincryptpassmatch(pwd,storedHashPass)) {
+                //if they match then login
+                request.getSession().setAttribute("session_user", user);
+                model.addAttribute("user", user);
+                return "redirect:/form";
+                
+            } else {
+                //if they do not match then giev them prompt saying that it does match
+                model.addAttribute("error", "Invalid Username or Password");
+                return "users/login";
+            }
         }
     }
 
     @GetMapping("/logout")
     public String destroySession(HttpServletRequest request){
         request.getSession().invalidate();
-        return "/users/login";
+        return "users/login";
     }
 }
 
