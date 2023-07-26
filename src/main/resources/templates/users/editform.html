@@ -121,11 +121,41 @@ datatorage/addnew -->
             <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="chargeNumber" name="chargeNumber" required>
           </div> -->
 
-          <div class="mb-4 text-center">
-            <label class="block text-gray-200 font-bold mb-2" for="statementOfWork">Statement of Work<span class="text-red-500"> *</span></label>
-            <textarea th:field="*{statementOfWork}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" id="statementOfWork" name="statementOfWork" rows="4" required></textarea>
+          <div class="mb-4 text-center w-3/4 mx-auto">
+            <label class="block text-gray-200 font-bold mb-2" for="statementOfWork">Statement of Work</label>
+            <div class="w-full border border-gray-300 rounded-md bg-white">
+              <div id="rich-text" style="height: 150px;" class="h-40 text-base"></div>
+              <textarea id="statementOfWork" name="statementOfWork" th:field="*{statementOfWork}" style="display:none;"></textarea>
+            </div>
           </div>
+          
 
+          <script>
+            var initialValue = document.querySelector('#statementOfWork').value;
+            var editor = new Quill('#rich-text', {
+            theme: 'snow',
+            modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline', 'strike'], // Text formatting options
+                ['blockquote', 'code-block'], // Additional formatting options
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }], // Bullet and numbered lists
+                ['clean'] // Remove formatting option
+                ]
+                }
+              });
+
+            editor.clipboard.dangerouslyPasteHTML(initialValue);
+            
+
+            var form = document.querySelector("form")
+            var hiddenInput = document.querySelector('#statementOfWork');
+
+            form.addEventListener('submit', function(e){
+              hiddenInput.value = editor.root.innerHTML;
+            });
+
+            
+        </script>
           <!-- <div class="mb-4 text-center">
             <label class="block text-gray-200 font-bold mb-2" for="commencementDate">Commencement Date</label>
             <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date" id="commencementDate" name="commencementDate">
