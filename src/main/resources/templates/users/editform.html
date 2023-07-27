@@ -54,6 +54,7 @@ datatorage/addnew -->
                   </a>
                 </div>
                 <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1"> 
+                  <a href="/requests/submitted"> 
                   <i class="bi bi-file-earmark-plus"> Submitted Orders </i>
                 </div>
               </div>
@@ -183,7 +184,8 @@ datatorage/addnew -->
 
           <div class="mb-4 text-center">
             <label class="block text-gray-200 font-bold mb-2" for="totalCost">Total Cost<span class="text-red-500"> *</span></label>
-            <input th:field="*{totalCost}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="totalCost" name="totalCost" required>
+            <!-- <input th:field="*{totalCost}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="totalCost" name="totalCost" required> -->
+            <textarea class="w-3/4 px-3 py-2 border border-gray-300 rounded-md h-40 resize-none" id="totalCost" name="totalCost" rows="4" th:field="*{totalCost}" required></textarea>
           </div>
 
           <!-- <div class="mb-4 text-center">

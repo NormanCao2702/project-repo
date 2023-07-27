@@ -106,11 +106,28 @@ public class RequestController {
         }
 		System.out.println("editEmployeeById" + rid);
 		
-			List<Request> request = requestRepo.findById(rid);
-			model.addAttribute("request", request.get(0));
+        List<Request> request = requestRepo.findById(rid);
+        model.addAttribute("request", request.get(0));
 		return "users/editform";
 	}
 
+    @GetMapping("/review/{rid}")
+	public String submittedEmployeeById(Model model, @PathVariable("rid") int rid, HttpSession session) {
+        User user = (User) session.getAttribute("session_user");
+        if (user == null)   {
+            return "/users/login";
+        }
+        else {
+            model.addAttribute("user", user);
+        }
+		System.out.println("editEmployeeById" + rid);
+		
+        List<Request> request = requestRepo.findById(rid);
+        model.addAttribute("request", request.get(0));
+		return "users/submittedForm";
+	}
+
+    // @{/edit/{rid}(rid=${request.rid})}
     @PostMapping("/requests/{rid}")
     public String saveUpdatedrequest(@PathVariable int rid, @ModelAttribute("request") Request request, Model model, HttpSession session) {
         Request request2 = requestRepo.findById(rid).get(0);

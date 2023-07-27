@@ -53,6 +53,7 @@ datatorage/addnew -->
                   </a>
                 </div>
                 <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1"> 
+                  <a href="/requests/submitted"> 
                   <i class="bi bi-file-earmark-plus"> Submitted Orders </i>
                 </div>
               </div>
@@ -72,7 +73,13 @@ datatorage/addnew -->
         <form th:action="@{/requests/add}" th:object="${user}" method="post" class="w-5/6 float-right pt-24 pb-20">
           <div class="mb-4 text-center">
             <label class="block text-gray-200 font-bold mb-2" for="companyCode">Company code<span class="text-red-500">*</span></label>
-            <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="companyCode" name="companyCode" required>
+            <!-- <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" > -->
+            <select class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" id="companyCode" name="companyCode" required>
+              <option value="fBC3700">FortisBC Inc. (3700)</option>
+              <option value="fE2000">FortisBC Energy Inc. (2000)</option>
+              <option value="fPH1000">FortisBC Pacific Holdings Inc. (1000)</option>
+              <option value="fAE7000">FortisBC Alternative Energy Solutions Inc. (7000)</option>
+            </select>
           </div>
 
           <div class="mb-4 text-center">
@@ -177,7 +184,7 @@ datatorage/addnew -->
 
           <div class="mb-4 text-center">
             <label class="block text-gray-200 font-bold mb-2" for="totalCost">Total Cost<span class="text-red-500"> *</span></label>
-            <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="totalCost" name="totalCost" required>
+            <textarea class="w-3/4 px-3 py-2 border border-gray-300 rounded-md h-40 resize-none" id="totalCost" name="totalCost" rows="4" required></textarea>
           </div>
 
           <!-- <div class="mb-4 text-center">
