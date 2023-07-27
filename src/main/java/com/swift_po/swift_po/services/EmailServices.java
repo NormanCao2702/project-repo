@@ -12,8 +12,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 
 @Service
 public class EmailServices {
-
-
     @Autowired
     // private EmailServices emailService;
     private JavaMailSender javaMailSender;

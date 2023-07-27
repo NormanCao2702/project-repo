@@ -17,7 +17,6 @@ public class UserServices {
     
 
     public void registerUser(User user) {
-
         // Send registration email to the user
         String to = user.getEmail();
         String subject = " Swift Purchase Orders!";
@@ -37,7 +36,6 @@ public class UserServices {
     }
 
     public boolean logincryptpassmatch(String loginpass, String storedHashedPassword){
-
         // Compare the provided password with the hashed password
         return passwordEncoder.matches(loginpass, storedHashedPassword);
     }
