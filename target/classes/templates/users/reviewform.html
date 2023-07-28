@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="/js/script.js" defer></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.core.css">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
+
+</head>
+
+<body style="background-repeat: no-repeat; background-attachment: fixed;"
+    class="bg-gradient-to-r from-[rgb(3,45,95)]/95 to-[rgb(6,76,135)]/95 bg-cover">
+    <div>
+        <nav class="fixed">
+            <div id="topnav"
+                class=" z-10 bg-gray-200 p-4 text-center content-center w-screen h-[10%] fixed top-0 left-0 ">
+                <div class=" items-center flex p-2.5 text-gray-100">
+                    <i class="bi bi-list px-2 py-1 bg-gray-600 bg-opacity-50 rounded-md cursor-pointer hover:bg-black"
+                        onclick="OpenNav()"></i>
+                    <a href="/login" class="flex items-center">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/9/97/FortisBC_logo.svg" alt="Logo"
+                            class=" w-[150px] ml-[50px]">
+                    </a>
+                </div>
+            </div>
+
+
+            <div id="sidenav" class=" z-0  fixed bg-black bg-opacity-30 p-6 pt-6 text-center w-72 bottom-0 h-[90%] ">
+                <div class="text-gray-100 text-xl">
+
+                    <div id="navcontent">
+                        <hr class=" my-2 ">
+                        <div class="p-2.5 item-center mt-3 flex rounded-md px-4 cursor-pointer hover:bg-gray-700 bg-opacity-50 text-white"
+                            onclick="dropdown()">
+                            <i class="bi bi-file-earmark"></i>
+                            <div class="item-center text-center flex justify-between w-full">
+                                <span class="text-[16px] ml-4 text-gray-200">Purchase Order</span>
+                                <span class="text-sm rotate-180" id="arrowdown">
+                                    <i class="bi bi-chevron-down p-2.5"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="text-left text-sm font-thin mt-2 w-4/5 max-auto" id="pomenu">
+                            <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
+                                <a th:href="@{/form/pr/{id}(id=${user.id})}">
+                                    <i class="bi bi-file-earmark-plus"> New Purchase Order</i>
+                                </a>
+                            </div>
+                            <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
+                                <a href="/requests/draft">
+                                    <i class="bi bi-file-earmark-plus"> Draft Orders</i>
+                                </a>
+                            </div>
+                            <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
+                                <a href="/requests/submitted">
+                                    <i class="bi bi-file-earmark-plus"> Submitted Orders </i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="/logout">
+                    <div class=" text-gray-100 px-2 py-1 bg-gray-600 bg-opacity-50 rounded-md cursor-pointer hover:bg-black 
+            bottom-0 text-white ml-0.5 fixed mb-3">
+                        <i class="bi bi-box-arrow-in-right "></i>
+                        <span id="logouttext" class="text-[16px] ml-4 text-gray-200">Logout</span>
+
+                    </div>
+                </a>
+            </div>
+        </nav>
+        <div class="content">
+            <form th:action="@{/requests/{rid}(rid=${request.rid})}" th:object="${request}" method="post"
+                class="w-5/6 float-right pt-24 pb-20">
+
+                <div class="mb-4 text-center">
+                    <label class="block text-gray-200 font-bold mb-2" for="companyCode">Company code<span
+                            class="text-red-500">*</span></label>
+                    <!-- <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" > -->
+                    <select class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" id="companyCode"
+                        name="companyCode" th:field="*{companyCode}" disabled>
+                        <option value="FortisBC Inc. (3700)">FortisBC Inc. (3700)</option>
+                        <option value="FortisBC Energy Inc. (2000)">FortisBC Energy Inc. (2000)</option>
+                        <option value="FortisBC Pacific Holdings Inc. (1000)">FortisBC Pacific Holdings Inc. (1000)
+                        </option>
+                        <option value="FortisBC Alternative Energy Solutions Inc. (7000)">FortisBC Alternative Energy
+                            Solutions Inc.
+                            (7000)</option>
+                    </select>
+                </div>
+
+                <div class="mb-4 text-center">
+                    <label class="block text-gray-200 font-bold mb-2" for="requestor">Requestor name/IT
+                        representative<span class="text-red-500">*</span></label>
+                    <input th:value="${user.name}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center"
+                        type="text" id="requestor" name="requestor" disabled>
+                </div>
+
+                <div class="mb-4 text-center">
+                    <label class="block text-gray-200 font-bold mb-2" for="consultant">Consultant<span
+                            class="text-red-500">*</span></label>
+                    <input th:field="*{consultant}"
+                        class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text"
+                        id="consultant" name="consultant" disabled>
+                </div>
+
+                <div class="mb-4 text-center">
+                    <label class="block text-gray-200 font-bold mb-2" for="date">Date<span class="text-red-500">
+                            *</span></label>
+                    <input th:field="*{date}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center"
+                        type="date" id="date" name="date" disabled>
+                </div>
+
+                <div class="mb-4 text-center">
+                    <label class="block text-gray-200 font-bold mb-2" for="email">Email<span class="text-red-500">
+                            *</span></label>
+                    <input th:field="*{email}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center"
+                        type="email" id="email" name="email" disabled>
+                </div>
+
+                <!-- <div class="mb-4 text-center">
+            <label class="block text-gray-200 font-bold mb-2" for="phoneNumber">Phone Number<span class="text-red-500"> *</span></label>
+            <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="tel" id="phoneNumber" name="phoneNumber">
+          </div>
+
+          <div class="mb-4 text-center">
+            <label class="block text-gray-200 font-bold mb-2" for="cellNumber">Cell Number<span class="text-red-500"> *</span></label>
+            <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="tel" id="cellNumber" name="cellNumber">
+          </div> -->
+
+                <div class="mb-4 text-center">
+                    <label class="block text-gray-200 font-bold mb-2" for="projectName">Project Name<span
+                            class="text-red-500">
+                            *</span></label>
+                    <input th:field="*{projectName}"
+                        class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text"
+                        id="projectName" name="projectName" disabled>
+                </div>
+
+                <div class="mb-4 text-center">
+                    <label class="block text-gray-200 font-bold mb-2" for="costElement">Cost Element/GL Account #<span
+                            class="text-red-500"> *</span></label>
+                    <input th:field="*{costElement}"
+                        class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text"
+                        id="costElement" name="costElement" disabled>
+                </div>
+
+                <!-- <div class="mb-4 text-center">
+            <label class="block text-gray-200 font-bold mb-2" for="chargeNumber">Charge Number<span class="text-red-500"> *</span></label>
+            <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="chargeNumber" name="chargeNumber" required>
+          </div> -->
+
+                <div class="mb-4 text-center w-3/4 mx-auto">
+                    <label class="block text-gray-200 font-bold mb-2" for="statementOfWork">Statement of Work</label>
+                    <div class="w-full border border-gray-300 rounded-md bg-white">
+                        <div id="rich-text" style="height: 150px;" class="h-40 text-base"></div>
+                        <textarea id="statementOfWork" name="statementOfWork" th:field="*{statementOfWork}"
+                            style="display:none;" disabled></textarea>
+                    </div>
+                </div>
+
+
+                <script>
+                    var initialValue = document.querySelector('#statementOfWork').value;
+                    var editor = new Quill('#rich-text', {
+                        theme: 'snow',
+                        modules: {
+                            toolbar: [
+                                ['bold', 'italic', 'underline', 'strike'], // Text formatting options
+                                ['blockquote', 'code-block'], // Additional formatting options
+                                [{ 'list': 'ordered' }, { 'list': 'bullet' }], // Bullet and numbered lists
+                                ['clean'] // Remove formatting option
+                            ]
+                        }
+                    });
+
+                    editor.clipboard.dangerouslyPasteHTML(initialValue);
+                    //make the editor read only
+                    editor.enable(false);
+                    //change the background color of the editor
+                    editor.root.setAttribute('style', 'background-color: #5A7CA0;');
+
+
+                </script>
+                <!-- <div class="mb-4 text-center">
+            <label class="block text-gray-200 font-bold mb-2" for="commencementDate">Commencement Date</label>
+            <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date" id="commencementDate" name="commencementDate">
+          </div>
+
+          <div class="mb-4 text-center">
+            <label class="block text-gray-200 font-bold mb-2" for="completionDate">Scheduled Completion Date</label>
+            <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date" id="completionDate" name="completionDate">
+          </div>
+
+          <div class="mb-4 text-center">
+            <label class="block text-gray-200 font-bold mb-2" for="objectives">Objectives</label>
+            <textarea class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" id="objectives" name="objectives" rows="4"></textarea>
+          </div>
+
+          <div class="mb-4 text-center">
+            <label class="block text-gray-200 font-bold mb-2" for="estimate">Time, Resources, Cost Estimate</label>
+            <textarea class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" id="estimate" name="estimate" rows="4"></textarea>
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-gray-200 font-bold mb-2" for="assumption">Assumption</label>
+            <textarea class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center rounded border border-black" id="assumption" name="assumption" rows="4"></textarea>
+          </div> -->
+
+                <div class="mb-4 text-center">
+                    <label class="block text-gray-200 font-bold mb-2" for="totalCost">Total Cost<span
+                            class="text-red-500">
+                            *</span></label>
+                    <!-- <input th:field="*{totalCost}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="totalCost" name="totalCost" required> -->
+                    <textarea class="w-3/4 px-3 py-2 border border-gray-300 rounded-md h-40 resize-none" id="totalCost"
+                        name="totalCost" rows="4" th:field="*{totalCost}" disabled></textarea>
+                </div>
+
+                <!-- <div class="mb-4 text-center">
+              <label class="block text-gray-200 font-bold mb-2" for="paymentTerm">Payment Term (days)</label>
+              <select class="w-3/4 px-3 py-2 border border-gray-300 rounded-md" id="paymentTerm" name="paymentTerm">
+                <option value="">Select payment term...</option>
+                <option class="font-semibold text-center" value="30" selected>30</option>
+                <option value="60">60</option>
+                <option value="90">90</option>
+                <option value="other">Other</option>
+              </select>
+              <p class="text-gray-600 text-sm">Note: "Net 30" is the standard payment term for Fortis BC.</p>
+            </div>
+            
+            <div class="mb-4 hidden text-center" id="otherPaymentTermContainer">
+              <label class="block text-gray-200 font-bold mb-2" for="otherPaymentTerm">Other Payment Term</label>
+              <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md" type="number" id="otherPaymentTerm" name="otherPaymentTerm">
+            </div> -->
+
+                <!-- <div class="mb-4 text-center">
+              <label class="block text-gray-200 font-bold mb-2" for="companyName">Company Names/Contact Information</label>
+              <textarea class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center rounded border border-black" id="companyName" name="companyName" rows="4"></textarea>
+            </div> -->
+
+                <div class="mb-4 text-center w-3/4 mx-auto">
+                    <label class="text-gray-200 font-bold mb-2 flex justify-center" for="sourcingJustification">
+                        Sourcing justification: Sole Source/Single Source
+                        <span class="text-red-500"> *</span>
+                        <span class="question-mark-icon cursor-pointer text-gray-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                            </svg>
+                        </span>
+                    </label>
+                    <select class="w-full px-4 py-2 border border-gray-300 rounded-md text-center"
+                        id="sourcingJustification" name="sourcingJustification" disabled>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+
+                <div id="explanationModal"
+                    class="fixed inset-0 flex items-center justify-center z-50 hidden text-center">
+                    <div class="bg-white p-4 rounded shadow-md">
+                        <p class="text-gray-200">
+                            Sole/single source justification and the retention of the information is the responsibility
+                            of each
+                            business unit. The retention of this information is subject to audit.
+                        </p>
+                        <p class="text-gray-200 font-bold">
+                            See FortisBC Policy Procurement Policy and Sourcing justification form.
+                        </p>
+                        <button id="closeModal"
+                            class="mt-4 px-4 py-2 font-semibold text-white bg-blue-500 rounded-md hover:bg-blue-600"
+                            type="button">Close</button>
+                    </div>
+                    <div class="inset-0 bg-black opacity-50"></div>
+                </div>
+
+                <!-- <div class="flex justify-center">
+              <button class="px-4 py-2 bg-blue-500 text-white rounded-md mr-2" type="submit">Submit</button>
+              <button class="px-4 py-2 bg-white text-gray-700 rounded-md border-gray-200 hover:bg-gray-100 border-2" type="submit">Save as Draft</button>
+            </div> -->
+                <div class="flex justify-center">
+                    <a th:href="@{/form}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        role="button">Go to Dashboard</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

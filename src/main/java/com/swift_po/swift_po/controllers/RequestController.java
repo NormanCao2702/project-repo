@@ -25,17 +25,18 @@ import jakarta.servlet.http.HttpSession;
 public class RequestController {
     @Autowired
     private RequestReposiory requestRepo;
-    
+
     @PostMapping("requests/add")
-    public String addRequest(@RequestParam Map<String, String> newRequest, HttpServletResponse response, Model model, @RequestParam(value = "status", required = false) String status, HttpServletRequest request, HttpSession session) {
+    public String addRequest(@RequestParam Map<String, String> newRequest, HttpServletResponse response, Model model,
+            @RequestParam(value = "status", required = false) String status, HttpServletRequest request,
+            HttpSession session) {
         System.out.println("ADD request");
 
         // Get user who submitted teh request
         User user = (User) session.getAttribute("session_user");
-        if (user == null)   {
+        if (user == null) {
             return "/users/login";
-        }
-        else {
+        } else {
             model.addAttribute("user", user);
         }
 
@@ -52,8 +53,9 @@ public class RequestController {
         String newStatus = newRequest.get("status");
         int newUserID = user.getId();
 
-
-        Request newRequestObj = new Request(newCompanyCode, newRequestor, newConsultant, newDate, newEmail, newProjectName, newCostElement, newStatementOfWork, newTotalCost, newSourcingJustification, newStatus, newUserID);
+        Request newRequestObj = new Request(newCompanyCode, newRequestor, newConsultant, newDate, newEmail,
+                newProjectName, newCostElement, newStatementOfWork, newTotalCost, newSourcingJustification, newStatus,
+                newUserID);
         requestRepo.save(newRequestObj);
         return "redirect:/form";
 
@@ -62,16 +64,15 @@ public class RequestController {
     @GetMapping("/requests/draft")
     public String getDrafts(Model model, HttpServletRequest request, HttpSession session) {
         System.out.println("Getting all draft requests");
-        //get all requests from database
+        // get all requests from database
         User user = (User) session.getAttribute("session_user");
-        if (user == null)   {
+        if (user == null) {
             return "/users/login";
-        }
-        else {
+        } else {
             model.addAttribute("user", user);
         }
         List<Request> requests = requestRepo.findAll();
-        //end of database call
+        // end of database call
         model.addAttribute("requests", requests);
         System.out.println("Drafts:");
         return "users/formdrafts";
@@ -80,39 +81,53 @@ public class RequestController {
     @GetMapping("/requests/submitted")
     public String getSubmitted(Model model, HttpServletRequest request, HttpSession session) {
         System.out.println("Getting all submitted requests");
-        //get all requests from database
+        // get all requests from database
         User user = (User) session.getAttribute("session_user");
-        if (user == null)   {
+        if (user == null) {
             return "/users/login";
-        }
-        else {
+        } else {
             model.addAttribute("user", user);
         }
         List<Request> requests = requestRepo.findAll();
-        //end of database call
+        // end of database call
         model.addAttribute("requests", requests);
         return "users/formssubmitted";
     }
 
-
     @GetMapping("/edit/{rid}")
-	public String editEmployeeById(Model model, @PathVariable("rid") int rid, HttpSession session) {
+    public String editRequestById(Model model, @PathVariable("rid") int rid, HttpSession session) {
         User user = (User) session.getAttribute("session_user");
-        if (user == null)   {
+        if (user == null) {
             return "/users/login";
-        }
-        else {
+        } else {
             model.addAttribute("user", user);
         }
-		System.out.println("editEmployeeById" + rid);
-		
-			List<Request> request = requestRepo.findById(rid);
-			model.addAttribute("request", request.get(0));
-		return "users/editform";
-	}
+        System.out.println("editRequesteById" + rid);
+
+        List<Request> request = requestRepo.findById(rid);
+        model.addAttribute("request", request.get(0));
+        return "users/editform";
+    }
+
+    @GetMapping("/review/{rid}")
+    public String reviewRequest(Model model, @PathVariable("rid") int rid, HttpSession session) {
+        User user = (User) session.getAttribute("session_user");
+        if (user == null) {
+            return "/users/login";
+        } else {
+            model.addAttribute("user", user);
+        }
+        System.out.println("reviewRequest" + rid);
+
+        List<Request> request = requestRepo.findById(rid);
+        model.addAttribute("request", request.get(0));
+        return "users/reviewform";
+    }
 
     @PostMapping("/requests/{rid}")
-    public String saveUpdatedrequest(@PathVariable int rid, @ModelAttribute("request") Request request, Model model, HttpSession session) {
+    public String saveUpdatedrequest(@PathVariable int rid, @ModelAttribute("request") Request request, Model model,
+            HttpSession session) {
+        System.out.println("saveUpdatedrequest" + rid);
         Request request2 = requestRepo.findById(rid).get(0);
 
         request2.setRid(rid);
@@ -129,14 +144,13 @@ public class RequestController {
         request2.setStatus(request.getStatus());
 
         User user = (User) session.getAttribute("session_user");
-        if (user == null)   {
+        if (user == null) {
             return "/users/login";
-        }
-        else {
+        } else {
             model.addAttribute("user", user);
         }
         int newUserID = user.getId();
-        
+
         request2.setUserID(newUserID);
         requestRepo.save(request2);
 
