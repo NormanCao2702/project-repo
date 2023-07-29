@@ -61,7 +61,7 @@ public class UserController {
 
         // Check if email is already in use
         List<User> existingUsers = userRepo.findByEmail(newEmail);
-        if (!existingUsers.isEmpty()) {
+        if (newPwd == null || !existingUsers.isEmpty() ) {
             String error = "Email already in use. Please choose a different email.";
             model.addAttribute("error", error);
             return "users/signup";
