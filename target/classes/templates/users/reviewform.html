@@ -1,3 +1,5 @@
+<!-- /data storage
+datatorage/addnew -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,11 +18,10 @@
 </head>
 
 <body style="background-repeat: no-repeat; background-attachment: fixed;"
-    class="bg-gradient-to-r from-[rgb(3,45,95)]/95 to-[rgb(6,76,135)]/95 bg-cover">
+    class="bg-gradient-to-r from-[rgb(3,45,95)]/95 to-[rgb(6,76,135)]/95 bg-cover min-h-[400px] min-w-[350px]">
     <div>
         <nav class="fixed">
-            <div id="topnav"
-                class=" z-10 bg-gray-200 p-4 text-center content-center w-screen h-[10%] fixed top-0 left-0 ">
+            <div id="topnav" class="z-10 bg-gray-200 p-4 text-center content-center w-screen h-20 top-0 left-0 ">
                 <div class=" items-center flex p-2.5 text-gray-100">
                     <i class="bi bi-list px-2 py-1 bg-gray-600 bg-opacity-50 rounded-md cursor-pointer hover:bg-black"
                         onclick="OpenNav()"></i>
@@ -32,7 +33,8 @@
             </div>
 
 
-            <div id="sidenav" class=" z-0  fixed bg-black bg-opacity-30 p-6 pt-6 text-center w-72 bottom-0 h-[90%] ">
+            <div id="sidenav"
+                class="z-0 fixed bg-sky-950 top-20 p-sm-2 p-2 pt-6 text-center bottom-0 h-screen min-h-fit">
                 <div class="text-gray-100 text-xl">
 
                     <div id="navcontent">
@@ -55,29 +57,30 @@
                             </div>
                             <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
                                 <a href="/requests/draft">
-                                    <i class="bi bi-file-earmark-plus"> Draft Orders</i>
-                                </a>
+                                    <i class="bi bi-file-earmark-plus"> Draft Order</i>
                             </div>
                             <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
                                 <a href="/requests/submitted">
                                     <i class="bi bi-file-earmark-plus"> Submitted Orders </i>
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <a href="/logout">
-                    <div class=" text-gray-100 px-2 py-1 bg-gray-600 bg-opacity-50 rounded-md cursor-pointer hover:bg-black 
-            bottom-0 text-white ml-0.5 fixed mb-3">
+                <a title="Logout" href="/logout">
+                    <div class="text-gray-100 px-2 py-1 bg-gray-600 bg-opacity-50 rounded-md cursor-pointer hover:bg-black 
+                  text-white mt-4 ml-0.5 mb-3" id="logoutbutton">
                         <i class="bi bi-box-arrow-in-right "></i>
                         <span id="logouttext" class="text-[16px] ml-4 text-gray-200">Logout</span>
-
                     </div>
                 </a>
             </div>
+
+
         </nav>
         <div class="content">
             <form th:action="@{/requests/{rid}(rid=${request.rid})}" th:object="${request}" method="post"
-                class="w-5/6 float-right pt-24 pb-20">
+                class="w-5/6 float-right pt-24 pb-20 top-20">
 
                 <div class="mb-4 text-center">
                     <label class="block text-gray-200 font-bold mb-2" for="companyCode">Company code<span

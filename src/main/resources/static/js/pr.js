@@ -31,9 +31,10 @@ function dropdown() {
 
 
 function OpenNav() {
-  document.querySelector('#sidenav').classList.toggle('w-[6%]');
   document.querySelector('#navcontent').classList.toggle('hidden');
   document.querySelector('#logouttext').classList.toggle('hidden');
-
-
+  document.querySelector('#sidenav').classList.toggle('w-16');
+  document.querySelector('#logoutbutton').classList.toggle('w-fit');
+  document.querySelector('#logoutbutton').classList.toggle('fixed');
+  document.querySelector('#logoutbutton').classList.toggle('bottom-0');
 }
