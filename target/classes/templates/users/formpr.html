@@ -79,18 +79,30 @@ datatorage/addnew -->
     </nav>
     <div class="content">
       <form th:action="@{/requests/add}" th:object="${user}" method="post" class="w-5/6 float-right pt-24 pb-20 top-20">
+
+        <div class="w-1/2 mx-auto mb-4 border-t-2 border-b-2 "> <!-- Add mx-auto class to center the div -->
+          <div class="text-center ">
+            <p class="font-bold text-gray-200 text-lg">Basic Information</p>
+          </div>
+        </div>
+
         <div class="mb-4 text-center">
           <label class="block text-gray-200 font-bold mb-2" for="companyCode">Company code<span
               class="text-red-500">*</span></label>
           <!-- <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" > -->
           <select class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" id="companyCode"
             name="companyCode" required>
+            <option value="" selected></option>
             <option value="FortisBC Inc. (3700)">FortisBC Inc. (3700)</option>
             <option value="FortisBC Energy Inc. (2000)">FortisBC Energy Inc. (2000)</option>
             <option value="FortisBC Pacific Holdings Inc. (1000)">FortisBC Pacific Holdings Inc. (1000)</option>
             <option value="FortisBC Alternative Energy Solutions Inc. (7000)">FortisBC Alternative Energy Solutions Inc.
               (7000)</option>
           </select>
+        </div>
+
+        <div id="pdfDownloadpc" style="display: none;" class="mb-4 text-center">
+          <a href="/pdf/pc.pdf" download>Download Procurement Checklist</a>
         </div>
 
         <div class="mb-4 text-center">
@@ -130,11 +142,29 @@ datatorage/addnew -->
             <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="tel" id="cellNumber" name="cellNumber">
           </div> -->
 
+        <div class="w-1/2 mx-auto mb-4 mt-6"> <!-- Add mx-auto class to center the div -->
+          <div class="text-center">
+            <p class="border-t-2 border-b-2 font-bold text-gray-200 text-lg">Project Details</p>
+          </div>
+        </div>
+
         <div class="mb-4 text-center">
           <label class="block text-gray-200 font-bold mb-2" for="projectName">Project Name<span class="text-red-500">
               *</span></label>
           <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="projectName"
             name="projectName" required>
+        </div>
+
+        <div class="mb-4 text-center">
+          <label class="block text-gray-200 font-bold mb-2" for="date">Start Date<span class="text-red-500"> *</span></label>
+          <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date" id="Sdate" name="Sdate"
+            required>
+        </div>
+
+        <div class="mb-4 text-center">
+          <label class="block text-gray-200 font-bold mb-2" for="date">End Date<span class="text-red-500"> *</span></label>
+          <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date" id="Edate" name="Edate"
+            required>
         </div>
 
         <div class="mb-4 text-center">
@@ -233,6 +263,12 @@ datatorage/addnew -->
               <textarea class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center rounded border border-black" id="companyName" name="companyName" rows="4"></textarea>
             </div> -->
 
+        <div class="w-1/2 mx-auto mb-4 mt-6"> <!-- Add mx-auto class to center the div -->
+          <div class="text-center">
+            <p class="border-t-2 border-b-2 font-bold text-gray-200 text-lg">Sourcing Information</p>
+          </div>
+        </div>
+
         <div class="mb-4 text-center w-3/4 mx-auto">
           <label class="text-gray-200 font-bold mb-2 flex justify-center" for="sourcingJustification">
             Sourcing justification: Sole Source/Single Source
@@ -247,9 +283,14 @@ datatorage/addnew -->
           </label>
           <select class="w-full px-4 py-2 border border-gray-300 rounded-md text-center" id="sourcingJustification"
             name="sourcingJustification">
-            <option value="no">No</option>
+            <option value="" selected></option>
             <option value="yes">Yes</option>
+            <option value="no">No</option>
           </select>
+        </div>
+
+        <div id="pdfDownloadsj" style="display: none;" class="mb-4 text-center">
+          <a href="/pdf/sj.pdf" download>Download Sourcing Justification</a>
         </div>
 
         <div id="explanationModal" class="fixed inset-0 flex items-center justify-center z-50 hidden text-center">
@@ -272,6 +313,28 @@ datatorage/addnew -->
               <button class="px-4 py-2 bg-blue-500 text-white rounded-md mr-2" type="submit">Submit</button>
               <button class="px-4 py-2 bg-white text-gray-700 rounded-md border-gray-200 hover:bg-gray-100 border-2" type="submit">Save as Draft</button>
             </div> -->
+
+        <div class="w-1/2 mx-auto mb-4 mt-6"> <!-- Add mx-auto class to center the div -->
+          <div class="text-center">
+            <p class="border-t-2 border-b-2 font-bold text-gray-200 text-lg">Uploading Section</p>
+          </div>
+        </div>
+
+        <div class="mb-4 text-center mx-auto">
+          <label class="text-gray-200 font-bold mb-2 flex justify-center" for="fileInput">Upload Sourcing Justification Document
+            <span class="text-red-500"> *</span>
+          </label>
+          <input class="w-3/4 px-4 py-2 text-gray-700 bg-white border rounded-lg focus:outline-none focus:border-blue-500 mx-auto" type="file" id="sj" name="sj" accept=".pdf, .doc, .docx" required>
+        </div>
+
+        <div class="mb-4 text-center mx-auto">
+          <label class="text-gray-200 font-bold mb-2 flex justify-center" for="fileInput">Upload Procurement Checklist Document
+            <span class="text-red-500"> *</span>
+          </label>
+          <input class="w-3/4 px-4 py-2 text-gray-700 bg-white border rounded-lg focus:outline-none focus:border-blue-500 mx-auto" type="file" id="pc" name="pc" accept=".pdf, .doc, .docx" required>
+        </div>
+      
+
         <div class="flex justify-center">
           <button type="submit"
             class="p-3 px-6 pt-2 bg-teal-500 rounded-full text-white baseline hover:bg-teal-400 font-bold font-Roboto mr-2"

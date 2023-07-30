@@ -1,5 +1,6 @@
 package com.swift_po.swift_po.controllers;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 // import java.util.Optional;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 // import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.swift_po.swift_po.models.Request;
 import com.swift_po.swift_po.models.RequestReposiory;
 import com.swift_po.swift_po.models.User;
@@ -29,13 +32,13 @@ public class RequestController {
     @PostMapping("requests/add")
     public String addRequest(@RequestParam Map<String, String> newRequest, HttpServletResponse response, Model model,
             @RequestParam(value = "status", required = false) String status, HttpServletRequest request,
-            HttpSession session) {
+            HttpSession session) throws IOException {
         System.out.println("ADD request");
 
         // Get user who submitted teh request
         User user = (User) session.getAttribute("session_user");
         if (user == null) {
-            return "/users/login";
+            return "users/login";
         } else {
             model.addAttribute("user", user);
         }
@@ -44,6 +47,8 @@ public class RequestController {
         String newRequestor = newRequest.get("requestor");
         String newConsultant = newRequest.get("consultant");
         String newDate = newRequest.get("date");
+        String newSDate = newRequest.get("Sdate");
+        String newEDate = newRequest.get("Edate");
         String newEmail = newRequest.get("email");
         String newProjectName = newRequest.get("projectName");
         String newCostElement = newRequest.get("costElement");
@@ -52,10 +57,14 @@ public class RequestController {
         String newSourcingJustification = newRequest.get("sourcingJustification");
         String newStatus = newRequest.get("status");
         int newUserID = user.getId();
+        // String sjFileName = sourcingJustificationFile.getOriginalFilename();
+        // byte[] sj = sourcingJustificationFile.getBytes();
+        // String pctFileName = procurementChecklistFile.getOriginalFilename();
+        // byte[] procurementChecklistFileData = procurementChecklistFile.getBytes();
 
         Request newRequestObj = new Request(newCompanyCode, newRequestor, newConsultant, newDate, newEmail,
                 newProjectName, newCostElement, newStatementOfWork, newTotalCost, newSourcingJustification, newStatus,
-                newUserID);
+                newUserID,newSDate,newEDate);
         requestRepo.save(newRequestObj);
         return "redirect:/form";
 
@@ -67,7 +76,7 @@ public class RequestController {
         // get all requests from database
         User user = (User) session.getAttribute("session_user");
         if (user == null) {
-            return "/users/login";
+            return "users/login";
         } else {
             model.addAttribute("user", user);
         }
@@ -84,7 +93,7 @@ public class RequestController {
         // get all requests from database
         User user = (User) session.getAttribute("session_user");
         if (user == null) {
-            return "/users/login";
+            return "users/login";
         } else {
             model.addAttribute("user", user);
         }
@@ -98,7 +107,7 @@ public class RequestController {
     public String editRequestById(Model model, @PathVariable("rid") int rid, HttpSession session) {
         User user = (User) session.getAttribute("session_user");
         if (user == null) {
-            return "/users/login";
+            return "users/login";
         } else {
             model.addAttribute("user", user);
         }
@@ -118,7 +127,7 @@ public class RequestController {
     public String reviewRequest(Model model, @PathVariable("rid") int rid, HttpSession session) {
         User user = (User) session.getAttribute("session_user");
         if (user == null) {
-            return "/users/login";
+            return "users/login";
         } else {
             model.addAttribute("user", user);
         }
@@ -150,7 +159,7 @@ public class RequestController {
 
         User user = (User) session.getAttribute("session_user");
         if (user == null) {
-            return "/users/login";
+            return "users/login";
         } else {
             model.addAttribute("user", user);
         }
