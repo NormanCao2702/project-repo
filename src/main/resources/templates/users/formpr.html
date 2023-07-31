@@ -22,7 +22,7 @@ datatorage/addnew -->
     <nav class="fixed">
       <div id="topnav" class="z-10 bg-gray-200 p-4 text-center content-center w-screen h-20 top-0 left-0 ">
         <div class=" items-center flex p-2.5 text-gray-100">
-          <i class="bi bi-list px-2 py-1 bg-gray-600 bg-opacity-50 rounded-md cursor-pointer hover:bg-black"
+          <i class="bi bi-list px-2 py-1 bg-gray-600 bg-opacity-50 rounded-md cursor-pointer hover:bg-black duration-300"
             onclick="OpenNav()"></i>
           <a href="/login" class="flex items-center">
             <img src="https://upload.wikimedia.org/wikipedia/en/9/97/FortisBC_logo.svg" alt="Logo"
@@ -38,7 +38,7 @@ datatorage/addnew -->
           <div id="navcontent">
             <hr class=" my-2 ">
             <div
-              class="p-2.5 item-center mt-3 flex rounded-md px-4 cursor-pointer hover:bg-gray-700 bg-opacity-50 text-white"
+              class="p-2.5 item-center mt-3 flex rounded-md px-4 cursor-pointer hover:bg-gray-700 duration-300 bg-opacity-50 text-white"
               onclick="dropdown()">
               <i class="bi bi-file-earmark"></i>
               <div class="item-center text-center flex justify-between w-full">
@@ -49,16 +49,16 @@ datatorage/addnew -->
               </div>
             </div>
             <div class="text-left text-sm font-thin mt-2 w-4/5 max-auto" id="pomenu">
-              <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
+              <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 duration-300 rounded-md mt-1">
                 <a th:href="@{/form/pr/{id}(id=${user.id})}">
                   <i class="bi bi-file-earmark-plus"> New Purchase Order</i>
                 </a>
               </div>
-              <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
+              <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 duration-300 rounded-md mt-1">
                 <a href="/requests/draft">
                   <i class="bi bi-file-earmark-plus"> Draft Order</i>
               </div>
-              <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
+              <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 duration-300 rounded-md mt-1">
                 <a href="/requests/submitted">
                   <i class="bi bi-file-earmark-plus"> Submitted Orders </i>
                 </a>
@@ -68,9 +68,9 @@ datatorage/addnew -->
         </div>
         <a title="Logout" href="/logout">
           <div class="text-gray-100 px-2 py-1 bg-gray-600 bg-opacity-50 rounded-md cursor-pointer hover:bg-black 
-            text-white mt-4 ml-0.5 mb-3" id="logoutbutton">
+            text-white mt-4 ml-0.5 mb-3 duration-300" id="logoutbutton">
             <i class="bi bi-box-arrow-in-right "></i>
-            <span id="logouttext" class="text-[16px] ml-4 text-gray-200">Logout</span>
+            <span id="logouttext" class="text-[16px] ml-2 text-gray-200">Logout</span>
           </div>
         </a>
       </div>
@@ -80,9 +80,9 @@ datatorage/addnew -->
     <div class="content">
       <form th:action="@{/requests/add}" th:object="${user}" method="post" class="w-5/6 float-right pt-24 pb-20 top-20">
 
-        <div class="w-1/2 mx-auto mb-4 border-t-2 border-b-2 "> <!-- Add mx-auto class to center the div -->
-          <div class="text-center ">
-            <p class="font-bold text-gray-200 text-lg">Basic Information</p>
+        <div class="text-center w-1/2 mx-auto mb-4 border-t-2 border-b-2"> <!-- Add mx-auto class to center the div -->
+          <div class=" ">
+            <p class="font-bold text-white text-xl">Basic Information</p>
           </div>
         </div>
 
@@ -101,8 +101,12 @@ datatorage/addnew -->
           </select>
         </div>
 
-        <div id="pdfDownloadpc" style="display: none;" class="mb-4 text-center">
+        <!-- <div id="pdfDownloadpc" style="display: none;" class="mb-4 text-center">
           <a href="/pdf/pc.pdf" download>Download Procurement Checklist</a>
+        </div> -->
+
+        <div id="pdfDownloadpc" style="display: none;" class="mb-4 text-center">
+          <a href="/pdf/pc.pdf" download class="text-white bg-blue-500 hover:bg-blue-600 duration-300 font-bold py-2 px-4 rounded-md inline-block">Download Procurement Checklist</a>
         </div>
 
         <div class="mb-4 text-center">
@@ -131,7 +135,7 @@ datatorage/addnew -->
           <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="email" id="email"
             name="email" th:field="*{email}" required>
         </div>
-
+<br/>
         <!-- <div class="mb-4 text-center">
             <label class="block text-gray-200 font-bold mb-2" for="phoneNumber">Phone Number<span class="text-red-500"> *</span></label>
             <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="tel" id="phoneNumber" name="phoneNumber">
@@ -142,9 +146,9 @@ datatorage/addnew -->
             <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="tel" id="cellNumber" name="cellNumber">
           </div> -->
 
-        <div class="w-1/2 mx-auto mb-4 mt-6"> <!-- Add mx-auto class to center the div -->
-          <div class="text-center">
-            <p class="border-t-2 border-b-2 font-bold text-gray-200 text-lg">Project Details</p>
+        <div class="text-center w-1/2 mx-auto mb-4 border-t-2 border-b-2 "> <!-- Add mx-auto class to center the div -->
+          <div class="">
+            <p class="font-bold text-white text-xl">Project Details</p>
           </div>
         </div>
 
@@ -154,19 +158,17 @@ datatorage/addnew -->
           <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="projectName"
             name="projectName" required>
         </div>
-
-        <div class="mb-4 text-center">
-          <label class="block text-gray-200 font-bold mb-2" for="date">Start Date<span class="text-red-500"> *</span></label>
-          <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date" id="Sdate" name="Sdate"
-            required>
+        <div class="mb-4 text-center flex justify-center">
+          <div class="mr-8">
+            <label class="block text-gray-200 font-bold mb-2" for="date">Start Date<span class="text-red-500"> *</span></label>
+            <input class="w-80 px-3 py-2 border border-gray-300 rounded-md text-center" type="date" id="Sdate" name="Sdate" required>
         </div>
-
-        <div class="mb-4 text-center">
-          <label class="block text-gray-200 font-bold mb-2" for="date">End Date<span class="text-red-500"> *</span></label>
-          <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date" id="Edate" name="Edate"
-            required>
+        
+          <div>
+            <label class="block text-gray-200 font-bold mb-2" for="date">End Date<span class="text-red-500"> *</span></label>
+            <input class="w-80 px-3 py-2 border border-gray-300 rounded-md text-center" type="date" id="Edate" name="Edate" required>
+          </div>
         </div>
-
         <div class="mb-4 text-center">
           <label class="block text-gray-200 font-bold mb-2" for="costElement">Cost Element/GL Account #<span
               class="text-red-500"> *</span></label>
@@ -181,7 +183,7 @@ datatorage/addnew -->
 
         <div class="mb-4 text-center w-3/4 mx-auto">
           <label class="block text-gray-200 font-bold mb-2" for="statementOfWork">Statement of Work</label>
-          <div class="w-full border border-gray-300 rounded-md bg-white">
+          <div class="w-full bg-white border border-gray-300 rounded-md">
             <div id="rich-text" style="height: 150px;" class="h-40 text-base"></div>
             <textarea id="statementOfWork" name="statementOfWork" style="display: none;"></textarea>
           </div>
@@ -263,11 +265,11 @@ datatorage/addnew -->
               <textarea class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center rounded border border-black" id="companyName" name="companyName" rows="4"></textarea>
             </div> -->
 
-        <div class="w-1/2 mx-auto mb-4 mt-6"> <!-- Add mx-auto class to center the div -->
-          <div class="text-center">
-            <p class="border-t-2 border-b-2 font-bold text-gray-200 text-lg">Sourcing Information</p>
-          </div>
-        </div>
+            <div class="text-center w-1/2 mx-auto mb-4 border-t-2 border-b-2"> <!-- Add mx-auto class to center the div -->
+              <div class="">
+                <p class="font-bold text-white text-xl">Sourcing Information</p>
+              </div>
+            </div>
 
         <div class="mb-4 text-center w-3/4 mx-auto">
           <label class="text-gray-200 font-bold mb-2 flex justify-center" for="sourcingJustification">
@@ -290,7 +292,7 @@ datatorage/addnew -->
         </div>
 
         <div id="pdfDownloadsj" style="display: none;" class="mb-4 text-center">
-          <a href="/pdf/sj.pdf" download>Download Sourcing Justification</a>
+          <a href="/pdf/sj.pdf" download class="text-white bg-blue-500 hover:bg-blue-600 duration-300 font-bold py-2 px-4 rounded-md inline-block">Download Sourcing Justification</a>
         </div>
 
         <div id="explanationModal" class="fixed inset-0 flex items-center justify-center z-50 hidden text-center">
@@ -313,12 +315,12 @@ datatorage/addnew -->
               <button class="px-4 py-2 bg-blue-500 text-white rounded-md mr-2" type="submit">Submit</button>
               <button class="px-4 py-2 bg-white text-gray-700 rounded-md border-gray-200 hover:bg-gray-100 border-2" type="submit">Save as Draft</button>
             </div> -->
-
-        <div class="w-1/2 mx-auto mb-4 mt-6"> <!-- Add mx-auto class to center the div -->
-          <div class="text-center">
-            <p class="border-t-2 border-b-2 font-bold text-gray-200 text-lg">Uploading Section</p>
-          </div>
-        </div>
+<br/>
+            <div class="text-center w-1/2 mx-auto mb-4 border-t-2 border-b-2 "> <!-- Add mx-auto class to center the div -->
+              <div class="">
+                <p class="font-bold text-white text-xl">Uploading Section</p>
+              </div>
+            </div>
 
         <div class="mb-4 text-center mx-auto">
           <label class="text-gray-200 font-bold mb-2 flex justify-center" for="fileInput">Upload Sourcing Justification Document
@@ -337,10 +339,10 @@ datatorage/addnew -->
 
         <div class="flex justify-center">
           <button type="submit"
-            class="p-3 px-6 pt-2 bg-teal-500 rounded-full text-white baseline hover:bg-teal-400 font-bold font-Roboto mr-2"
+            class="p-3 px-6 pt-2 bg-teal-500 rounded-full text-white baseline hover:bg-teal-400 duration-300 font-bold font-Roboto mr-2 ring-1 ring-offset-1 ring-inset"
             th:name="status" th:value="draft">Save as Draft</button>
           <button type="submit"
-            class="p-3 px-6 pt-2 bg-teal-500 rounded-full text-white baseline hover:bg-teal-400 font-bold font-Roboto"
+            class="p-3 px-6 pt-2 bg-teal-500 rounded-full text-white baseline hover:bg-teal-400 duration-300 font-bold font-Roboto ring-1 ring-offset-1 ring-inset"
             th:name="status" th:value="submitted">Submit</button>
         </div>
       </form>
