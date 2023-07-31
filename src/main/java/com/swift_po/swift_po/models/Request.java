@@ -13,6 +13,8 @@ public class Request {
     private String requestor;
     private String consultant;
     private String date;
+    private String startDate;
+    private String endDate;
     private String email;
     private String projectName;
     private String costElement;
@@ -21,11 +23,16 @@ public class Request {
     private String sourcingJustification;
     private String status;
     private int userID;
+    // private String fileName;
+
+    // @Lob
+    // private byte[] fileData;
+    
     public Request() {
     }
     public Request(String companyCode, String requestor, String consultant, String date, String email,
             String projectName, String costElement, String statementOfWork, String totalCost,
-            String sourcingJustification, String status, int userID) {
+            String sourcingJustification, String status, int userID, String sdate, String edate) {
         this.companyCode = companyCode;
         this.requestor = requestor;
         this.consultant = consultant;
@@ -38,6 +45,8 @@ public class Request {
         this.sourcingJustification = sourcingJustification;
         this.status = status;
         this.userID = userID;
+        this.startDate = sdate;
+        this.endDate = edate;
     }
     
     public int getRid() {
@@ -118,6 +127,30 @@ public class Request {
     public void setUserID(int userID) {
         this.userID = userID;
     }
+    public String getStartDate() {
+        return startDate;
+    }
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+    public String getEndDate() {
+        return endDate;
+    }
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+    // public String getFileName() {
+    //     return fileName;
+    // }
+    // public void setFileName(String fileName) {
+    //     this.fileName = fileName;
+    // }
+    // public byte[] getFileData() {
+    //     return fileData;
+    // }
+    // public void setFileData(byte[] fileData) {
+    //     this.fileData = fileData;
+    // }
 }
 
 

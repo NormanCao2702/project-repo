@@ -1,13 +1,13 @@
 package com.swift_po.swift_po.services;
 
-import java.util.List;
+// import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.swift_po.swift_po.models.User;
-import com.swift_po.swift_po.models.userRepo;
+// import com.swift_po.swift_po.models.userRepo;
 
 @Service
 public class UserServices {
@@ -17,7 +17,6 @@ public class UserServices {
     
 
     public void registerUser(User user) {
-
         // Send registration email to the user
         String to = user.getEmail();
         String subject = " Swift Purchase Orders!";
@@ -37,7 +36,6 @@ public class UserServices {
     }
 
     public boolean logincryptpassmatch(String loginpass, String storedHashedPassword){
-
         // Compare the provided password with the hashed password
         return passwordEncoder.matches(loginpass, storedHashedPassword);
     }
