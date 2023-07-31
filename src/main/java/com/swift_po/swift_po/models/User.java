@@ -1,5 +1,7 @@
 package com.swift_po.swift_po.models;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -13,6 +15,10 @@ public class User {
     private String name;
     private String password;
     private String userType;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Request> forms;
+
     public User() {
     }
     public User(String email, String name, String password, String userType) {
@@ -52,6 +58,13 @@ public class User {
     }
     public void setUserType(String userType) {
         this.userType = userType;
+    }
+    public List<Request> getForms() {
+        return forms;
+    }
+
+    public void setForms(List<Request> forms) {
+        this.forms = forms;
     }
 }
 

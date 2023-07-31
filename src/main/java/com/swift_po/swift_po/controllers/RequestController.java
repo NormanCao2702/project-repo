@@ -64,7 +64,7 @@ public class RequestController {
 
         Request newRequestObj = new Request(newCompanyCode, newRequestor, newConsultant, newDate, newEmail,
                 newProjectName, newCostElement, newStatementOfWork, newTotalCost, newSourcingJustification, newStatus,
-                newUserID,newSDate,newEDate);
+                newUserID,newSDate,newEDate, user);
         requestRepo.save(newRequestObj);
         return "redirect:/form";
 

@@ -23,6 +23,10 @@ public class Request {
     private String sourcingJustification;
     private String status;
     private int userID;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
     // private String fileName;
 
     // @Lob
@@ -32,7 +36,7 @@ public class Request {
     }
     public Request(String companyCode, String requestor, String consultant, String date, String email,
             String projectName, String costElement, String statementOfWork, String totalCost,
-            String sourcingJustification, String status, int userID, String sdate, String edate) {
+            String sourcingJustification, String status, int userID, String sdate, String edate, User user) {
         this.companyCode = companyCode;
         this.requestor = requestor;
         this.consultant = consultant;
@@ -47,6 +51,7 @@ public class Request {
         this.userID = userID;
         this.startDate = sdate;
         this.endDate = edate;
+        this.user = user;
     }
     
     public int getRid() {
@@ -138,6 +143,12 @@ public class Request {
     }
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
     }
     // public String getFileName() {
     //     return fileName;
