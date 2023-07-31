@@ -299,7 +299,8 @@ datatorage/addnew -->
             </span>
           </label>
           <select class="w-full px-4 py-2 border border-gray-300 rounded-md text-center" id="sourcingJustification"
-            name="sourcingJustification">
+            name="sourcingJustification" th:field="*{sourcingJustification}" >
+            <option value="" selected></option>
             <option value="yes">Yes</option>
             <option value="no">No</option>
           </select>
