@@ -20,6 +20,15 @@ datatorage/addnew -->
             <a href="/login" class="flex items-center">
               <img src="https://upload.wikimedia.org/wikipedia/en/9/97/FortisBC_logo.svg" alt="Logo" class=" w-[150px] ml-[50px]">
             </a>
+            <div class="absolute right-1">
+              <a th:href="@{/profile/pr/{id}(id=${user.id})}"> 
+                <img
+                  id="avatar"
+                  th:src="@{${user.avatarImagePath}}"
+                  alt="Avatar"
+                  class=" w-12 h-12 mr-2 rounded-full cursor-pointer bg-opacity-50 hover:bg-black "/>
+              </a>
+            </div>
           </div>
         </div>
 

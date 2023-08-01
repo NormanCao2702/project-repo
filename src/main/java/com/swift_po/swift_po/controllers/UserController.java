@@ -1,15 +1,28 @@
 package com.swift_po.swift_po.controllers;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.util.StringUtils;
+
+
+
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -49,7 +62,7 @@ public class UserController {
     }
 
     @PostMapping("users/add")
-    public String addUser(@RequestParam Map<String, String> newuser, HttpServletResponse response, Model model){
+    public String addUser(@RequestParam Map<String, String> newuser ,HttpServletResponse response, Model model){
         System.out.println("ADD user");
     
         String newEmail = newuser.get("email");
@@ -72,9 +85,15 @@ public class UserController {
             return "users/signup";
         }
         
-        userRepo.save(new User( newEmail, newName, newCryptedPass, newuserType));
-        User tempuser = new User( newEmail, newName, newCryptedPass, newuserType);
-        UserServices.registerUser(tempuser);
+        User newUser= new User( newEmail, newName, newCryptedPass, newuserType);
+        
+        newUser.setAvatarImagePath("/uploads/avatar_images/lightning-logo.png"); 
+       
+
+        //email new user
+        UserServices.registerUser(newUser);//call method from user services to send email.
+        userRepo.save(newUser);
+
         response.setStatus(201);
         return "users/login";
     }
@@ -108,6 +127,85 @@ public class UserController {
             return "users/form";
         }
     }
+
+    @GetMapping("/profile/pr/{id}")
+    public String getProfile(Model model, HttpServletRequest request, HttpSession session){
+        User user = (User) session.getAttribute("session_user");
+        if (user == null)   {
+            return "users/login";
+        }
+        else {
+            model.addAttribute("user",user);
+            return "users/profile";
+        }
+    }
+    @PostMapping("/profile/pr/{id}")
+    public String updateUserProfile(@PathVariable("id") Integer userId, @RequestParam Map<String, String> updatedUserData, HttpSession session, Model model) {
+        User currentUser = (User) session.getAttribute("session_user");
+
+        if (currentUser == null)   {
+            return "users/login";
+        }
+        else {
+           int currentuserid = currentUser.getId();
+        
+            if (currentUser == null || (currentuserid != userId )) {
+                // If the user is not logged in or trying to update another user's profile, redirect to the login page or handle the case appropriately.
+                return "redirect:/login";
+            }
+            
+            // Extract the updated information from the form data
+            String newName = updatedUserData.get("name");
+            String newEmail = updatedUserData.get("email");
+
+            // Check if the email is already in use by another user (excluding the current user)
+            List<User> existingUsers = userRepo.findByEmail(newEmail);
+            if (!existingUsers.isEmpty() ) {
+                String error = "Email already in use. Please choose a different email.";
+                model.addAttribute("error", error);
+                return "users/profile";
+            }
+
+            // Update the user's information
+            currentUser.setName(newName);
+            currentUser.setEmail(newEmail);
+
+            // Save the updated user in the repository
+            userRepo.save(currentUser);
+
+            // Redirect back to the profile page with the updated user information
+            return "redirect:/profile/pr/" + currentUser.getId();
+        }
+        
+        
+    }
+    @PostMapping("/profile/delete/{id}")
+    public String deleteUser(@PathVariable("id") Integer userId, @RequestParam Map<String, String> updatedUserData, HttpSession session ){
+        User currentUser = (User) session.getAttribute("session_user");
+        if (currentUser == null)   {
+            return "/login";
+        }
+        else {
+            int currentuserid = currentUser.getId();
+        
+            if (currentUser == null || (currentuserid != userId )) {
+                // If the user is not logged in or trying to update another user's profile, redirect to the login page or handle the case appropriately.
+                return "/login";
+            }
+            Optional<User> UserOp = userRepo.findById(userId);
+            if (UserOp.isPresent()) {
+                userRepo.deleteById(userId);
+                return "redirect:/logout";
+            } else {
+                session.invalidate();
+                return "redirect:/logout";
+            }
+        }
+        
+             
+        
+    }
+
 
     @GetMapping("/form/pr/{id}")
     public String showForm(Model model, HttpServletRequest request, HttpSession session){
@@ -182,6 +280,8 @@ public class UserController {
         request.getSession().invalidate();
         return "users/login";
     }
+
+    
 }
 
 

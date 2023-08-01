@@ -61,6 +61,7 @@ public class UserControllerTests {
         when(userRepo.save(any(User.class))).thenReturn(new User());
 
         // Act 
+
         MvcResult result = mockMvc.perform(post("/users/add")
                 .param("email", "test@example.com")
                 .param("name", "John Doe")
@@ -71,14 +72,30 @@ public class UserControllerTests {
         // Assert
         assertEquals("users/login", result.getModelAndView().getViewName());
     }
-    // @Test
-    // public void emailAlreadyExists_signup() throws Exception{
 
-    // }
-    // @Test
-    // public void login() throws Exception{
+    // test sign up if the password is weak. strong.
 
+    // test sign up if the email already exists.
+    // @Test
+    // public void EmailAlreadyExists() throws Exception{
+    //     //Arange
+
+    //     //Act
+
+    //     //Assert
     // }
+
+    // test login to see if it works. it should work if the email exists. and fail if it doesnt 
+    // @Test
+    // public void loginTest() throws Exception{
+    //     //Arange
+            
+    //     //Act
+
+    //     //Assert
+    // }
+
+    
 
     
 }

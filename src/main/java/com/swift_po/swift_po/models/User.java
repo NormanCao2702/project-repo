@@ -13,6 +13,7 @@ public class User {
     private String name;
     private String password;
     private String userType;
+    private String avatarImagePath;
     public User() {
     }
     public User(String email, String name, String password, String userType) {
@@ -20,6 +21,7 @@ public class User {
         this.name = name;
         this.password = password;
         this.userType = userType;
+        // this.avatarImagePath= avatarImagePath;
 
     }
     public int getId() {
@@ -53,6 +55,13 @@ public class User {
     public void setUserType(String userType) {
         this.userType = userType;
     }
+    public String getAvatarImagePath() {
+        return avatarImagePath;
+    }
+    public void setAvatarImagePath(String avatarImagePath) {
+        this.avatarImagePath = avatarImagePath;
+    }
+    
 }
 
 
