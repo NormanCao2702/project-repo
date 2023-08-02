@@ -347,12 +347,30 @@ datatorage/addnew -->
         <button class="px-4 py-2 bg-white text-gray-700 rounded-md border-gray-200 hover:bg-gray-100 border-2" type="submit">Save as Draft</button>
         </div> -->
                 <div class="flex justify-center">
-                    <button type="submit"
+                    <button id="denyButton"
                     class="p-3 px-6 pt-2 bg-teal-500 rounded-full text-white baseline hover:bg-teal-400 font-bold font-Roboto mr-2"
                     th:name="status" th:value="denied">Deny</button>
+
+                    <script>
+                        function handleDenyButtonClick() {
+                            var denyButton = document.querySelector("#denyButton");
+                            var inputButtonContainer = document.querySelector("#inputButtonContainer");
+                    
+                            denyButton.addEventListener("click", function (event) {
+                                event.preventDefault();
+                                inputButtonContainer.style.display = "flex";
+                            });
+                        }
+                    
+                        handleDenyButtonClick();
+                    </script>
+                    
                     <button type="submit"
                         class="p-3 px-6 pt-2 bg-teal-500 rounded-full text-white baseline hover:bg-teal-400 font-bold font-Roboto"
                         th:name="status" th:value="approved">Approve</button>
+                </div>
+                <div id="inputButtonContainer" class="flex justify-center mt-4">
+                    <input type="text" id="comments" name="comments" class="px-4 py-2 border border-gray-300 rounded-md text-center" placeholder="Enter Reason for Denial">
                 </div>
             </form>
         </div>

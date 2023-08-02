@@ -1,31 +1,27 @@
 package com.swift_po.swift_po.controllers;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+// import java.util.Optional;
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-
-// import java.util.Optional;
-import javax.sql.DataSource;
-import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCallback;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 // import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,11 +32,6 @@ import com.swift_po.swift_po.models.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import java.io.InputStream;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 @Controller
 public class RequestController {
@@ -125,6 +116,7 @@ public class RequestController {
         String newTotalCost = newRequest.get("totalCost");
         String newSourcingJustification = newRequest.get("sourcingJustification");
         String newStatus = newRequest.get("status");
+        String newComments = newRequest.get("comments");
         int newUserID = user.getId();
 
         byte[] sjFileData = sjFile.getBytes();
@@ -136,7 +128,7 @@ public class RequestController {
 
         Request newReq = new Request(newCompanyCode, newRequestor, newConsultant, newSDate, newEDate, newEmail,
                 newProjectName, newCostElement, newStatementOfWork, newTotalCost, newSourcingJustification, newStatus,
-                newUserID, (byte[]) sjFileData, (byte[]) pcFileData, user);
+                newUserID, (byte[]) sjFileData, (byte[]) pcFileData, user, newComments);
 
         requestRepo.save(newReq);
 
@@ -255,6 +247,7 @@ public class RequestController {
         request2.setTotalCost(newRequest.get("totalCost"));
         request2.setSourcingJustification(newRequest.get("sourcingJustification"));
         request2.setStatus(newRequest.get("status"));
+        request2.setComments(newRequest.get("comments"));
         // only change the file if a new file is uploaded
 
         // Check if a new SJ File is provided
