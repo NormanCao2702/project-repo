@@ -3,3 +3,4 @@ const togglePasswordButton = document.getElementById('togglePassword');
   togglePasswordButton.addEventListener('click', () => {
       passwordField.type = passwordField.type === 'password' ? 'text' : 'password';
 });
+

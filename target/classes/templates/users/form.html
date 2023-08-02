@@ -1,7 +1,7 @@
 <!-- /data storage
 datatorage/addnew -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
@@ -26,52 +26,57 @@ datatorage/addnew -->
             <img src="https://upload.wikimedia.org/wikipedia/en/9/97/FortisBC_logo.svg" alt="Logo"
               class=" w-[150px] ml-[50px]">
           </a>
+          <div class="absolute right-1">
+            <a th:href="@{/profile/pr/{id}(id=${user.id})}">
+              <img id="avatar" th:src="@{${user.avatarImagePath}}" alt="Avatar"
+                class=" w-12 h-12 mr-5 rounded-full cursor-pointer bg-opacity-50 hover:bg-black " />
+            </a>
+          </div>
         </div>
-      </div>
 
 
-      <div id="sidenav" class="z-0 fixed bg-sky-950 top-20 p-sm-2 p-2 pt-6 text-center bottom-0 h-screen min-h-fit">
-        <div class="text-gray-100 text-xl">
+        <div id="sidenav" class="z-0 fixed bg-sky-950 top-20 p-sm-2 p-2 pt-6 text-center bottom-0 h-screen min-h-fit">
+          <div class="text-gray-100 text-xl">
 
-          <div id="navcontent">
-            <hr class=" my-2 ">
-            <div
-              class="p-2.5 item-center mt-3 flex rounded-md px-4 cursor-pointer hover:bg-gray-700 bg-opacity-50 text-white"
-              onclick="dropdown()">
-              <i class="bi bi-file-earmark"></i>
-              <div class="item-center text-center flex justify-between w-full">
-                <span class="text-[16px] ml-4 text-gray-200">Purchase Order</span>
-                <span class="text-sm rotate-180" id="arrowdown">
-                  <i class="bi bi-chevron-down p-2.5"></i>
-                </span>
+            <div id="navcontent">
+              <hr class=" my-2 ">
+              <div
+                class="p-2.5 item-center mt-3 flex rounded-md px-4 cursor-pointer hover:bg-gray-700 bg-opacity-50 text-white"
+                onclick="dropdown()">
+                <i class="bi bi-file-earmark"></i>
+                <div class="item-center text-center flex justify-between w-full">
+                  <span class="text-[16px] ml-4 text-gray-200">Purchase Order</span>
+                  <span class="text-sm rotate-180" id="arrowdown">
+                    <i class="bi bi-chevron-down p-2.5"></i>
+                  </span>
+                </div>
               </div>
-            </div>
-            <div class="text-left text-sm font-thin mt-2 w-4/5 max-auto" id="pomenu">
-              <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
-                <a th:href="@{/form/pr/{id}(id=${user.id})}">
-                  <i class="bi bi-file-earmark-plus"> New Purchase Order</i>
-                </a>
-              </div>
-              <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
-                <a href="/requests/draft">
-                  <i class="bi bi-file-earmark-plus"> Draft Order</i>
-              </div>
-              <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
-                <a href="/requests/submitted">
-                  <i class="bi bi-file-earmark-plus"> Submitted Orders </i>
-                </a>
+              <div class="text-left text-sm font-thin mt-2 w-4/5 max-auto" id="pomenu">
+                <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
+                  <a th:href="@{/form/pr/{id}(id=${user.id})}">
+                    <i class="bi bi-file-earmark-plus"> New Purchase Order</i>
+                  </a>
+                </div>
+                <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
+                  <a href="/requests/draft">
+                    <i class="bi bi-file-earmark-plus"> Draft Order</i>
+                </div>
+                <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
+                  <a href="/requests/submitted">
+                    <i class="bi bi-file-earmark-plus"> Submitted Orders </i>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <a title="Logout" href="/logout">
-          <div class="text-gray-100 px-2 py-1 bg-gray-600 bg-opacity-50 rounded-md cursor-pointer hover:bg-black 
+          <a title="Logout" href="/logout">
+            <div class="text-gray-100 px-2 py-1 bg-gray-600 bg-opacity-50 rounded-md cursor-pointer hover:bg-black 
             text-white mt-4 ml-0.5 mb-3" id="logoutbutton">
-            <i class="bi bi-box-arrow-in-right "></i>
-            <span id="logouttext" class="text-[16px] ml-4 text-gray-200">Logout</span>
-          </div>
-        </a>
-      </div>
+              <i class="bi bi-box-arrow-in-right "></i>
+              <span id="logouttext" class="text-[16px] ml-4 text-gray-200">Logout</span>
+            </div>
+          </a>
+        </div>
 
 
     </nav>

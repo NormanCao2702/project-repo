@@ -1,15 +1,24 @@
 package com.swift_po.swift_po.controllers;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.util.StringUtils;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -61,7 +70,7 @@ public class UserController {
 
         // Check if email is already in use
         List<User> existingUsers = userRepo.findByEmail(newEmail);
-        if (!existingUsers.isEmpty()) {
+        if (newPwd == null || !existingUsers.isEmpty()) {
             String error = "Email already in use. Please choose a different email.";
             model.addAttribute("error", error);
             return "/users/signup";
@@ -73,9 +82,13 @@ public class UserController {
             return "/users/signup";
         }
 
-        userRepo.save(new User(newEmail, newName, newCryptedPass, newuserType));
-        User tempuser = new User(newEmail, newName, newCryptedPass, newuserType);
-        UserServices.registerUser(tempuser);
+        User newUser = new User(newEmail, newName, newCryptedPass, newuserType);
+        newUser.setAvatarImagePath("/uploads/avatar_images/lightning-logo.png");
+
+        // email new user
+        UserServices.registerUser(newUser);// call method from user services to send email.
+        userRepo.save(newUser);
+
         response.setStatus(201);
         return "/users/login";
     }
@@ -106,6 +119,153 @@ public class UserController {
             model.addAttribute("user", user);
             return "/users/form";
         }
+    }
+
+    @GetMapping("/profile/pr/{id}")
+    public String getProfile(Model model, HttpServletRequest request, HttpSession session) {
+        User user = (User) session.getAttribute("session_user");
+        if (user == null) {
+            return "users/login";
+        } else {
+            model.addAttribute("user", user);
+            return "users/profile";
+        }
+    }
+
+    @PostMapping("/profile/pr/{id}")
+    public String updateUserProfile(@PathVariable("id") Integer userId,
+            @RequestParam Map<String, String> updatedUserData, HttpSession session, Model model) {
+        User currentUser = (User) session.getAttribute("session_user");
+
+        if (currentUser == null) {
+            return "users/login";
+        } else {
+            int currentuserid = currentUser.getId();
+
+            if (currentUser == null || (currentuserid != userId)) {
+                // If the user is not logged in or trying to update another user's profile,
+                // redirect to the login page or handle the case appropriately.
+                return "redirect:/login";
+            }
+
+            // Extract the updated information from the form data
+            String newName = updatedUserData.get("name");
+            String newEmail = updatedUserData.get("email");
+
+            // Check if the email is already in use by another user (excluding the current
+            // user)
+            List<User> existingUsers = userRepo.findByEmail(newEmail);
+            if (!existingUsers.isEmpty()) {
+                String error = "Email already in use. Please choose a different email.";
+                model.addAttribute("error", error);
+                return "users/profile";
+            }
+
+            // Update the user's information
+            currentUser.setName(newName);
+            currentUser.setEmail(newEmail);
+
+            // Save the updated user in the repository
+            userRepo.save(currentUser);
+
+            // Redirect back to the profile page with the updated user information
+            return "redirect:/profile/pr/" + currentUser.getId();
+        }
+
+    }
+
+    @PostMapping("/profile/delete/{id}")
+    public String deleteUser(@PathVariable("id") Integer userId, @RequestParam Map<String, String> updatedUserData,
+            HttpSession session) {
+        User currentUser = (User) session.getAttribute("session_user");
+        if (currentUser == null) {
+            return "/login";
+        } else {
+            int currentuserid = currentUser.getId();
+
+            if (currentUser == null || (currentuserid != userId)) {
+                // If the user is not logged in or trying to update another user's profile,
+                // redirect to the login page or handle the case appropriately.
+                return "/login";
+            }
+            Optional<User> UserOp = userRepo.findById(userId);
+            if (UserOp.isPresent()) {
+                userRepo.deleteById(userId);
+                return "redirect:/logout";
+            } else {
+                session.invalidate();
+                return "redirect:/logout";
+            }
+        }
+
+    }
+
+    @GetMapping("/forgotpassword")
+    public String forgotpassword() {
+
+        return "users/forgotpassword";
+    }
+
+    @PostMapping("/forgotpassword")
+    public String forgotpassword(@RequestParam("email") String email, Model model) {
+        // Check if the email exists in the database or user repository
+        List<User> userlist = userRepo.findByEmail(email);
+        if (userlist.isEmpty()) {
+            // If the email does not exist, show an error message on the same page
+            model.addAttribute("error", "Email does not exist.");
+            return "users/forgotpassword";
+        } else {
+            User newuser = userlist.get(0);
+
+            // Generate a password reset token (UUID) and save it in the user's account
+            String resetToken = UUID.randomUUID().toString();
+            newuser.setPasswordResetToken(resetToken);
+            userRepo.save(newuser);
+
+            // email user with reset token
+            UserServices.resetpassword(newuser);
+
+            // Show a success message on the same page or redirect to a confirmation page
+            model.addAttribute("success", "Password reset link has been sent to your email.");
+            return "users/login";
+        }
+    }
+
+    @GetMapping("/resetpassword")
+    public String showResetPasswordPage(@RequestParam("token") String token, Model model) {
+        model.addAttribute("token", token);
+        return "users/resetpassword";
+    }
+
+    @PostMapping("/resetpassword")
+    public String resetPassword(@RequestParam("token") String token, @RequestParam("password") String password,
+            @RequestParam("confirmPassword") String confirmPassword, Model model) {
+        // Find the user by the reset token
+        List<User> userlist = userRepo.findByPasswordResetToken(token);
+        User currentuser = userlist.get(0);
+
+        if (currentuser == null) {
+            // Invalid or expired token
+            model.addAttribute("error", "Invalid or expired token.");
+            return "users/resetpassword";
+        }
+
+        if (!password.equals(confirmPassword)) {
+            // Password and confirm password don't match
+            model.addAttribute("error", "Password and confirm password do not match.");
+            model.addAttribute("token", token); // Pass the token back to the form
+            return "users/resetpassword";
+        }
+
+        // Update the user's password and clear the reset token
+        String newCryptedPass = UserServices.cryptpass(password);
+        currentuser.setPassword(newCryptedPass);
+        currentuser.setPasswordResetToken(null);
+        userRepo.save(currentuser);
+
+        // Show a success message or redirect to the login page
+        model.addAttribute("success", "Password has been reset successfully. Please login with your new password.");
+        return "users/login";
     }
 
     @GetMapping("/form/pr/{id}")
@@ -178,4 +338,5 @@ public class UserController {
         request.getSession().invalidate();
         return "/users/login";
     }
+
 }
