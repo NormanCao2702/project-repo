@@ -63,7 +63,6 @@ datatorage/addnew -->
             bottom-0 text-white ml-0.5 fixed mb-3">
               <i class="bi bi-box-arrow-in-right "></i>
               <span id="logouttext" class="text-[16px] ml-4 text-gray-200">Logout</span>
-          
             </div> 
           </a>
         </div>
@@ -82,7 +81,9 @@ datatorage/addnew -->
 
           <div class="mb-4 text-center">
             <label class="block text-gray-200 font-bold mb-2" for="consultant">Consultant<span class="text-red-500">*</span></label>
-            <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="consultant" name="consultant">
+          <select class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" id="consultant" name="consultant">
+              <option th:each="option : ${firstColumnData}" th:text="${option}"></option>
+          </select>
           </div>
 
           <div class="mb-4 text-center">

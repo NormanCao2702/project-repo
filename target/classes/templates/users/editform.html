@@ -8,7 +8,11 @@ datatorage/addnew -->
     <title>Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <script  src="/js/script.js"></script>
+    <script  src="/js/script.js" defer></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.core.css">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
 
   </head>
   <body style="background-repeat: no-repeat; background-attachment: fixed;" class="bg-gradient-to-r from-[rgb(3,45,95)]/95 to-[rgb(6,76,135)]/95 bg-cover">
@@ -79,7 +83,9 @@ datatorage/addnew -->
 
           <div class="mb-4 text-center">
             <label class="block text-gray-200 font-bold mb-2" for="consultant">Consultant<span class="text-red-500">*</span></label>
-            <input th:field="*{consultant}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="consultant" name="consultant">
+          <select class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" id="consultant" name="consultant">
+              <option th:each="option : ${firstColumnData}" th:text="${option}"></option>
+          </select>
           </div>
 
           <div class="mb-4 text-center">

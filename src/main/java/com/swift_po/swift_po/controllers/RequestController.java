@@ -1,8 +1,14 @@
 package com.swift_po.swift_po.controllers;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.logging.Logger;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.swift_po.swift_po.models.Request;
@@ -23,6 +28,7 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class RequestController {
+    private static final Logger LOGGER = Logger.getLogger(RequestController.class.getName());
     @Autowired
     private RequestReposiory requestRepo;
     
@@ -95,6 +101,7 @@ public class RequestController {
     }
 
 
+    //edit button
     @GetMapping("/edit/{rid}")
 	public String editEmployeeById(Model model, @PathVariable("rid") int rid, HttpSession session) {
         User user = (User) session.getAttribute("session_user");
@@ -108,9 +115,40 @@ public class RequestController {
 		
 			List<Request> request = requestRepo.findById(rid);
 			model.addAttribute("request", request.get(0));
+
+        try {
+            List<String> firstColumnData = readOptionsFromFile("options.txt");
+            model.addAttribute("firstColumnData", firstColumnData);
+        } catch (IOException e) {
+            // Handle the exception appropriately
+            System.err.println("Error reading options from file: " + e.getMessage());
+            e.printStackTrace();
+            return "error"; // or some other error template
+        }
+        LOGGER.info("Exiting vendorList method.");
 		return "users/editform";
 	}
 
+     // Method to read data from the text file
+     private List<String> readOptionsFromFile(String fileName) throws IOException {
+        List<String> options = new ArrayList<>();
+    
+        // Load the file using ClassLoader
+        ClassLoader classLoader = getClass().getClassLoader();
+        try (InputStream inputStream = classLoader.getResourceAsStream(fileName);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+    
+            String line;
+            while ((line = reader.readLine()) != null) {
+                options.add(line.trim());
+            }
+        }
+    
+        return options;
+    }
+
+
+    //review button
     @PostMapping("/requests/{rid}")
     public String saveUpdatedrequest(@PathVariable int rid, @ModelAttribute("request") Request request, Model model, HttpSession session) {
         Request request2 = requestRepo.findById(rid).get(0);
@@ -140,6 +178,18 @@ public class RequestController {
         request2.setUserID(newUserID);
         requestRepo.save(request2);
 
+        try {
+            List<String> firstColumnData = readOptionsFromFile("options.txt");
+            model.addAttribute("firstColumnData", firstColumnData);
+        } catch (IOException e) {
+            // Handle the exception appropriately
+            System.err.println("Error reading options from file: " + e.getMessage());
+            e.printStackTrace();
+            return "error"; // or some other error template
+        }
+        LOGGER.info("Exiting vendorList method.");
         return "redirect:/form";
     }
+    
 }
+

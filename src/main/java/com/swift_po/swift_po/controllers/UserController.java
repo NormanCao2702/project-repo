@@ -1,7 +1,13 @@
 package com.swift_po.swift_po.controllers;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +26,7 @@ import com.swift_po.swift_po.services.UserServices;
 
 @Controller
 public class UserController {
+    private static final Logger LOGGER = Logger.getLogger(UserController.class.getName());
     @Autowired
     private userRepo userRepo;
     @Autowired
@@ -111,15 +118,44 @@ public class UserController {
 
     @GetMapping("/form/pr/{id}")
     public String showForm(Model model, HttpServletRequest request, HttpSession session){
+        LOGGER.info("Entering vendorList method.");
         User user = (User) session.getAttribute("session_user");
-        if (user == null)   {
-            return "users/login";
+        if (user == null) {
+            return "/users/login";
+        } else {
+            model.addAttribute("user", user);
         }
-        else {
-            model.addAttribute("user",user);
-            return "users/formpr";
+
+        try {
+            List<String> firstColumnData = readOptionsFromFile("options.txt");
+            model.addAttribute("firstColumnData", firstColumnData);
+        } catch (IOException e) {
+            // Handle the exception appropriately
+            System.err.println("Error reading options from file: " + e.getMessage());
+            e.printStackTrace();
+            return "error"; // or some other error template
         }
+        LOGGER.info("Exiting vendorList method.");
+        return "users/formpr";
     }
+
+        // Method to read data from the text file
+        private List<String> readOptionsFromFile(String fileName) throws IOException {
+            List<String> options = new ArrayList<>();
+        
+            // Load the file using ClassLoader
+            ClassLoader classLoader = getClass().getClassLoader();
+            try (InputStream inputStream = classLoader.getResourceAsStream(fileName);
+                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+        
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    options.add(line.trim());
+                }
+            }
+        
+            return options;
+        }
 
     @GetMapping("/pr/{id}")
     public String getPr(Model model, HttpServletRequest request, HttpSession session){

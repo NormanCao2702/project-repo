@@ -1,13 +1,11 @@
 package com.swift_po.swift_po.services;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.swift_po.swift_po.models.User;
-import com.swift_po.swift_po.models.userRepo;
 
 @Service
 public class UserServices {
