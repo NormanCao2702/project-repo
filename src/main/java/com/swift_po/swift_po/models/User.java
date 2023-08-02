@@ -14,6 +14,7 @@ public class User {
     private String password;
     private String userType;
     private String avatarImagePath;
+    private String passwordResetToken;
     public User() {
     }
     public User(String email, String name, String password, String userType) {
@@ -61,6 +62,13 @@ public class User {
     public void setAvatarImagePath(String avatarImagePath) {
         this.avatarImagePath = avatarImagePath;
     }
+    public String getPasswordResetToken() {
+        return passwordResetToken;
+    }
+    public void setPasswordResetToken(String passwordResetToken) {
+        this.passwordResetToken = passwordResetToken;
+    }
+    
     
 }
 

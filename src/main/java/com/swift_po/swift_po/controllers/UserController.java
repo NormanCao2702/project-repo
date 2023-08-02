@@ -201,9 +201,83 @@ public class UserController {
                 return "redirect:/logout";
             }
         }
-        
+
              
         
+    }
+
+    @GetMapping("/forgotpassword")
+    public String forgotpassword(){
+
+        return "users/forgotpassword";
+    }
+
+    @PostMapping("/forgotpassword")
+    public String forgotpassword(@RequestParam("email") String email, Model model) {
+        // Check if the email exists in the database or user repository
+        List<User> userlist = userRepo.findByEmail(email);
+        if (userlist.isEmpty()) {
+            // If the email does not exist, show an error message on the same page
+            model.addAttribute("error", "Email does not exist.");
+            return "users/forgotpassword";
+        } else {
+            User newuser = userlist.get(0);
+
+            // Generate a password reset token (UUID) and save it in the user's account
+            String resetToken = UUID.randomUUID().toString();
+            newuser.setPasswordResetToken(resetToken);
+            userRepo.save(newuser);
+
+            
+            //email user with reset token
+            UserServices.resetpassword(newuser);
+
+            // Show a success message on the same page or redirect to a confirmation page
+            model.addAttribute("success", "Password reset link has been sent to your email.");
+            return "users/login";
+        }   
+    }   
+
+
+
+    
+    
+
+    
+    @GetMapping("/resetpassword")
+    public String showResetPasswordPage(@RequestParam("token") String token, Model model) {
+        model.addAttribute("token", token);
+        return "users/resetpassword";
+    }
+
+    @PostMapping("/resetpassword")
+    public String resetPassword(@RequestParam("token") String token, @RequestParam("password") String password, @RequestParam("confirmPassword") String confirmPassword, Model model) {
+        // Find the user by the reset token
+        List<User> userlist = userRepo.findByPasswordResetToken(token);
+        User currentuser = userlist.get(0);
+
+        if (currentuser == null) {
+            // Invalid or expired token
+            model.addAttribute("error", "Invalid or expired token.");
+            return "users/resetpassword";
+        }
+
+        if (!password.equals(confirmPassword)) {
+            // Password and confirm password don't match
+            model.addAttribute("error", "Password and confirm password do not match.");
+            model.addAttribute("token", token); // Pass the token back to the form
+            return "users/resetpassword";
+        }
+
+        // Update the user's password and clear the reset token
+        String newCryptedPass = UserServices.cryptpass(password);
+        currentuser.setPassword(newCryptedPass);
+        currentuser.setPasswordResetToken(null);
+        userRepo.save(currentuser);
+
+        // Show a success message or redirect to the login page
+        model.addAttribute("success", "Password has been reset successfully. Please login with your new password.");
+        return "users/login";
     }
 
 
