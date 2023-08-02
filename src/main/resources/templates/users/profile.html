@@ -43,7 +43,7 @@
                         <h4 class="text-right">Profile Settings</h4>
                     </div>
                     <hr>
-<!--                    <form th:action="@{/profile/pr/{id}(id=${user.id})}" method="POST" onsubmit="return confirm('Confirm to Update?');">
+                  <form th:action="@{/profile/pr/{id}(id=${user.id})}" method="POST" onsubmit="return confirm('Confirm to Update?');">
                         <div class="justify-center items-center text-center mt-5">
                             <label class="text-xs">NAME: </label>
                             <input type="text"  class="form-input border border-gray-300 rounded focus:outline-none focus:border-blue-500" name="name"  id= "name" placeholder=" John Doe " required >
@@ -59,7 +59,7 @@
 
                         
 
-                    <hr> -->
+                    <hr>
 
                     <div class="mt-5 text-center ">
                         <form th:action="@{/profile/delete/{id}(id=${user.id})}" method="POST" onsubmit="return confirm('IMPORTANT!!! Once deleted, an account and its infomration is not retrievable. Do you want to continue?');">
