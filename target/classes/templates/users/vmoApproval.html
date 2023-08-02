@@ -88,26 +88,24 @@ datatorage/addnew -->
                     <th scope="col" class="px-6 py-4">Request ID</th>
                     <th scope="col" class="px-6 py-4">Company Code</th>
                     <th scope="col" class="px-6 py-4">ProjectName</th>
-                    <th scope="col" class="px-6 py-4">Date</th>
                     <th scope="col" class="px-6 py-4">Status</th>
                     <th scope="col" class="px-6 py-4">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="request:${approvedForms}" 
-                      class=" font-medium border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600 text-center">
-                      <td class="whitespace-nowrap px-6 py-4 font-medium" th:text="${request.rid}"></td>
-                        <td class="whitespace-nowrap px-6 py-4" th:text="${request.companyCode}"></td>
-                        <td class="whitespace-nowrap px-6 py-4" th:text="${request.projectName}"></td>
-                        <td class="whitespace-nowrap px-6 py-4" th:text="${request.date}"></td>
-                        <td class="whitespace-nowrap px-6 py-4" th:text="${request.status}"></td>
-                        <td class="whitespace-nowrap px-6 py-4 flex items-center justify-center">
-                        <a th:href="@{/VMOviewForm/{rid}(rid=${request.rid})}"
-                          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                          role="button">Review Purchase Requisition</a>
-                      </td>
-                    </tr>
-                  </tbody>
+                  <tr th:each="request:${approvedForms}"
+                    class=" font-medium border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600 text-center">
+                    <td class="whitespace-nowrap px-6 py-4 font-medium" th:text="${request.rid}"></td>
+                    <td class="whitespace-nowrap px-6 py-4" th:text="${request.companyCode}"></td>
+                    <td class="whitespace-nowrap px-6 py-4" th:text="${request.projectName}"></td>
+                    <td class="whitespace-nowrap px-6 py-4" th:text="${request.status}"></td>
+                    <td class="whitespace-nowrap px-6 py-4 flex items-center justify-center">
+                      <a th:href="@{/VMOviewForm/{rid}(rid=${request.rid})}"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        role="button">Review Purchase Requisition</a>
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>

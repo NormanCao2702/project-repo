@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,9 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.util.StringUtils;
-
-
-
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -37,12 +33,12 @@ public class UserController {
     private userRepo userRepo;
     @Autowired
     private UserServices UserServices;
+
     @Autowired
     // private BCryptPasswordEncoder encoder;
-    
 
     @GetMapping("/")
-    public String index(){
+    public String index() {
         return "users/index";
     }
 
@@ -50,55 +46,54 @@ public class UserController {
     public String getSignUp() {
         return "users/signup";
     }
-    
+
     @GetMapping("/pr")
-    public String getPr(){
+    public String getPr() {
         return "users/pr";
     }
 
     @RequestMapping("/src")
-    public String getSrc(){
+    public String getSrc() {
         return "users/srcJustification";
     }
 
-    @PostMapping("users/add")
-    public String addUser(@RequestParam Map<String, String> newuser ,HttpServletResponse response, Model model){
+    @PostMapping("/users/add")
+    public String addUser(@RequestParam Map<String, String> newuser, HttpServletResponse response, Model model) {
         System.out.println("ADD user");
-    
+
         String newEmail = newuser.get("email");
-        String newName = newuser.get("name");;
+        String newName = newuser.get("name");
+        ;
         String newPwd = newuser.get("password");
         String newuserType = newuser.get("userType");
         String newCryptedPass = UserServices.cryptpass(newPwd);
 
-
         // Check if email is already in use
         List<User> existingUsers = userRepo.findByEmail(newEmail);
-        if (newPwd == null || !existingUsers.isEmpty() ) {
+        if (newPwd == null || !existingUsers.isEmpty()) {
             String error = "Email already in use. Please choose a different email.";
             model.addAttribute("error", error);
             return "users/signup";
         }
         // Password policy validation
         if (!isStrongPassword(newPwd)) {
-            model.addAttribute("error", "Password should be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.");
+            model.addAttribute("error",
+                    "Password should be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.");
             return "users/signup";
         }
-        
-        User newUser= new User( newEmail, newName, newCryptedPass, newuserType);
-        
-        newUser.setAvatarImagePath("/uploads/avatar_images/lightning-logo.png"); 
-       
+        String avatarImagePath = "/uploads/avatar_images/lightning-logo.png";
+        User newUser = new User(newEmail, newName, newCryptedPass, newuserType, avatarImagePath);
 
-        //email new user
-        UserServices.registerUser(newUser);//call method from user services to send email.
+        // email new user
+        UserServices.registerUser(newUser);// call method from user services to send email.
         userRepo.save(newUser);
 
         response.setStatus(201);
+
         System.out.println("User type:" + newuserType);
         return "users/login";
     }
-    
+
     // Helper method to check password strength
     private boolean isStrongPassword(String password) {
         String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
@@ -106,17 +101,17 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String getLogin(Model model, HttpServletRequest request, HttpSession session){
+    public String getLogin(Model model, HttpServletRequest request, HttpSession session) {
         User user = (User) session.getAttribute("session_user");
-        if (user == null){
+
+        if (user == null) {
             return "users/login";
-        }
-        else {
-            // model.addAttribute("user",user);
+        } else {
+            model.addAttribute("user", user);
             if ("VMO User".equals(user.getUserType())) {
                 // VMO user, redirect to the VMO user dashboard page
                 return "users/vmoUser";
-            } else if("IS User".equals(user.getUserType())) {
+            } else if ("IS User".equals(user.getUserType())) {
                 // Regular user, redirect to the regular user dashboard page
                 return "users/form";
             }
@@ -125,50 +120,51 @@ public class UserController {
     }
 
     @GetMapping("/form")
-    public String getForm(Model model, HttpServletRequest request, HttpSession session){
+    public String getForm(Model model, HttpServletRequest request, HttpSession session) {
         User user = (User) session.getAttribute("session_user");
-        if (user == null)   {
+        if (user == null) {
             return "users/login";
-        }
-        else {
-            model.addAttribute("user",user);
+        } else {
+            model.addAttribute("user", user);
             return "users/form";
         }
     }
 
     @GetMapping("/profile/pr/{id}")
-    public String getProfile(Model model, HttpServletRequest request, HttpSession session){
+    public String getProfile(Model model, HttpServletRequest request, HttpSession session) {
         User user = (User) session.getAttribute("session_user");
-        if (user == null)   {
+        if (user == null) {
             return "users/login";
-        }
-        else {
-            model.addAttribute("user",user);
+        } else {
+            model.addAttribute("user", user);
             return "users/profile";
         }
     }
+
     @PostMapping("/profile/pr/{id}")
-    public String updateUserProfile(@PathVariable("id") Integer userId, @RequestParam Map<String, String> updatedUserData, HttpSession session, Model model) {
+    public String updateUserProfile(@PathVariable("id") Integer userId,
+            @RequestParam Map<String, String> updatedUserData, HttpSession session, Model model) {
         User currentUser = (User) session.getAttribute("session_user");
 
-        if (currentUser == null)   {
+        if (currentUser == null) {
             return "users/login";
-        }
-        else {
-           int currentuserid = currentUser.getId();
-        
-            if (currentUser == null || (currentuserid != userId )) {
-                // If the user is not logged in or trying to update another user's profile, redirect to the login page or handle the case appropriately.
+        } else {
+            int currentuserid = currentUser.getId();
+
+            if (currentUser == null || (currentuserid != userId)) {
+                // If the user is not logged in or trying to update another user's profile,
+                // redirect to the login page or handle the case appropriately.
                 return "redirect:/login";
             }
-            
+
             // Extract the updated information from the form data
             String newName = updatedUserData.get("name");
             String newEmail = updatedUserData.get("email");
 
-            // Check if the email is already in use by another user (excluding the current user)
+            // Check if the email is already in use by another user (excluding the current
+            // user)
             List<User> existingUsers = userRepo.findByEmail(newEmail);
-            if (!existingUsers.isEmpty() ) {
+            if (!existingUsers.isEmpty()) {
                 String error = "Email already in use. Please choose a different email.";
                 model.addAttribute("error", error);
                 return "users/profile";
@@ -184,21 +180,22 @@ public class UserController {
             // Redirect back to the profile page with the updated user information
             return "redirect:/profile/pr/" + currentUser.getId();
         }
-        
-        
+
     }
+
     @PostMapping("/profile/delete/{id}")
-    public String deleteUser(@PathVariable("id") Integer userId, @RequestParam Map<String, String> updatedUserData, HttpSession session ){
+    public String deleteUser(@PathVariable("id") Integer userId, @RequestParam Map<String, String> updatedUserData,
+            HttpSession session) {
         User currentUser = (User) session.getAttribute("session_user");
-        if (currentUser == null)   {
-            return "/login";
-        }
-        else {
+        if (currentUser == null) {
+            return "login";
+        } else {
             int currentuserid = currentUser.getId();
-        
-            if (currentUser == null || (currentuserid != userId )) {
-                // If the user is not logged in or trying to update another user's profile, redirect to the login page or handle the case appropriately.
-                return "/login";
+
+            if (currentUser == null || (currentuserid != userId)) {
+                // If the user is not logged in or trying to update another user's profile,
+                // redirect to the login page or handle the case appropriately.
+                return "login";
             }
             Optional<User> UserOp = userRepo.findById(userId);
             if (UserOp.isPresent()) {
@@ -210,12 +207,10 @@ public class UserController {
             }
         }
 
-             
-        
     }
 
     @GetMapping("/forgotpassword")
-    public String forgotpassword(){
+    public String forgotpassword() {
 
         return "users/forgotpassword";
     }
@@ -236,22 +231,15 @@ public class UserController {
             newuser.setPasswordResetToken(resetToken);
             userRepo.save(newuser);
 
-            
-            //email user with reset token
+            // email user with reset token
             UserServices.resetpassword(newuser);
 
             // Show a success message on the same page or redirect to a confirmation page
             model.addAttribute("success", "Password reset link has been sent to your email.");
             return "users/login";
-        }   
-    }   
+        }
+    }
 
-
-
-    
-    
-
-    
     @GetMapping("/resetpassword")
     public String showResetPasswordPage(@RequestParam("token") String token, Model model) {
         model.addAttribute("token", token);
@@ -259,7 +247,8 @@ public class UserController {
     }
 
     @PostMapping("/resetpassword")
-    public String resetPassword(@RequestParam("token") String token, @RequestParam("password") String password, @RequestParam("confirmPassword") String confirmPassword, Model model) {
+    public String resetPassword(@RequestParam("token") String token, @RequestParam("password") String password,
+            @RequestParam("confirmPassword") String confirmPassword, Model model) {
         // Find the user by the reset token
         List<User> userlist = userRepo.findByPasswordResetToken(token);
         User currentuser = userlist.get(0);
@@ -288,72 +277,70 @@ public class UserController {
         return "users/login";
     }
 
-
     @GetMapping("/form/pr/{id}")
-    public String showForm(Model model, HttpServletRequest request, HttpSession session){
+    public String showForm(Model model, HttpServletRequest request, HttpSession session) {
         User user = (User) session.getAttribute("session_user");
-        if (user == null)   {
+        if (user == null) {
             return "users/login";
-        }
-        else {
-            model.addAttribute("user",user);
+        } else {
+            model.addAttribute("user", user);
             return "users/formpr";
         }
     }
 
     @GetMapping("/pr/{id}")
-    public String getPr(Model model, HttpServletRequest request, HttpSession session){
+    public String getPr(Model model, HttpServletRequest request, HttpSession session) {
         User user = (User) session.getAttribute("session_user");
-        if (user == null)   {
+        if (user == null) {
             return "users/login";
-        }
-        else {
-            model.addAttribute("user",user);
+        } else {
+            model.addAttribute("user", user);
             return "users/pr";
         }
     }
 
     @PostMapping("/src/{id}")
-    public String getSrc(Model model, HttpServletRequest request, HttpSession session){
+    public String getSrc(Model model, HttpServletRequest request, HttpSession session) {
         User user = (User) session.getAttribute("session_user");
-        if (user == null)   {
+        if (user == null) {
             return "users/login";
-        }
-        else {
-            model.addAttribute("user",user);
+        } else {
+            model.addAttribute("user", user);
             return "users/srcJustification";
         }
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam Map<String,String> formData, Model model, HttpServletRequest request, HttpSession session){
+    public String login(@RequestParam Map<String, String> formData, Model model, HttpServletRequest request,
+            HttpSession session) {
         // processing login
         String uname = formData.get("username");
         String pwd = formData.get("password");
+
         List<User> userlist = userRepo.findByEmail(uname);
-        if (userlist.isEmpty()){
+        if (userlist.isEmpty()) {
             model.addAttribute("error", "Invalid username or password");
             return "users/login";
-        }
-        else {
+        } else {
             // success
             User user = userlist.get(0);
+
             String type = user.getUserType();
-            //get user pass
+            // get user pass
             String storedHashPass = user.getPassword();
-            //check is they match
-            
-            if (UserServices.logincryptpassmatch(pwd,storedHashPass)) {
-                //if they match then login
+            // check is they match
+
+            if (UserServices.logincryptpassmatch(pwd, storedHashPass)) {
+                // if they match then login
                 request.getSession().setAttribute("session_user", user);
                 model.addAttribute("user", user);
-                if("VMO User".equals(type)){
+                if ("VMO User".equals(type)) {
                     return "users/vmoUser";
-                } else if("IS User".equals(type)){
+                } else if ("IS User".equals(type)) {
                     return "users/form";
-                } 
+                }
             } else {
-                //if they do not match then giev them prompt saying that it does match
+                // if they do not match then giev them prompt saying that it does match
                 model.addAttribute("error", "Invalid Username or Password");
                 return "users/login";
             }
@@ -362,13 +349,9 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public String destroySession(HttpServletRequest request){
+    public String destroySession(HttpServletRequest request) {
         request.getSession().invalidate();
         return "users/login";
     }
 
-    
 }
-
-
-

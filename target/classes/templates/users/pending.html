@@ -90,7 +90,7 @@ datatorage/addnew -->
                     <!-- <th scope="col" class="px-6 py-4">ProjectName</th> -->
                     <th scope="col" class="px-6 py-4">Email</th>
                     <!-- <th scope="col" class="px-6 py-4">Status</th> -->
-                    <th scope="col" class="px-6 py-4">Action</th> 
+                    <th scope="col" class="px-6 py-4">Action</th>
                   </tr>
                 </thead>
                 <!-- <tbody>
@@ -110,18 +110,18 @@ datatorage/addnew -->
                   </tr>
                 </tbody> -->
                 <tbody>
-                    <tr th:each="user:${usersWithForms}"
-                      class=" font-medium border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600 text-center">
-                      <td class="whitespace-nowrap px-6 py-4 font-medium" th:text="${user.id}"></td>
-                      <td class="whitespace-nowrap px-6 py-4" th:text="${user.name}"></td>
-                      <td class="whitespace-nowrap px-6 py-4" th:text="${user.email}"></td>
-                      <td class="whitespace-nowrap px-6 py-4 flex items-center justify-center">
-                        <a th:href="@{/user-forms(userId=${user.id})}"
-                          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                          role="button">Access all form</a>
-                      </td>
-                    </tr>
-                  </tbody>
+                  <tr th:each="user:${usersWithForms}"
+                    class=" font-medium border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600 text-center">
+                    <td class="whitespace-nowrap px-6 py-4 font-medium" th:text="${user.id}"></td>
+                    <td class="whitespace-nowrap px-6 py-4" th:text="${user.name}"></td>
+                    <td class="whitespace-nowrap px-6 py-4" th:text="${user.email}"></td>
+                    <td class="whitespace-nowrap px-6 py-4 flex items-center justify-center">
+                      <a th:href="@{/user-forms/{id}(id=${user.id})}"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        role="button">Access all form</a>
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>

@@ -77,11 +77,11 @@ datatorage/addnew -->
 
 
         </nav>
-        <div class="content"> 
+        <div class="content">
             <form th:object="${request}" th:action="@{/vmoRequests/{rid}(rid=${request.rid})}" method="post"
                 class="w-5/6 float-right pt-24 pb-20 top-20">
 
-                
+
                 <div class="w-1/2 mx-auto mb-4"> <!-- Add mx-auto class to center the div -->
                     <div class="text-center">
                         <p class="border-t-2 border-b-2 font-bold text-gray-200 text-lg">Basic Information</p>
@@ -119,12 +119,6 @@ datatorage/addnew -->
                         id="consultant" name="consultant" disabled>
                 </div>
 
-                <div class="mb-4 text-center">
-                    <label class="block text-gray-200 font-bold mb-2" for="date">Date<span class="text-red-500">
-                            *</span></label>
-                    <input th:field="*{date}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center"
-                        type="date" id="date" name="date" disabled>
-                </div>
 
                 <div class="mb-4 text-center">
                     <label class="block text-gray-200 font-bold mb-2" for="email">Email<span class="text-red-500">
@@ -145,7 +139,7 @@ datatorage/addnew -->
 
                 <div class="w-1/2 mx-auto mb-4 mt-6"> <!-- Add mx-auto class to center the div -->
                     <div class="text-center">
-                    <p class="border-t-2 border-b-2 font-bold text-gray-200 text-lg">Project Details</p>
+                        <p class="border-t-2 border-b-2 font-bold text-gray-200 text-lg">Project Details</p>
                     </div>
                 </div>
 
@@ -159,15 +153,17 @@ datatorage/addnew -->
                 </div>
 
                 <div class="mb-4 text-center">
-                    <label class="block text-gray-200 font-bold mb-2" for="date">Start Date<span class="text-red-500"> *</span></label>
-                    <input th:field="*{startDate}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date" id="Sdate" name="Sdate"
-                    disabled>
+                    <label class="block text-gray-200 font-bold mb-2" for="date">Start Date<span class="text-red-500">
+                            *</span></label>
+                    <input th:field="*{sDate}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center"
+                        type="date" id="Sdate" name="Sdate" disabled>
                 </div>
 
                 <div class="mb-4 text-center">
-                    <label class="block text-gray-200 font-bold mb-2" for="date">End Date<span class="text-red-500"> *</span></label>
-                    <input th:field="*{endDate}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date" id="Edate" name="Edate"
-                        disabled>
+                    <label class="block text-gray-200 font-bold mb-2" for="date">End Date<span class="text-red-500">
+                            *</span></label>
+                    <input th:field="*{eDate}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center"
+                        type="date" id="Edate" name="Edate" disabled>
                 </div>
 
                 <div class="mb-4 text-center">
@@ -272,7 +268,7 @@ datatorage/addnew -->
             </div> -->
                 <div class="w-1/2 mx-auto mb-4 mt-6"> <!-- Add mx-auto class to center the div -->
                     <div class="text-center">
-                    <p class="border-t-2 border-b-2 font-bold text-gray-200 text-lg">Sourcing Information</p>
+                        <p class="border-t-2 border-b-2 font-bold text-gray-200 text-lg">Sourcing Information</p>
                     </div>
                 </div>
 
@@ -289,10 +285,10 @@ datatorage/addnew -->
                         </span>
                     </label>
                     <select class="w-full px-4 py-2 border border-gray-300 rounded-md text-center"
-                        id="sourcingJustification" name="sourcingJustification" th:field="*{sourcingJustification}" disabled>
-                        <option value="" selected></option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
+                        id="sourcingJustification" name="sourcingJustification" th:value="*{sourcingJustification}"
+                        disabled>
+                        <option th:value="Yes">Yes</option>
+                        <option th:value="No">No</option>
                     </select>
                 </div>
 
@@ -346,7 +342,7 @@ datatorage/addnew -->
                     <div class="inset-0 bg-black opacity-50"></div>
                 </div>
 
-            <!-- <div class="flex justify-center">
+                <!-- <div class="flex justify-center">
         <button class="px-4 py-2 bg-blue-500 text-white rounded-md mr-2" type="submit">Submit</button>
         <button class="px-4 py-2 bg-white text-gray-700 rounded-md border-gray-200 hover:bg-gray-100 border-2" type="submit">Save as Draft</button>
         </div> -->
@@ -355,8 +351,8 @@ datatorage/addnew -->
                     class="p-3 px-6 pt-2 bg-teal-500 rounded-full text-white baseline hover:bg-teal-400 font-bold font-Roboto mr-2"
                     th:name="status" th:value="denied">Deny</button>
                     <button type="submit"
-                    class="p-3 px-6 pt-2 bg-teal-500 rounded-full text-white baseline hover:bg-teal-400 font-bold font-Roboto"
-                    th:name="status" th:value="approved">Approve</button>
+                        class="p-3 px-6 pt-2 bg-teal-500 rounded-full text-white baseline hover:bg-teal-400 font-bold font-Roboto"
+                        th:name="status" th:value="approved">Approve</button>
                 </div>
             </form>
         </div>

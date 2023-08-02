@@ -36,8 +36,8 @@ public class VMOController {
         return "users/pending";
     }
 
-    @GetMapping("/user-forms")
-    public String showUserForms(@RequestParam("userId") int userId, Model model) {
+    @GetMapping("/user-forms/{id}")
+    public String showUserForms(@PathVariable("id") int userId, Model model) {
         List<User> Luser = userRepo.findById(userId);
         User user = Luser.get(0);
         if (user != null) {
@@ -64,9 +64,13 @@ public class VMOController {
         request2.setStatus(request.getStatus());
 
         User user = (User) session.getAttribute("session_user");
-        model.addAttribute("user", user);
-
+        if (user == null) {
+            return "users/login";
+        } else {
+            model.addAttribute("user", user);
+        }
         int newUserID = user.getId();
+
         int newISUser = request2.getUserID();
 
         request2.setUserID(newUserID);
