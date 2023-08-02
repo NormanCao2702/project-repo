@@ -328,7 +328,16 @@ datatorage/addnew -->
         <button class="px-4 py-2 bg-blue-500 text-white rounded-md mr-2" type="submit">Submit</button>
         <button class="px-4 py-2 bg-white text-gray-700 rounded-md border-gray-200 hover:bg-gray-100 border-2" type="submit">Save as Draft</button>
         </div> -->
-                <div id="inputButtonContainer" class="flex justify-center mt-4 mb-4">
+                <div class="w-1/2 mx-auto mb-4 mt-6"> <!-- Add mx-auto class to center the div -->
+                    <div class="text-center">
+                        <p class="border-t-2 border-b-2 font-bold text-gray-200 text-lg">Project Details</p>
+                    </div>
+                </div>
+
+                <div id="inputButtonContainer" class="text-center w-1/2 mx-auto mb-4 mt-6">
+                    <label class="block text-gray-200 font-bold mb-2" for="comments">Comments<span class="text-red-500">
+                            *</span></label>
+
                     <input type="text" id="comments" name="comments" th:field="*{comments}"
                         class="w-96 px-4 py-3 border border-gray-300 rounded-md text-center"
                         placeholder="Enter Reason for Denial if denying.">

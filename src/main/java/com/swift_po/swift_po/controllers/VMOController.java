@@ -1,5 +1,6 @@
 package com.swift_po.swift_po.controllers;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,29 @@ public class VMOController {
     @GetMapping("/viewForms")
     public String viewForms(Model model) {
         List<User> usersWithForms = userRepo.findByUserType("IS User");
+        // Create an iterator to safely remove elements from the list
+        Iterator<User> iterator = usersWithForms.iterator();
+        while (iterator.hasNext()) {
+            User user = iterator.next();
+            List<Request> requests = requestRepo.findByUserID(user.getId());
+            if (requests.size() == 0) {
+                iterator.remove();
+            }
+        }
+        boolean hasSubmitted = false;
+        while (iterator.hasNext()) {
+            User user = iterator.next();
+            List<Request> requests = requestRepo.findByUserID(user.getId());
+            for (Request request : requests) {
+                if (request.getStatus().equals("Submitted")) {
+                    hasSubmitted = true;
+                    break;
+                }
+            }
+            if (!hasSubmitted) {
+                iterator.remove();
+            }
+        }
         model.addAttribute("usersWithForms", usersWithForms);
         return "users/pending";
     }
@@ -101,7 +125,7 @@ public class VMOController {
 
     @GetMapping("/viewDenial")
     public String viewDenialForms(Model model) {
-        List<Request> deniedForms = requestRepo.findByStatus("denied");
+        List<Request> deniedForms = requestRepo.findByStatus("rejected");
         model.addAttribute("deniedForms", deniedForms);
         return "users/vmoDenial";
     }
