@@ -74,7 +74,12 @@ public class VMOController {
 
         List<User> tempt = userRepo.findById(newISUser);
         User temptuser = tempt.get(0);
-        UserServices.vmoApprovalnotification(temptuser, request2);
+
+        // if(request2.getStatus().isEqual("approved ")){
+        // UserServices.vmoApprovalnotification(temptuser, request2);
+        // else
+        // erServices.vmoDenialnotification(temptuser, request2);
+        // }
         return "users/vmoUser";
     }
 
@@ -83,5 +88,12 @@ public class VMOController {
         List<Request> approvedForms = requestRepo.findByStatus("approved");
         model.addAttribute("approvedForms", approvedForms);
         return "users/vmoApproval";
+    }
+
+    @GetMapping("/viewDenial")
+    public String viewDenialForms(Model model) {
+        List<Request> deniedForms = requestRepo.findByStatus("denied");
+        model.addAttribute("deniedForms", deniedForms);
+        return "users/vmoDenial";
     }
 }

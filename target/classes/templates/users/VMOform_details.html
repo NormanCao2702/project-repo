@@ -60,6 +60,10 @@ datatorage/addnew -->
                                     <i class="bi bi-file-earmark-plus"> Approved Orders</i>
                             </div>
                             <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
+                                <a href="/viewDenial">
+                                    <i class="bi bi-file-earmark-plus"> Denied Orders</i>
+                            </div>
+                            <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
                                 <a href="">
                                     <i class="bi bi-file-earmark-plus">Processed Orders </i>
                                 </a>
@@ -322,7 +326,7 @@ datatorage/addnew -->
                 <div class="flex justify-center">
                     <button type="submit"
                     class="p-3 px-6 pt-2 bg-teal-500 rounded-full text-white baseline hover:bg-teal-400 font-bold font-Roboto mr-2"
-                    th:name="status" th:value="deny">Deny</button>
+                    th:name="status" th:value="denied">Deny</button>
                     <button type="submit"
                     class="p-3 px-6 pt-2 bg-teal-500 rounded-full text-white baseline hover:bg-teal-400 font-bold font-Roboto"
                     th:name="status" th:value="approved">Approve</button>
