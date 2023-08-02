@@ -44,20 +44,20 @@ public class UserController {
 
     @GetMapping("/signup")
     public String getSignUp() {
-        return "/users/signup";
+        return "users/signup";
     }
 
     @GetMapping("/pr")
     public String getPr() {
-        return "/users/pr";
+        return "users/pr";
     }
 
     @RequestMapping("/src")
     public String getSrc() {
-        return "/users/srcJustification";
+        return "users/srcJustification";
     }
 
-    @PostMapping("users/add")
+    @PostMapping("/users/add")
     public String addUser(@RequestParam Map<String, String> newuser, HttpServletResponse response, Model model) {
         System.out.println("ADD user");
 
@@ -73,13 +73,13 @@ public class UserController {
         if (newPwd == null || !existingUsers.isEmpty()) {
             String error = "Email already in use. Please choose a different email.";
             model.addAttribute("error", error);
-            return "/users/signup";
+            return "users/signup";
         }
         // Password policy validation
         if (!isStrongPassword(newPwd)) {
             model.addAttribute("error",
                     "Password should be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.");
-            return "/users/signup";
+            return "users/signup";
         }
         String avatarImagePath = "/uploads/avatar_images/lightning-logo.png";
         User newUser = new User(newEmail, newName, newCryptedPass, newuserType, avatarImagePath);
@@ -123,10 +123,10 @@ public class UserController {
     public String getForm(Model model, HttpServletRequest request, HttpSession session) {
         User user = (User) session.getAttribute("session_user");
         if (user == null) {
-            return "/users/login";
+            return "users/login";
         } else {
             model.addAttribute("user", user);
-            return "/users/form";
+            return "users/form";
         }
     }
 
@@ -188,14 +188,14 @@ public class UserController {
             HttpSession session) {
         User currentUser = (User) session.getAttribute("session_user");
         if (currentUser == null) {
-            return "/login";
+            return "login";
         } else {
             int currentuserid = currentUser.getId();
 
             if (currentUser == null || (currentuserid != userId)) {
                 // If the user is not logged in or trying to update another user's profile,
                 // redirect to the login page or handle the case appropriately.
-                return "/login";
+                return "login";
             }
             Optional<User> UserOp = userRepo.findById(userId);
             if (UserOp.isPresent()) {
@@ -281,10 +281,10 @@ public class UserController {
     public String showForm(Model model, HttpServletRequest request, HttpSession session) {
         User user = (User) session.getAttribute("session_user");
         if (user == null) {
-            return "/users/login";
+            return "users/login";
         } else {
             model.addAttribute("user", user);
-            return "/users/formpr";
+            return "users/formpr";
         }
     }
 
@@ -292,10 +292,10 @@ public class UserController {
     public String getPr(Model model, HttpServletRequest request, HttpSession session) {
         User user = (User) session.getAttribute("session_user");
         if (user == null) {
-            return "/users/login";
+            return "users/login";
         } else {
             model.addAttribute("user", user);
-            return "/users/pr";
+            return "users/pr";
         }
     }
 
@@ -303,10 +303,10 @@ public class UserController {
     public String getSrc(Model model, HttpServletRequest request, HttpSession session) {
         User user = (User) session.getAttribute("session_user");
         if (user == null) {
-            return "/users/login";
+            return "users/login";
         } else {
             model.addAttribute("user", user);
-            return "/users/srcJustification";
+            return "users/srcJustification";
         }
     }
 
@@ -320,7 +320,7 @@ public class UserController {
         List<User> userlist = userRepo.findByEmail(uname);
         if (userlist.isEmpty()) {
             model.addAttribute("error", "Invalid username or password");
-            return "/users/login";
+            return "users/login";
         } else {
             // success
             User user = userlist.get(0);
@@ -342,7 +342,7 @@ public class UserController {
             } else {
                 // if they do not match then giev them prompt saying that it does match
                 model.addAttribute("error", "Invalid Username or Password");
-                return "/users/login";
+                return "users/login";
             }
         }
         return null;
@@ -351,7 +351,7 @@ public class UserController {
     @GetMapping("/logout")
     public String destroySession(HttpServletRequest request) {
         request.getSession().invalidate();
-        return "/users/login";
+        return "users/login";
     }
 
 }

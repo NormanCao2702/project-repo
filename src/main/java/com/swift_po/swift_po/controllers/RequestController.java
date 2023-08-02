@@ -57,8 +57,6 @@ public class RequestController {
 
     @GetMapping(value = "/download_pdf/{rid}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> downloadPdf(@PathVariable int rid) {
-        // Replace "your_table" and "pdf_data_column" with your actual table and column
-        // names in the query below
         String sql = "SELECT sj_file FROM requests WHERE rid = ?;";
         return jdbcTemplate.execute(sql, (PreparedStatement ps) -> {
             ps.setLong(1, rid);
@@ -80,8 +78,6 @@ public class RequestController {
 
     @GetMapping(value = "/download_pc/{rid}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> downloadpc(@PathVariable int rid) {
-        // Replace "your_table" and "pdf_data_column" with your actual table and column
-        // names in the query below
         String sql = "SELECT pc_file FROM requests WHERE rid = ?;";
         return jdbcTemplate.execute(sql, (PreparedStatement ps) -> {
             ps.setLong(1, rid);
