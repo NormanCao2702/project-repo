@@ -109,7 +109,7 @@ datatorage/addnew -->
           </select>
         </div>
 
-        <div id="pdfDownloadpc" style="display: none;" class="mb-4 text-center">
+        <div id="pdfDownloadPR" style="display: none;" class="mb-4 text-center">
           <a href="/pdf/pc.pdf" download
             class="text-white bg-blue-500 hover:bg-blue-600 duration-300 font-bold py-2 px-4 rounded-md inline-block">Download
             Procurement Checklist</a>
@@ -242,83 +242,79 @@ datatorage/addnew -->
           </select>
         </div>
 
-        <div id="pdfDownloadsj" style="display: none;" class="mb-4 text-center">
-          <<<<<<< HEAD <a class="text-white hover:underline no-underline" href="/pdf/sj.pdf" download>Download Sourcing
-            Justification</a>
+        <div class="mb-4 text-center w-3/4 mx-auto" id="pdfDownloadsj">
+          <a href="/pdf/sj.pdf" download
+            class="text-white bg-blue-500 hover:bg-blue-600 duration-300 font-bold py-2 px-4 rounded-md inline-block">Download
+            Sourcing Justification
+          </a>
         </div>
 
-        =======
-        <a href="/pdf/sj.pdf" download
-          class="text-white bg-blue-500 hover:bg-blue-600 duration-300 font-bold py-2 px-4 rounded-md inline-block">Download
-          Sourcing Justification</a>
+        <div id="explanationModal" class="fixed inset-0 flex items-center justify-center z-50 hidden text-center">
+          <div class="bg-white p-4 rounded shadow-md">
+            <p class="text-gray-200">
+              Sole/single source justification and the retention of the information is the responsibility of each
+              business unit. The retention of this information is subject to audit.
+            </p>
+            <p class="text-gray-200 font-bold">
+              See FortisBC Policy Procurement Policy and Sourcing justification form.
+            </p>
+            <button id="closeModal"
+              class="mt-4 px-4 py-2 font-semibold text-white bg-blue-500 rounded-md hover:bg-blue-600"
+              type="button">Close</button>
+          </div>
+          <div class="inset-0 bg-black opacity-50"></div>
+        </div>
+
+
+        <div class="w-1/2 mx-auto mb-4 mt-6"> <!-- Add mx-auto class to center the div -->
+          <div class="text-center">
+            <p class="border-t-2 border-b-2 font-bold text-gray-200 text-lg">Uploading Section</p>
+          </div>
+        </div>
+
+        <div class="mb-4 text-center mx-auto" id="uploadSrc" style="display: none;">
+          <label class="text-gray-200 font-bold mb-2 flex justify-center" for="sjFile">Upload Sourcing Justification
+            Document
+            <span class="text-red-500"> *</span>
+          </label>
+          <input
+            class="w-3/4 px-4 py-2 text-gray-700 bg-white border rounded-lg focus:outline-none focus:border-blue-500 mx-auto mb-2"
+            type="file" id="sjFile" name="sjFile" accept=".pdf, .doc, .docx">
+          <br>
+          <span th:if="${hasSavedSJFile}" class="bg-red-500 text-indigo-100 m-2 p-1">
+            Previously uploaded document: <a class="underline hover:bg-sky-700"
+              th:href="@{/download_pdf/{rid}(rid=${request.rid})}">Click here </a> to download or add a new one to
+            overwrite it.
+          </span>
+        </div>
+
+        <div class="mb-4 text-center mx-auto" id="uploadPR" style="display: none;">
+          <label class="text-gray-200 font-bold mb-2 flex justify-center" for="pcFile">Upload Procurement Checklist
+            Document
+            <span class="text-red-500"> *</span>
+          </label>
+          <input
+            class="w-3/4 px-4 py-2 text-gray-700 bg-white border rounded-lg focus:outline-none focus:border-blue-500 mx-auto mb-2"
+            type="file" id="pcFile" name="pcFile" accept=".pdf, .doc, .docx">
+          <br>
+          <span th:if="${hasSavedPCFile}" class="bg-red-500 text-indigo-100 m-2 p-1">
+            Previously uploaded document: <a class="underline hover:bg-sky-700"
+              th:href="@{/download_pc/{rid}(rid=${request.rid})}">Click here </a> to download or add a new one to
+            overwrite it.
+          </span>
+        </div>
+
+        <div class="flex justify-center">
+          <button type="submit"
+            class="p-3 px-6 pt-2 bg-teal-500 rounded-full text-white baseline hover:bg-teal-400 font-bold font-Roboto mr-2"
+            th:name="status" th:value="Draft">Save as Draft</button>
+          <button type="submit"
+            class="p-3 px-6 pt-2 bg-teal-500 rounded-full text-white baseline hover:bg-teal-400 font-bold font-Roboto"
+            th:name="status" th:value="Submitted">Submit</button>
+        </div>
+
+      </form>
     </div>
-
-    >>>>>>> main
-    <div id="explanationModal" class="fixed inset-0 flex items-center justify-center z-50 hidden text-center">
-      <div class="bg-white p-4 rounded shadow-md">
-        <p class="text-gray-200">
-          Sole/single source justification and the retention of the information is the responsibility of each
-          business unit. The retention of this information is subject to audit.
-        </p>
-        <p class="text-gray-200 font-bold">
-          See FortisBC Policy Procurement Policy and Sourcing justification form.
-        </p>
-        <button id="closeModal" class="mt-4 px-4 py-2 font-semibold text-white bg-blue-500 rounded-md hover:bg-blue-600"
-          type="button">Close</button>
-      </div>
-      <div class="inset-0 bg-black opacity-50"></div>
-    </div>
-
-
-    <div class="w-1/2 mx-auto mb-4 mt-6"> <!-- Add mx-auto class to center the div -->
-      <div class="text-center">
-        <p class="border-t-2 border-b-2 font-bold text-gray-200 text-lg">Uploading Section</p>
-      </div>
-    </div>
-
-    <div class="mb-4 text-center mx-auto" id="uploadSrc" style="display: none;">
-      <label class="text-gray-200 font-bold mb-2 flex justify-center" for="sjFile">Upload Sourcing Justification
-        Document
-        <span class="text-red-500"> *</span>
-      </label>
-      <input
-        class="w-3/4 px-4 py-2 text-gray-700 bg-white border rounded-lg focus:outline-none focus:border-blue-500 mx-auto mb-2"
-        type="file" id="sjFile" name="sjFile" accept=".pdf, .doc, .docx" th:field="*{sjFile}">
-      <br>
-      <span th:if="${hasSavedSJFile}" class="bg-red-500 text-indigo-100 m-2 p-1">
-        Previously uploaded document: <a class="underline hover:bg-sky-700"
-          th:href="@{/download_pdf/{rid}(rid=${request.rid})}">Click here </a> to download or add a new one to
-        overwrite it.
-      </span>
-    </div>
-
-    <div class="mb-4 text-center mx-auto" id="uploadPR" style="display: none;">
-      <label class="text-gray-200 font-bold mb-2 flex justify-center" for="pcFile">Upload Procurement Checklist
-        Document
-        <span class="text-red-500"> *</span>
-      </label>
-      <input
-        class="w-3/4 px-4 py-2 text-gray-700 bg-white border rounded-lg focus:outline-none focus:border-blue-500 mx-auto mb-2"
-        type="file" id="pcFile" name="pcFile" accept=".pdf, .doc, .docx" th:field="*{pcFile}">
-      <br>
-      <span th:if="${hasSavedPCFile}" class="bg-red-500 text-indigo-100 m-2 p-1">
-        Previously uploaded document: <a class="underline hover:bg-sky-700"
-          th:href="@{/download_pc/{rid}(rid=${request.rid})}">Click here </a> to download or add a new one to
-        overwrite it.
-      </span>
-    </div>
-
-    <div class="flex justify-center">
-      <button type="submit"
-        class="p-3 px-6 pt-2 bg-teal-500 rounded-full text-white baseline hover:bg-teal-400 font-bold font-Roboto mr-2"
-        th:name="status" th:value="Draft">Save as Draft</button>
-      <button type="submit"
-        class="p-3 px-6 pt-2 bg-teal-500 rounded-full text-white baseline hover:bg-teal-400 font-bold font-Roboto"
-        th:name="status" th:value="Submitted">Submit</button>
-    </div>
-
-    </form>
-  </div>
   </div>
 </body>
 
