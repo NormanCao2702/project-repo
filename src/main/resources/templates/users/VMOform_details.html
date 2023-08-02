@@ -60,9 +60,8 @@ datatorage/addnew -->
                                     <i class="bi bi-file-earmark-plus"> Approved Orders</i>
                             </div>
                             <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
-                                <a href="">
-                                    <i class="bi bi-file-earmark-plus">Processed Orders </i>
-                                </a>
+                                <a href="/viewDenial">
+                                    <i class="bi bi-file-earmark-plus"> Denied Orders</i>
                             </div>
                         </div>
                     </div>
@@ -293,6 +292,38 @@ datatorage/addnew -->
                     </select>
                 </div>
 
+                <div class="mb-4 text-center mx-auto" id="uploadSrc" style="display:none">
+                    <label class="text-gray-200 font-bold mb-2 flex justify-center" for="sjFile">Upload Sourcing Justification
+                      Document
+                      <span class="text-red-500"> *</span>
+                    </label>
+                    <input
+                      class="w-3/4 px-4 py-2 text-gray-700 bg-white border rounded-lg focus:outline-none focus:border-blue-500 mx-auto mb-2"
+                      type="file" id="sjFile" name="sjFile" accept=".pdf, .doc, .docx" disabled>
+                    <br>
+                    <span th:if="${hasSavedSJFile}" class="bg-red-500 text-indigo-100 m-2 p-1">
+                      Previously uploaded document: <a class="underline hover:bg-sky-700"
+                        th:href="@{/download_pdf/{rid}(rid=${request.rid})}">Click here </a> to download or add a new one to
+                      overwrite it.
+                    </span>
+                  </div>
+          
+                  <div class="mb-4 text-center mx-auto" id="uploadPR" style="display:none">
+                    <label class="text-gray-200 font-bold mb-2 flex justify-center" for="pcFile">Upload Procurement Checklist
+                      Document
+                      <span class="text-red-500"> *</span>
+                    </label>
+                    <input
+                      class="w-3/4 px-4 py-2 text-gray-700 bg-white border rounded-lg focus:outline-none focus:border-blue-500 mx-auto mb-2"
+                      type="file" id="pcFile" name="pcFile" accept=".pdf, .doc, .docx" disabled>
+                    <br>
+                    <span th:if="${hasSavedPCFile}" class="bg-red-500 text-indigo-100 m-2 p-1">
+                      Previously uploaded document: <a class="underline hover:bg-sky-700"
+                        th:href="@{/download_pc/{rid}(rid=${request.rid})}">Click here </a> to download or add a new one to
+                      overwrite it.
+                    </span>
+                  </div>
+
                 <div id="explanationModal"
                     class="fixed inset-0 flex items-center justify-center z-50 hidden text-center">
                     <div class="bg-white p-4 rounded shadow-md">
@@ -317,8 +348,8 @@ datatorage/addnew -->
         </div> -->
                 <div class="flex justify-center">
                     <button type="submit"
-                        class="p-3 px-6 pt-2 bg-teal-500 rounded-full text-white baseline hover:bg-teal-400 font-bold font-Roboto mr-2"
-                        th:name="status" th:value="deny">Deny</button>
+                    class="p-3 px-6 pt-2 bg-teal-500 rounded-full text-white baseline hover:bg-teal-400 font-bold font-Roboto mr-2"
+                    th:name="status" th:value="denied">Deny</button>
                     <button type="submit"
                         class="p-3 px-6 pt-2 bg-teal-500 rounded-full text-white baseline hover:bg-teal-400 font-bold font-Roboto"
                         th:name="status" th:value="approved">Approve</button>
