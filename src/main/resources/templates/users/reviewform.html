@@ -174,9 +174,10 @@ datatorage/addnew -->
                 </div>
 
                 <div class="mb-4 text-center">
-                    <label class="block text-gray-200 font-bold mb-2" for="date">Start Date<span class="text-red-500"> *</span></label>
-                    <input th:field="*{startDate}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date" id="Sdate" name="Sdate"
-                    disabled>
+                    <label class="block text-gray-200 font-bold mb-2" for="date">Start Date<span class="text-red-500">
+                            *</span></label>
+                    <input th:field="*{sDate}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center"
+                        type="date" id="Sdate" name="Sdate" disabled>
                 </div>
 
                 <!-- <div class="mb-4 text-center">
@@ -186,9 +187,10 @@ datatorage/addnew -->
                 </div> -->
 
                 <div class="mb-4 text-center">
-                <label class="block text-gray-200 font-bold mb-2" for="date">End Date<span class="text-red-500"> *</span></label>
-                <input th:field="*{endDate}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date" id="Edate" name="Edate"
-                    disabled>
+                    <label class="block text-gray-200 font-bold mb-2" for="date">End Date<span class="text-red-500">
+                            *</span></label>
+                    <input th:field="*{eDate}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center"
+                        type="date" id="Edate" name="Edate" disabled>
                 </div>
 
                 <div class="mb-4 text-center">
@@ -301,7 +303,8 @@ datatorage/addnew -->
                 </div>
 
                 <div class="flex justify-center">
-                    <a th:href="@{/form}" class="bg-blue-500 hover:bg-blue-700 duration-300 text-white font-bold py-2 px-4 rounded"
+                    <a th:href="@{/form}"
+                        class="bg-blue-500 hover:bg-blue-700 duration-300 text-white font-bold py-2 px-4 rounded"
                         role="button">Go to Dashboard</a>
                 </div>
             </form>
