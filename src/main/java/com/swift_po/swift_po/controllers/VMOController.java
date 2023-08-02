@@ -75,11 +75,11 @@ public class VMOController {
         List<User> tempt = userRepo.findById(newISUser);
         User temptuser = tempt.get(0);
 
-        // if(request2.getStatus().isEqual("approved ")){
-        // UserServices.vmoApprovalnotification(temptuser, request2);
-        // else
-        // erServices.vmoDenialnotification(temptuser, request2);
-        // }
+        if(request2.getStatus().equals("approved"))
+            UserServices.vmoApprovalnotification(temptuser, request2);
+        else{
+            UserServices.vmoDenialnotification(temptuser, request2);
+        }
         return "users/vmoUser";
     }
 
