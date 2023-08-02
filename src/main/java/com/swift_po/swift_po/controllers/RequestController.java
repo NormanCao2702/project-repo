@@ -3,9 +3,22 @@ package com.swift_po.swift_po.controllers;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+
 // import java.util.Optional;
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCallback;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,16 +37,77 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import java.io.InputStream;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 @Controller
 public class RequestController {
+
+    JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public void PdfController(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+
     @Autowired
     private RequestReposiory requestRepo;
+
+    @GetMapping(value = "/download_pdf/{rid}", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<byte[]> downloadPdf(@PathVariable int rid) {
+        // Replace "your_table" and "pdf_data_column" with your actual table and column
+        // names in the query below
+        String sql = "SELECT sj_file FROM requests WHERE rid = ?;";
+        return jdbcTemplate.execute(sql, (PreparedStatement ps) -> {
+            ps.setLong(1, rid);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    byte[] pdfData = rs.getBytes("sj_file");
+                    if (pdfData != null) {
+                        HttpHeaders headers = new HttpHeaders();
+                        headers.setContentDispositionFormData("attachment", "sjfile.pdf");
+                        return new ResponseEntity<>(pdfData, headers, HttpStatus.OK);
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        });
+    }
+
+    @GetMapping(value = "/download_pc/{rid}", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<byte[]> downloadpc(@PathVariable int rid) {
+        // Replace "your_table" and "pdf_data_column" with your actual table and column
+        // names in the query below
+        String sql = "SELECT pc_file FROM requests WHERE rid = ?;";
+        return jdbcTemplate.execute(sql, (PreparedStatement ps) -> {
+            ps.setLong(1, rid);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    byte[] pdfData = rs.getBytes("pc_file");
+                    if (pdfData != null) {
+                        HttpHeaders headers = new HttpHeaders();
+                        headers.setContentDispositionFormData("attachment", "pcFile.pdf");
+                        return new ResponseEntity<>(pdfData, headers, HttpStatus.OK);
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        });
+    }
 
     @PostMapping("requests/add")
     public String addRequest(@RequestParam Map<String, String> newRequest, HttpServletResponse response, Model model,
             @RequestParam(value = "status", required = false) String status, HttpServletRequest request,
-            HttpSession session) throws IOException {
-        System.out.println("ADD request");
+            HttpSession session, @RequestParam("sjFile") MultipartFile sjFile,
+            @RequestParam("pcFile") MultipartFile pcFile)
+            throws IOException {
+        System.out.println("===========================ADD request============================");
 
         // Get user who submitted teh request
         User user = (User) session.getAttribute("session_user");
@@ -46,9 +120,8 @@ public class RequestController {
         String newCompanyCode = newRequest.get("companyCode");
         String newRequestor = newRequest.get("requestor");
         String newConsultant = newRequest.get("consultant");
-        String newDate = newRequest.get("date");
-        String newSDate = newRequest.get("Sdate");
-        String newEDate = newRequest.get("Edate");
+        String newSDate = newRequest.get("sDate");
+        String newEDate = newRequest.get("eDate");
         String newEmail = newRequest.get("email");
         String newProjectName = newRequest.get("projectName");
         String newCostElement = newRequest.get("costElement");
@@ -57,17 +130,21 @@ public class RequestController {
         String newSourcingJustification = newRequest.get("sourcingJustification");
         String newStatus = newRequest.get("status");
         int newUserID = user.getId();
-        // String sjFileName = sourcingJustificationFile.getOriginalFilename();
-        // byte[] sj = sourcingJustificationFile.getBytes();
-        // String pctFileName = procurementChecklistFile.getOriginalFilename();
-        // byte[] procurementChecklistFileData = procurementChecklistFile.getBytes();
 
-        Request newRequestObj = new Request(newCompanyCode, newRequestor, newConsultant, newDate, newEmail,
+        byte[] sjFileData = sjFile.getBytes();
+        byte[] pcFileData = pcFile.getBytes();
+
+        // print length of files
+        System.out.println("sjFileData.length: " + sjFileData.length);
+        System.out.println("pcFileData.length: " + pcFileData.length);
+
+        Request newReq = new Request(newCompanyCode, newRequestor, newConsultant, newSDate, newEDate, newEmail,
                 newProjectName, newCostElement, newStatementOfWork, newTotalCost, newSourcingJustification, newStatus,
-                newUserID,newSDate,newEDate, user);
-        requestRepo.save(newRequestObj);
-        return "redirect:/form";
+                newUserID, (byte[]) sjFileData, (byte[]) pcFileData, user);
 
+        requestRepo.save(newReq);
+
+        return "redirect:/form";
     }
 
     @GetMapping("/requests/draft")
@@ -105,23 +182,44 @@ public class RequestController {
 
     @GetMapping("/edit/{rid}")
     public String editRequestById(Model model, @PathVariable("rid") int rid, HttpSession session) {
+
+        Request request1 = requestRepo.findById(rid).get(0);
+        byte[] sjFile = request1.getSjFile();
+        byte[] pcFile = request1.getPcFile();
+
+        System.out.println("sjFile: " + sjFile);
+        System.out.println("pcFile: " + pcFile);
+
+        System.out.println("sjFile.length: " + sjFile.length);
+        System.out.println("pcFile.length: " + pcFile.length);
+
+        boolean hasSavedSJFile = false;
+        if (sjFile.length > 0) {
+            hasSavedSJFile = true;
+        }
+        System.out.println("hasSavedSJFile: " + hasSavedSJFile);
+
+        model.addAttribute("hasSavedSJFile", hasSavedSJFile);
+
+        boolean hasSavedPCFile = false;
+        if (pcFile.length > 0) {
+            hasSavedPCFile = true;
+        }
+        System.out.println("hasSavedPCFile: " + hasSavedPCFile);
+        model.addAttribute("hasSavedPCFile", hasSavedPCFile);
+
         User user = (User) session.getAttribute("session_user");
         if (user == null) {
             return "users/login";
         } else {
             model.addAttribute("user", user);
         }
-		// System.out.println("editEmployeeById" + rid);
-		
-		// 	List<Request> request = requestRepo.findById(rid);
-		// 	model.addAttribute("request", request.get(0));
-		// return "users/editform";
         System.out.println("editRequesteById" + rid);
 
         List<Request> request = requestRepo.findById(rid);
         model.addAttribute("request", request.get(0));
         return "users/editform";
-	}
+    }
 
     @GetMapping("/review/{rid}")
     public String reviewRequest(Model model, @PathVariable("rid") int rid, HttpSession session) {
@@ -139,23 +237,42 @@ public class RequestController {
     }
 
     @PostMapping("/requests/{rid}")
-    public String saveUpdatedrequest(@PathVariable int rid, @ModelAttribute("request") Request request, Model model,
-            HttpSession session) {
+    public String saveUpdatedrequest(@RequestParam Map<String, String> newRequest, @PathVariable int rid, Model model,
+            HttpSession session, @RequestParam("sjFile") MultipartFile sjFile,
+            @RequestParam("pcFile") MultipartFile pcFile)
+            throws IOException {
+
         System.out.println("saveUpdatedrequest" + rid);
+
         Request request2 = requestRepo.findById(rid).get(0);
 
         request2.setRid(rid);
-        request2.setCompanyCode(request.getCompanyCode());
-        request2.setRequestor(request.getRequestor());
-        request2.setConsultant(request.getConsultant());
-        request2.setDate(request.getDate());
-        request2.setEmail(request.getEmail());
-        request2.setProjectName(request.getProjectName());
-        request2.setCostElement(request.getCostElement());
-        request2.setStatementOfWork(request.getStatementOfWork());
-        request2.setTotalCost(request.getTotalCost());
-        request2.setSourcingJustification(request.getSourcingJustification());
-        request2.setStatus(request.getStatus());
+        request2.setCompanyCode(newRequest.get("companyCode"));
+        request2.setRequestor(newRequest.get("requestor"));
+        request2.setConsultant(newRequest.get("consultant"));
+        request2.setsDate(newRequest.get("sDate"));
+        request2.seteDate(newRequest.get("eDate"));
+        request2.setEmail(newRequest.get("email"));
+        request2.setProjectName(newRequest.get("projectName"));
+        request2.setCostElement(newRequest.get("costElement"));
+        request2.setStatementOfWork(newRequest.get("statementOfWork"));
+        request2.setTotalCost(newRequest.get("totalCost"));
+        request2.setSourcingJustification(newRequest.get("sourcingJustification"));
+        request2.setStatus(newRequest.get("status"));
+        // only change the file if a new file is uploaded
+
+        // Check if a new SJ File is provided
+        System.out.println("sjFile:");
+        if (sjFile.getBytes().length > 0) {
+            byte[] sjFileData = sjFile.getBytes();
+            request2.setSjFile(sjFileData);
+        }
+
+        // Check if a new PC File is provided
+        if (pcFile.getBytes().length > 0) {
+            byte[] pcFileData = pcFile.getBytes();
+            request2.setPcFile(pcFileData);
+        }
 
         User user = (User) session.getAttribute("session_user");
         if (user == null) {
@@ -170,4 +287,5 @@ public class RequestController {
 
         return "redirect:/form";
     }
+
 }

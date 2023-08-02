@@ -21,7 +21,6 @@ public class User {
     private String name;
     private String password;
     private String userType;
-    private int numberForms;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Request> forms;
@@ -32,13 +31,12 @@ public class User {
     public User() {
     }
 
-    public User(String email, String name, String password, String userType) {
+    public User(String email, String name, String password, String userType, String avatarImagePath) {
         this.email = email;
         this.name = name;
         this.password = password;
         this.userType = userType;
-        // this.avatarImagePath= avatarImagePath;
-
+        this.avatarImagePath = avatarImagePath;
     }
 
     public int getId() {
@@ -87,13 +85,6 @@ public class User {
 
     public void setForms(List<Request> forms) {
         this.forms = forms;
-    }
-
-    public int getNumberForms() {
-        this.numberForms = forms.size();
-        if (this.equals(null))
-            return 0;
-        return numberForms;
     }
 
     public String getAvatarImagePath() {

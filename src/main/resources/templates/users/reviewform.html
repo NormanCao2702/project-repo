@@ -10,6 +10,7 @@ datatorage/addnew -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <script src="/js/script.js" defer></script>
+    <script src="/js/pr.js" defer></script>
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.core.css">
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
@@ -28,6 +29,12 @@ datatorage/addnew -->
                     <a href="/login" class="flex items-center">
                         <img src="https://upload.wikimedia.org/wikipedia/en/9/97/FortisBC_logo.svg" alt="Logo"
                             class=" w-[150px] ml-[50px]">
+                    </a>
+                </div>
+                <div class="absolute right-1">
+                    <a th:href="@{/profile/pr/{id}(id=${user.id})}">
+                        <img id="avatar" th:src="${user.avatarImagePath}" alt="Avatar"
+                            class=" w-12 h-12 mr-2 rounded-full cursor-pointer bg-opacity-50 hover:bg-black " />
                     </a>
                 </div>
             </div>
@@ -82,6 +89,12 @@ datatorage/addnew -->
             <form th:action="@{/requests/{rid}(rid=${request.rid})}" th:object="${request}" method="post"
                 class="w-5/6 float-right pt-24 pb-20 top-20">
 
+                <div class="w-1/2 mx-auto mb-4"> <!-- Add mx-auto class to center the div -->
+                    <div class="text-center ">
+                        <p class="border-t-2 border-b-2 font-bold text-gray-200 text-lg">Basic Information</p>
+                    </div>
+                </div>
+
                 <div class="mb-4 text-center">
                     <label class="block text-gray-200 font-bold mb-2" for="companyCode">Company code<span
                             class="text-red-500">*</span></label>
@@ -101,8 +114,9 @@ datatorage/addnew -->
                 <div class="mb-4 text-center">
                     <label class="block text-gray-200 font-bold mb-2" for="requestor">Requestor name/IT
                         representative<span class="text-red-500">*</span></label>
-                    <input th:value="${user.name}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center"
-                        type="text" id="requestor" name="requestor" disabled>
+                    <input th:name="requestor" th:value="${user.name}"
+                        class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="requestor"
+                        name="requestor" disabled>
                 </div>
 
                 <div class="mb-4 text-center">
@@ -114,16 +128,23 @@ datatorage/addnew -->
                 </div>
 
                 <div class="mb-4 text-center">
-                    <label class="block text-gray-200 font-bold mb-2" for="date">Date<span class="text-red-500">
+                    <label class="block text-gray-200 font-bold mb-2" for="sDate">Start Date<span class="text-red-500">
                             *</span></label>
-                    <input th:field="*{date}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center"
-                        type="date" id="date" name="date" disabled>
+                    <input th:field="*{sDate}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center"
+                        type="date" id="sDate" name="sDate" disabled>
+                </div>
+
+                <div class="mb-4 text-center">
+                    <label class="block text-gray-200 font-bold mb-2" for="eDate">End Date<span class="text-red-500">
+                            *</span></label>
+                    <input th:field="*{eDate}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center"
+                        type="date" id="eDate" name="eDate" disabled>
                 </div>
 
                 <div class="mb-4 text-center">
                     <label class="block text-gray-200 font-bold mb-2" for="email">Email<span class="text-red-500">
                             *</span></label>
-                    <input th:field="*{email}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center"
+                    <input th:value="*{email}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center"
                         type="email" id="email" name="email" disabled>
                 </div>
 
@@ -137,6 +158,12 @@ datatorage/addnew -->
             <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="tel" id="cellNumber" name="cellNumber">
           </div> -->
 
+                <div class="w-1/2 mx-auto mb-4 mt-6"> <!-- Add mx-auto class to center the div -->
+                    <div class="text-center">
+                        <p class="border-t-2 border-b-2 font-bold text-gray-200 text-lg">Project Details</p>
+                    </div>
+                </div>
+
                 <div class="mb-4 text-center">
                     <label class="block text-gray-200 font-bold mb-2" for="projectName">Project Name<span
                             class="text-red-500">
@@ -147,9 +174,10 @@ datatorage/addnew -->
                 </div>
 
                 <div class="mb-4 text-center">
-                    <label class="block text-gray-200 font-bold mb-2" for="date">Start Date<span class="text-red-500"> *</span></label>
-                    <input th:field="*{startDate}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date" id="Sdate" name="Sdate"
-                    disabled>
+                    <label class="block text-gray-200 font-bold mb-2" for="date">Start Date<span class="text-red-500">
+                            *</span></label>
+                    <input th:field="*{sDate}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center"
+                        type="date" id="Sdate" name="Sdate" disabled>
                 </div>
 
                 <!-- <div class="mb-4 text-center">
@@ -159,9 +187,10 @@ datatorage/addnew -->
                 </div> -->
 
                 <div class="mb-4 text-center">
-                <label class="block text-gray-200 font-bold mb-2" for="date">End Date<span class="text-red-500"> *</span></label>
-                <input th:field="*{endDate}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date" id="Edate" name="Edate"
-                    disabled>
+                    <label class="block text-gray-200 font-bold mb-2" for="date">End Date<span class="text-red-500">
+                            *</span></label>
+                    <input th:field="*{eDate}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center"
+                        type="date" id="Edate" name="Edate" disabled>
                 </div>
 
                 <div class="mb-4 text-center">
@@ -171,11 +200,6 @@ datatorage/addnew -->
                         class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text"
                         id="costElement" name="costElement" disabled>
                 </div>
-
-                <!-- <div class="mb-4 text-center">
-            <label class="block text-gray-200 font-bold mb-2" for="chargeNumber">Charge Number<span class="text-red-500"> *</span></label>
-            <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="chargeNumber" name="chargeNumber" required>
-          </div> -->
 
                 <div class="mb-4 text-center w-3/4 mx-auto">
                     <label class="block text-gray-200 font-bold mb-2" for="statementOfWork">Statement of Work</label>
@@ -209,61 +233,16 @@ datatorage/addnew -->
 
 
                 </script>
-                <!-- <div class="mb-4 text-center">
-            <label class="block text-gray-200 font-bold mb-2" for="commencementDate">Commencement Date</label>
-            <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date" id="commencementDate" name="commencementDate">
-          </div>
 
-          <div class="mb-4 text-center">
-            <label class="block text-gray-200 font-bold mb-2" for="completionDate">Scheduled Completion Date</label>
-            <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date" id="completionDate" name="completionDate">
-          </div>
-
-          <div class="mb-4 text-center">
-            <label class="block text-gray-200 font-bold mb-2" for="objectives">Objectives</label>
-            <textarea class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" id="objectives" name="objectives" rows="4"></textarea>
-          </div>
-
-          <div class="mb-4 text-center">
-            <label class="block text-gray-200 font-bold mb-2" for="estimate">Time, Resources, Cost Estimate</label>
-            <textarea class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" id="estimate" name="estimate" rows="4"></textarea>
-          </div>
-
-          <div class="mb-4">
-            <label class="block text-gray-200 font-bold mb-2" for="assumption">Assumption</label>
-            <textarea class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center rounded border border-black" id="assumption" name="assumption" rows="4"></textarea>
-          </div> -->
 
                 <div class="mb-4 text-center">
                     <label class="block text-gray-200 font-bold mb-2" for="totalCost">Total Cost<span
                             class="text-red-500">
                             *</span></label>
-                    <!-- <input th:field="*{totalCost}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="totalCost" name="totalCost" required> -->
                     <textarea class="w-3/4 px-3 py-2 border border-gray-300 rounded-md h-40 resize-none" id="totalCost"
                         name="totalCost" rows="4" th:field="*{totalCost}" disabled></textarea>
                 </div>
 
-                <!-- <div class="mb-4 text-center">
-              <label class="block text-gray-200 font-bold mb-2" for="paymentTerm">Payment Term (days)</label>
-              <select class="w-3/4 px-3 py-2 border border-gray-300 rounded-md" id="paymentTerm" name="paymentTerm">
-                <option value="">Select payment term...</option>
-                <option class="font-semibold text-center" value="30" selected>30</option>
-                <option value="60">60</option>
-                <option value="90">90</option>
-                <option value="other">Other</option>
-              </select>
-              <p class="text-gray-600 text-sm">Note: "Net 30" is the standard payment term for Fortis BC.</p>
-            </div>
-            
-            <div class="mb-4 hidden text-center" id="otherPaymentTermContainer">
-              <label class="block text-gray-200 font-bold mb-2" for="otherPaymentTerm">Other Payment Term</label>
-              <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md" type="number" id="otherPaymentTerm" name="otherPaymentTerm">
-            </div> -->
-
-                <!-- <div class="mb-4 text-center">
-              <label class="block text-gray-200 font-bold mb-2" for="companyName">Company Names/Contact Information</label>
-              <textarea class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center rounded border border-black" id="companyName" name="companyName" rows="4"></textarea>
-            </div> -->
 
                 <div class="mb-4 text-center w-3/4 mx-auto">
                     <label class="text-gray-200 font-bold mb-2 flex justify-center" for="sourcingJustification">
@@ -278,9 +257,10 @@ datatorage/addnew -->
                         </span>
                     </label>
                     <select class="w-full px-4 py-2 border border-gray-300 rounded-md text-center"
-                        id="sourcingJustification" name="sourcingJustification" disabled>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
+                        id="sourcingJustification" name="sourcingJustification" th:field="*{sourcingJustification}"
+                        disabled>
+                        <option th:value="Yes">Yes</option>
+                        <option th:value="No">No</option>
                     </select>
                 </div>
 
@@ -302,12 +282,29 @@ datatorage/addnew -->
                     <div class="inset-0 bg-black opacity-50"></div>
                 </div>
 
-                <!-- <div class="flex justify-center">
-              <button class="px-4 py-2 bg-blue-500 text-white rounded-md mr-2" type="submit">Submit</button>
-              <button class="px-4 py-2 bg-white text-gray-700 rounded-md border-gray-200 hover:bg-gray-100 border-2" type="submit">Save as Draft</button>
-            </div> -->
+                <div class="w-1/2 mx-auto mb-4 mt-6"> <!-- Add mx-auto class to center the div -->
+                    <div class="text-center">
+                        <p class="border-t-2 border-b-2 font-bold text-gray-200 text-lg">Uploading Section</p>
+                    </div>
+                </div>
+
+                <div class="mb-4 text-center mx-auto" id="uploadSrc">
+                    <span class="bg-red-500 text-indigo-100 m-2 p-1">
+                        Sourcing Justifiaction Document: <a class="underline hover:bg-sky-700"
+                            th:href="@{/download_pdf/{rid}(rid=${request.rid})}">Click here </a> to download.
+                    </span>
+                </div>
+
+                <div class="mb-4 text-center mx-auto" id="uploadPR">
+                    <span class="bg-red-500 text-indigo-100 m-2 p-1">
+                        Procurement Checklist Document: <a class="underline hover:bg-sky-700"
+                            th:href="@{/download_pc/{rid}(rid=${request.rid})}">Click here </a> to download.
+                    </span>
+                </div>
+
                 <div class="flex justify-center">
-                    <a th:href="@{/form}" class="bg-blue-500 hover:bg-blue-700 duration-300 text-white font-bold py-2 px-4 rounded"
+                    <a th:href="@{/form}"
+                        class="bg-blue-500 hover:bg-blue-700 duration-300 text-white font-bold py-2 px-4 rounded"
                         role="button">Go to Dashboard</a>
                 </div>
             </form>

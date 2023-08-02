@@ -10,6 +10,7 @@ datatorage/addnew -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <script src="/js/script.js" defer></script>
+  <script src="/js/pr.js" defer></script>
   <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.core.css">
   <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
@@ -28,6 +29,12 @@ datatorage/addnew -->
           <a href="/login" class="flex items-center">
             <img src="https://upload.wikimedia.org/wikipedia/en/9/97/FortisBC_logo.svg" alt="Logo"
               class=" w-[150px] ml-[50px]">
+          </a>
+        </div>
+        <div class="absolute right-1">
+          <a th:href="@{/profile/pr/{id}(id=${user.id})}">
+            <img id="avatar" th:src="${user.avatarImagePath}" alt="Avatar"
+              class=" w-12 h-12 mr-2 rounded-full cursor-pointer bg-opacity-50 hover:bg-black " />
           </a>
         </div>
       </div>
@@ -80,7 +87,7 @@ datatorage/addnew -->
     </nav>
     <div class="content">
       <form th:action="@{/requests/{rid}(rid=${request.rid})}" th:object="${request}" method="post"
-        class="w-5/6 float-right pt-24 pb-20 top-20">
+        enctype='multipart/form-data' class="w-5/6 float-right pt-24 pb-20 top-20">
 
         <div class="w-1/2 mx-auto mb-4"> <!-- Add mx-auto class to center the div -->
           <div class="text-center ">
@@ -102,15 +109,18 @@ datatorage/addnew -->
           </select>
         </div>
 
-        <div id="pdfDownloadpc" style="display: none;" class="mb-4 text-center">
-          <a href="/pdf/pc.pdf" download class="text-white bg-blue-500 hover:bg-blue-600 duration-300 font-bold py-2 px-4 rounded-md inline-block">Download Procurement Checklist</a>
+        <div id="pdfDownloadPR" style="display: none;" class="mb-4 text-center">
+          <a href="/pdf/pc.pdf" download
+            class="text-white bg-blue-500 hover:bg-blue-600 duration-300 font-bold py-2 px-4 rounded-md inline-block">Download
+            Procurement Checklist</a>
         </div>
 
         <div class="mb-4 text-center">
           <label class="block text-gray-200 font-bold mb-2" for="requestor">Requestor name/IT representative<span
               class="text-red-500">*</span></label>
-          <input th:value="${user.name}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center"
-            type="text" id="requestor" name="requestor">
+          <input th:name="requestor" th:value="${user.name}"
+            class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="requestor"
+            name="requestor">
         </div>
 
         <div class="mb-4 text-center">
@@ -121,27 +131,25 @@ datatorage/addnew -->
         </div>
 
         <div class="mb-4 text-center">
-          <label class="block text-gray-200 font-bold mb-2" for="date">Date<span class="text-red-500"> *</span></label>
-          <input th:field="*{date}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date"
-            id="date" name="date" required>
+          <label class="block text-gray-200 font-bold mb-2" for="sDate">Start Date<span class="text-red-500">
+              *</span></label>
+          <input th:field="*{sDate}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date"
+            id="sDate" name="sDate" required>
+        </div>
+
+        <div class="mb-4 text-center">
+          <label class="block text-gray-200 font-bold mb-2" for="eDate">End Date<span class="text-red-500">
+              *</span></label>
+          <input th:field="*{eDate}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date"
+            id="eDate" name="eDate" required>
         </div>
 
         <div class="mb-4 text-center">
           <label class="block text-gray-200 font-bold mb-2" for="email">Email<span class="text-red-500">
               *</span></label>
-          <input th:field="*{email}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="email"
+          <input th:value="*{email}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="email"
             id="email" name="email" required>
         </div>
-
-        <!-- <div class="mb-4 text-center">
-            <label class="block text-gray-200 font-bold mb-2" for="phoneNumber">Phone Number<span class="text-red-500"> *</span></label>
-            <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="tel" id="phoneNumber" name="phoneNumber">
-          </div>
-
-          <div class="mb-4 text-center">
-            <label class="block text-gray-200 font-bold mb-2" for="cellNumber">Cell Number<span class="text-red-500"> *</span></label>
-            <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="tel" id="cellNumber" name="cellNumber">
-          </div> -->
 
         <div class="w-1/2 mx-auto mb-4 mt-6"> <!-- Add mx-auto class to center the div -->
           <div class="text-center">
@@ -158,131 +166,56 @@ datatorage/addnew -->
 
 
         <div class="mb-4 text-center">
-          <label class="block text-gray-200 font-bold mb-2" for="date">Start Date<span class="text-red-500"> *</span></label>
-          <input th:field="*{startDate}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date" id="Sdate" name="Sdate"
-            required>
-        </div>
-
-        <!-- <div class="mb-4 text-center">
-          <label class="block text-gray-200 font-bold mb-2" for="date">Date<span class="text-red-500"> *</span></label>
-          <input th:field="*{date}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date"
-            id="date" name="date" required>
-        </div> -->
-
-        <div class="mb-4 text-center">
-          <label class="block text-gray-200 font-bold mb-2" for="date">End Date<span class="text-red-500"> *</span></label>
-          <input th:field="*{endDate}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date" id="Edate" name="Edate"
-            required>
-        </div>
-
-        <div class="mb-4 text-center">
           <label class="block text-gray-200 font-bold mb-2" for="costElement">Cost Element/GL Account #<span
               class="text-red-500"> *</span></label>
           <input th:field="*{costElement}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center"
             type="text" id="costElement" name="costElement" required>
         </div>
 
-        <!-- <div class="mb-4 text-center">
-            <label class="block text-gray-200 font-bold mb-2" for="chargeNumber">Charge Number<span class="text-red-500"> *</span></label>
-            <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="chargeNumber" name="chargeNumber" required>
-          </div> -->
-
-          <!-- <div class="mb-4 text-center">
-            <label class="block text-gray-200 font-bold mb-2" for="statementOfWork">Statement of Work<span class="text-red-500"> *</span></label>
-            <textarea th:field="*{statementOfWork}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" id="statementOfWork" name="statementOfWork" rows="4" required></textarea>
-          </div> -->
-
-          <div class="mb-4 text-center w-3/4 mx-auto">
-            <label class="block text-gray-200 font-bold mb-2" for="statementOfWork">Statement of Work</label>
-            <div class="w-full border border-gray-300 rounded-md bg-white">
-              <div id="rich-text" style="height: 150px;" class="h-40 text-base"></div>
-              <textarea id="statementOfWork" name="statementOfWork" th:field="*{statementOfWork}"
-                style="display:none;"></textarea>
-            </div>
+        <div class="mb-4 text-center w-3/4 mx-auto">
+          <label class="block text-gray-200 font-bold mb-2" for="statementOfWork">Statement of Work</label>
+          <div class="w-full border border-gray-300 rounded-md bg-white">
+            <div id="rich-text" style="height: 150px;" class="h-40 text-base"></div>
+            <textarea id="statementOfWork" name="statementOfWork" th:field="*{statementOfWork}"
+              style="display:none;"></textarea>
           </div>
-  
-  
-          <script>
-            var initialValue = document.querySelector('#statementOfWork').value;
-            var editor = new Quill('#rich-text', {
-              theme: 'snow',
-              modules: {
-                toolbar: [
-                  ['bold', 'italic', 'underline', 'strike'], // Text formatting options
-                  ['blockquote', 'code-block'], // Additional formatting options
-                  [{ 'list': 'ordered' }, { 'list': 'bullet' }], // Bullet and numbered lists
-                  ['clean'] // Remove formatting option
-                ]
-              }
-            });
-  
-            editor.clipboard.dangerouslyPasteHTML(initialValue);
-  
-  
-            var form = document.querySelector("form")
-            var hiddenInput = document.querySelector('#statementOfWork');
-  
-            form.addEventListener('submit', function (e) {
-              hiddenInput.value = editor.root.innerHTML;
-            });
-  
-  
-          </script>
+        </div>
 
-          <!-- <div class="mb-4 text-center">
-            <label class="block text-gray-200 font-bold mb-2" for="commencementDate">Commencement Date</label>
-            <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date" id="commencementDate" name="commencementDate">
-          </div>
 
-          <div class="mb-4 text-center">
-            <label class="block text-gray-200 font-bold mb-2" for="completionDate">Scheduled Completion Date</label>
-            <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date" id="completionDate" name="completionDate">
-          </div>
+        <script>
+          var initialValue = document.querySelector('#statementOfWork').value;
+          var editor = new Quill('#rich-text', {
+            theme: 'snow',
+            modules: {
+              toolbar: [
+                ['bold', 'italic', 'underline', 'strike'], // Text formatting options
+                ['blockquote', 'code-block'], // Additional formatting options
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }], // Bullet and numbered lists
+                ['clean'] // Remove formatting option
+              ]
+            }
+          });
 
-          <div class="mb-4 text-center">
-            <label class="block text-gray-200 font-bold mb-2" for="objectives">Objectives</label>
-            <textarea class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" id="objectives" name="objectives" rows="4"></textarea>
-          </div>
+          editor.clipboard.dangerouslyPasteHTML(initialValue);
 
-          <div class="mb-4 text-center">
-            <label class="block text-gray-200 font-bold mb-2" for="estimate">Time, Resources, Cost Estimate</label>
-            <textarea class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" id="estimate" name="estimate" rows="4"></textarea>
-          </div>
 
-          <div class="mb-4">
-            <label class="block text-gray-200 font-bold mb-2" for="assumption">Assumption</label>
-            <textarea class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center rounded border border-black" id="assumption" name="assumption" rows="4"></textarea>
-          </div> -->
+          var form = document.querySelector("form")
+          var hiddenInput = document.querySelector('#statementOfWork');
+
+          form.addEventListener('submit', function (e) {
+            hiddenInput.value = editor.root.innerHTML;
+          });
+
+
+        </script>
 
         <div class="mb-4 text-center">
           <label class="block text-gray-200 font-bold mb-2" for="totalCost">Total Cost<span class="text-red-500">
               *</span></label>
-          <!-- <input th:field="*{totalCost}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="totalCost" name="totalCost" required> -->
           <textarea class="w-3/4 px-3 py-2 border border-gray-300 rounded-md h-40 resize-none" id="totalCost"
             name="totalCost" rows="4" th:field="*{totalCost}" required></textarea>
         </div>
 
-        <!-- <div class="mb-4 text-center">
-              <label class="block text-gray-200 font-bold mb-2" for="paymentTerm">Payment Term (days)</label>
-              <select class="w-3/4 px-3 py-2 border border-gray-300 rounded-md" id="paymentTerm" name="paymentTerm">
-                <option value="">Select payment term...</option>
-                <option class="font-semibold text-center" value="30" selected>30</option>
-                <option value="60">60</option>
-                <option value="90">90</option>
-                <option value="other">Other</option>
-              </select>
-              <p class="text-gray-600 text-sm">Note: "Net 30" is the standard payment term for Fortis BC.</p>
-            </div>
-            
-            <div class="mb-4 hidden text-center" id="otherPaymentTermContainer">
-              <label class="block text-gray-200 font-bold mb-2" for="otherPaymentTerm">Other Payment Term</label>
-              <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md" type="number" id="otherPaymentTerm" name="otherPaymentTerm">
-            </div> -->
-
-        <!-- <div class="mb-4 text-center">
-              <label class="block text-gray-200 font-bold mb-2" for="companyName">Company Names/Contact Information</label>
-              <textarea class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center rounded border border-black" id="companyName" name="companyName" rows="4"></textarea>
-            </div> -->
 
         <div class="w-1/2 mx-auto mb-4 mt-6"> <!-- Add mx-auto class to center the div -->
           <div class="text-center">
@@ -303,16 +236,19 @@ datatorage/addnew -->
             </span>
           </label>
           <select class="w-full px-4 py-2 border border-gray-300 rounded-md text-center" id="sourcingJustification"
-            name="sourcingJustification">
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
+            name="sourcingJustification" th:field="*{sourcingJustification}">
+            <option th:value="Yes">Yes</option>
+            <option th:value="No">No</option>
           </select>
         </div>
 
-        <div id="pdfDownloadsj" style="display: none;" class="mb-4 text-center">
-          <a href="/pdf/sj.pdf" download class="text-white bg-blue-500 hover:bg-blue-600 duration-300 font-bold py-2 px-4 rounded-md inline-block">Download Sourcing Justification</a>
+        <div class="mb-4 text-center w-3/4 mx-auto" id="pdfDownloadsj">
+          <a href="/pdf/sj.pdf" download
+            class="text-white bg-blue-500 hover:bg-blue-600 duration-300 font-bold py-2 px-4 rounded-md inline-block">Download
+            Sourcing Justification
+          </a>
         </div>
-        
+
         <div id="explanationModal" class="fixed inset-0 flex items-center justify-center z-50 hidden text-center">
           <div class="bg-white p-4 rounded shadow-md">
             <p class="text-gray-200">
@@ -329,10 +265,6 @@ datatorage/addnew -->
           <div class="inset-0 bg-black opacity-50"></div>
         </div>
 
-        <!-- <div class="flex justify-center">
-              <button class="px-4 py-2 bg-blue-500 text-white rounded-md mr-2" type="submit">Submit</button>
-              <button class="px-4 py-2 bg-white text-gray-700 rounded-md border-gray-200 hover:bg-gray-100 border-2" type="submit">Save as Draft</button>
-            </div> -->
 
         <div class="w-1/2 mx-auto mb-4 mt-6"> <!-- Add mx-auto class to center the div -->
           <div class="text-center">
@@ -340,15 +272,47 @@ datatorage/addnew -->
           </div>
         </div>
 
-        
+        <div class="mb-4 text-center mx-auto" id="uploadSrc" style="display: none;">
+          <label class="text-gray-200 font-bold mb-2 flex justify-center" for="sjFile">Upload Sourcing Justification
+            Document
+            <span class="text-red-500"> *</span>
+          </label>
+          <input
+            class="w-3/4 px-4 py-2 text-gray-700 bg-white border rounded-lg focus:outline-none focus:border-blue-500 mx-auto mb-2"
+            type="file" id="sjFile" name="sjFile" accept=".pdf, .doc, .docx">
+          <br>
+          <span th:if="${hasSavedSJFile}" class="bg-red-500 text-indigo-100 m-2 p-1">
+            Previously uploaded document: <a class="underline hover:bg-sky-700"
+              th:href="@{/download_pdf/{rid}(rid=${request.rid})}">Click here </a> to download or add a new one to
+            overwrite it.
+          </span>
+        </div>
+
+        <div class="mb-4 text-center mx-auto" id="uploadPR" style="display: none;">
+          <label class="text-gray-200 font-bold mb-2 flex justify-center" for="pcFile">Upload Procurement Checklist
+            Document
+            <span class="text-red-500"> *</span>
+          </label>
+          <input
+            class="w-3/4 px-4 py-2 text-gray-700 bg-white border rounded-lg focus:outline-none focus:border-blue-500 mx-auto mb-2"
+            type="file" id="pcFile" name="pcFile" accept=".pdf, .doc, .docx">
+          <br>
+          <span th:if="${hasSavedPCFile}" class="bg-red-500 text-indigo-100 m-2 p-1">
+            Previously uploaded document: <a class="underline hover:bg-sky-700"
+              th:href="@{/download_pc/{rid}(rid=${request.rid})}">Click here </a> to download or add a new one to
+            overwrite it.
+          </span>
+        </div>
+
         <div class="flex justify-center">
           <button type="submit"
             class="p-3 px-6 pt-2 bg-teal-500 rounded-full text-white baseline hover:bg-teal-400 font-bold font-Roboto mr-2"
-            th:name="status" th:value="draft">Save as Draft</button>
+            th:name="status" th:value="Draft">Save as Draft</button>
           <button type="submit"
             class="p-3 px-6 pt-2 bg-teal-500 rounded-full text-white baseline hover:bg-teal-400 font-bold font-Roboto"
-            th:name="status" th:value="submitted">Submit</button>
+            th:name="status" th:value="Submitted">Submit</button>
         </div>
+
       </form>
     </div>
   </div>

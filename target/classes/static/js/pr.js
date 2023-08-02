@@ -5,6 +5,9 @@ const companySelect = document.getElementById('companyCode');
 const pdfDownloadDiv = document.getElementById('pdfDownloadpc');
 const source = document.getElementById('sourcingJustification');
 const pdfDownloadsj = document.getElementById('pdfDownloadsj');
+const pdfDownloadPR = document.getElementById('pdfDownloadPR');
+const uploadSrc = document.getElementById('uploadSrc');
+const uploadPR = document.getElementById('uploadPR');
 
 companySelect.addEventListener('change', function() {
   // Get the selected option value
@@ -13,10 +16,12 @@ companySelect.addEventListener('change', function() {
   // Check if the selected value is "FortisBC Inc. (3700)"
   if (selectedValue === "FortisBC Inc. (3700)") {
     // If selected, show the PDF download div
-    pdfDownloadDiv.style.display = "block";
+    pdfDownloadPR.style.display = "block";
+    uploadPR.style.display = "block";
   } else {
     // If not selected, hide the PDF download div
-    pdfDownloadDiv.style.display = "none";
+    pdfDownloadPR.style.display = "none";
+    uploadPR.style.display = "none";
   }
 });
 source.addEventListener('change', function() {
@@ -24,14 +29,20 @@ source.addEventListener('change', function() {
   const selectedValue = source.value;
 
   // Check if the selected value is "FortisBC Inc. (3700)"
-  if (selectedValue === "yes") {
+  if (selectedValue === "Yes") {
     // If selected, show the PDF download div
     pdfDownloadsj.style.display = "block";
+    uploadSrc.style.display = "block";
   } else {
     // If not selected, hide the PDF download div
+    uploadSrc.style.display = "none";
     pdfDownloadsj.style.display = "none";
   }
 });
+
+companySelect.dispatchEvent(new Event('change'));
+source.dispatchEvent(new Event('change'));
+
 questionMarkIcon.addEventListener('click', () => {
   explanationModal.classList.remove('hidden');
 });
