@@ -1,6 +1,13 @@
 package com.swift_po.swift_po.models;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "requests")
@@ -21,8 +28,17 @@ public class Request {
     private String sourcingJustification;
     private String status;
     private int userID;
+    private String comments;
 
     // private String fileName;
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
 
     @Column(columnDefinition = "default NULL")
     private byte[] sjFile;
@@ -36,11 +52,13 @@ public class Request {
     public Request() {
         this.sjFile = null;
         this.pcFile = null;
+        this.comments = null;
     }
 
     public Request(String companyCode, String requestor, String consultant, String sDate, String eDate, String email,
             String projectName, String costElement, String statementOfWork, String totalCost,
-            String sourcingJustification, String status, int userID, byte[] sjFile, byte[] pcFile, User user) {
+            String sourcingJustification, String status, int userID, byte[] sjFile, byte[] pcFile, User user,
+            String comments) {
         this.companyCode = companyCode;
         this.requestor = requestor;
         this.consultant = consultant;
@@ -57,6 +75,7 @@ public class Request {
         this.sjFile = sjFile;
         this.pcFile = pcFile;
         this.user = user;
+        this.comments = comments;
     }
 
     public int getRid() {
