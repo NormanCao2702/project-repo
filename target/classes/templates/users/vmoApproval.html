@@ -56,8 +56,8 @@ datatorage/addnew -->
                 </a>
               </div>
               <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
-                <a href="/viewApproval">
-                  <i class="bi bi-file-earmark-plus"> Approved Oders</i>
+                <a href="">
+                  <i class="bi bi-file-earmark-plus"> Approved Orders</i>
               </div>
               <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
                 <a href="">
@@ -78,7 +78,7 @@ datatorage/addnew -->
 
 
     </nav>
-    <!-- <div class="w-4/6 float-right mr-4 md:mr-24 pt-24 pb-20 top-20">
+    <div class="w-4/6 float-right mr-4 md:mr-24 pt-24 pb-20 top-20">
       <div class="flex flex-col">
         <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
@@ -95,26 +95,25 @@ datatorage/addnew -->
                   </tr>
                 </thead>
                 <tbody>
-                  <tr th:each="request:${requests}"
-                    th:if="${request.status == 'submitted' && request.userID == user.id}"
-                    class=" font-medium border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600 text-center">
-                    <td class="whitespace-nowrap px-6 py-4 font-medium" th:text="${request.rid}"></td>
-                    <td class="whitespace-nowrap px-6 py-4" th:text="${request.companyCode}"></td>
-                    <td class="whitespace-nowrap px-6 py-4" th:text="${request.projectName}"></td>
-                    <td class="whitespace-nowrap px-6 py-4" th:text="${request.date}"></td>
-                    <td class="whitespace-nowrap px-6 py-4" th:text="${request.status}"></td>
-                    <td class="whitespace-nowrap px-6 py-4 flex items-center justify-center">
-                      <a th:href="@{/review/{rid}(rid=${request.rid})}"
-                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                        role="button">Review</a>
-                    </td>
-                  </tr>
-                </tbody>
+                    <tr th:each="request:${approvedForms}" 
+                      class=" font-medium border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600 text-center">
+                      <td class="whitespace-nowrap px-6 py-4 font-medium" th:text="${request.rid}"></td>
+                        <td class="whitespace-nowrap px-6 py-4" th:text="${request.companyCode}"></td>
+                        <td class="whitespace-nowrap px-6 py-4" th:text="${request.projectName}"></td>
+                        <td class="whitespace-nowrap px-6 py-4" th:text="${request.date}"></td>
+                        <td class="whitespace-nowrap px-6 py-4" th:text="${request.status}"></td>
+                        <td class="whitespace-nowrap px-6 py-4 flex items-center justify-center">
+                        <a th:href="@{/VMOviewForm/{rid}(rid=${request.rid})}"
+                          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                          role="button">Review Purchase Requisition</a>
+                      </td>
+                    </tr>
+                  </tbody>
               </table>
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
 
     </div>
   </div>

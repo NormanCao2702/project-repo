@@ -109,7 +109,7 @@ datatorage/addnew -->
           <label class="block text-gray-200 font-bold mb-2" for="requestor">Requestor name/IT representative<span
               class="text-red-500">*</span></label>
           <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="requestor"
-            name="requestor" th:field="*{name}">
+            name="requestor" th:value="*{name}">
         </div>
 
         <div class="mb-4 text-center">
@@ -129,7 +129,7 @@ datatorage/addnew -->
           <label class="block text-gray-200 font-bold mb-2" for="email">Email<span class="text-red-500">
               *</span></label>
           <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="email" id="email"
-            name="email" th:field="*{email}" required>
+            name="email" th:value="*{email}" required>
         </div>
 
         <!-- <div class="mb-4 text-center">

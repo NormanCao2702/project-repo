@@ -5,13 +5,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.swift_po.swift_po.models.Request;
 import com.swift_po.swift_po.models.RequestReposiory;
 import com.swift_po.swift_po.models.User;
 import com.swift_po.swift_po.models.userRepo;
+
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.ui.Model;
 
 @Controller
@@ -42,11 +47,35 @@ public class VMOController {
 
     @GetMapping("/VMOviewForm/{rid}")
     public String viewFormDetails(@PathVariable int rid, Model model) {
-        Request form = requestRepo.findById(rid).get(0);
-
-        model.addAttribute("form", form);
-
+        Request request = requestRepo.findById(rid).get(0);
+        
+        model.addAttribute("request", request);
+        
         return "users/VMOform_details";
     }
 
+    @PostMapping("/vmoRequests/{rid}")
+    public String saveUpdatedrequest(@PathVariable int rid, @ModelAttribute("request") Request request, Model model,
+            HttpSession session) {
+        System.out.println("saveUpdatedrequest" + rid);
+        Request request2 = requestRepo.findById(rid).get(0);
+        request2.setStatus(request.getStatus());
+
+        User user = (User) session.getAttribute("session_user");
+        model.addAttribute("user", user);
+        
+        int newUserID = user.getId();
+
+        request2.setUserID(newUserID);
+        requestRepo.save(request2);
+
+        return "users/vmoUser";
+    }
+
+    @GetMapping("/viewApproval")
+    public String viewApprovalForms(Model model) {
+        List<Request> approvedForms =requestRepo.findByStatus("approved");
+        model.addAttribute("approvedForms", approvedForms);
+        return "users/vmoApproval"; 
+    }
 }
