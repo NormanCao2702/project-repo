@@ -102,6 +102,10 @@ datatorage/addnew -->
           </select>
         </div>
 
+        <div id="pdfDownloadpc" style="display: none;" class="mb-4 text-center">
+          <a href="/pdf/pc.pdf" download class="text-white bg-blue-500 hover:bg-blue-600 duration-300 font-bold py-2 px-4 rounded-md inline-block">Download Procurement Checklist</a>
+        </div>
+
         <div class="mb-4 text-center">
           <label class="block text-gray-200 font-bold mb-2" for="requestor">Requestor name/IT representative<span
               class="text-red-500">*</span></label>
@@ -299,13 +303,16 @@ datatorage/addnew -->
             </span>
           </label>
           <select class="w-full px-4 py-2 border border-gray-300 rounded-md text-center" id="sourcingJustification"
-            name="sourcingJustification" th:field="*{sourcingJustification}" >
-            <option value="" selected></option>
+            name="sourcingJustification">
             <option value="yes">Yes</option>
             <option value="no">No</option>
           </select>
         </div>
 
+        <div id="pdfDownloadsj" style="display: none;" class="mb-4 text-center">
+          <a href="/pdf/sj.pdf" download class="text-white bg-blue-500 hover:bg-blue-600 duration-300 font-bold py-2 px-4 rounded-md inline-block">Download Sourcing Justification</a>
+        </div>
+        
         <div id="explanationModal" class="fixed inset-0 flex items-center justify-center z-50 hidden text-center">
           <div class="bg-white p-4 rounded shadow-md">
             <p class="text-gray-200">

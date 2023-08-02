@@ -40,7 +40,6 @@ public class UserServices {
         // Hash password
         String hashedPassword = passwordEncoder.encode(password);
         return hashedPassword;
-
     }
 
     public boolean logincryptpassmatch(String loginpass, String storedHashedPassword) {
