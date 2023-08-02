@@ -22,10 +22,16 @@ public class Request {
     private String status;
     private int userID;
 
+    // private String fileName;
+
     @Column(columnDefinition = "default NULL")
     private byte[] sjFile;
     @Column(columnDefinition = "default NULL")
     private byte[] pcFile;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Request() {
         this.sjFile = null;
@@ -34,7 +40,7 @@ public class Request {
 
     public Request(String companyCode, String requestor, String consultant, String sDate, String eDate, String email,
             String projectName, String costElement, String statementOfWork, String totalCost,
-            String sourcingJustification, String status, int userID, byte[] sjFile, byte[] pcFile) {
+            String sourcingJustification, String status, int userID, byte[] sjFile, byte[] pcFile, User user) {
         this.companyCode = companyCode;
         this.requestor = requestor;
         this.consultant = consultant;
@@ -50,6 +56,7 @@ public class Request {
         this.userID = userID;
         this.sjFile = sjFile;
         this.pcFile = pcFile;
+        this.user = user;
     }
 
     public int getRid() {
@@ -178,5 +185,13 @@ public class Request {
 
     public void seteDate(String eDate) {
         this.eDate = eDate;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

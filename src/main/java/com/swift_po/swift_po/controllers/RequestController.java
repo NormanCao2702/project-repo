@@ -140,7 +140,7 @@ public class RequestController {
 
         Request newReq = new Request(newCompanyCode, newRequestor, newConsultant, newSDate, newEDate, newEmail,
                 newProjectName, newCostElement, newStatementOfWork, newTotalCost, newSourcingJustification, newStatus,
-                newUserID, (byte[]) sjFileData, (byte[]) pcFileData);
+                newUserID, (byte[]) sjFileData, (byte[]) pcFileData, user);
 
         requestRepo.save(newReq);
 

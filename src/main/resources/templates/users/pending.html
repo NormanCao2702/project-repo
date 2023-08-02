@@ -29,12 +29,6 @@ datatorage/addnew -->
             <img src="https://upload.wikimedia.org/wikipedia/en/9/97/FortisBC_logo.svg" alt="Logo"
               class=" w-[150px] ml-[50px]">
           </a>
-          <div class="absolute right-1">
-            <a th:href="@{/profile/pr/{id}(id=${user.id})}">
-              <img id="avatar" th:src="${user.avatarImagePath}" alt="Avatar"
-                class=" w-12 h-12 mr-2 rounded-full cursor-pointer bg-opacity-50 hover:bg-black " />
-            </a>
-          </div>
         </div>
       </div>
 
@@ -45,36 +39,36 @@ datatorage/addnew -->
           <div id="navcontent">
             <hr class=" my-2 ">
             <div
-              class="p-2.5 item-center mt-3 flex rounded-md px-4 cursor-pointer hover:bg-gray-700 duration-300 bg-opacity-50 text-white"
+              class="p-2.5 item-center mt-3 flex rounded-md px-4 cursor-pointer hover:bg-gray-700 bg-opacity-50 text-white"
               onclick="dropdown()">
               <i class="bi bi-file-earmark"></i>
               <div class="item-center text-center flex justify-between w-full">
-                <span class="text-[16px] ml-4 text-gray-200">Purchase Order</span>
+                <span class="text-[16px] ml-4 text-gray-200">Stages</span>
                 <span class="text-sm rotate-180" id="arrowdown">
                   <i class="bi bi-chevron-down p-2.5"></i>
                 </span>
               </div>
             </div>
             <div class="text-left text-sm font-thin mt-2 w-4/5 max-auto" id="pomenu">
-              <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 duration-300 mt-1">
-                <a th:href="@{/form/pr/{id}(id=${user.id})}">
-                  <i class="bi bi-file-earmark-plus"> New Purchase Order</i>
+              <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
+                <a href="/viewForms">
+                  <i class="bi bi-file-earmark-plus"> Pending Orders</i>
                 </a>
               </div>
-              <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 duration-300 rounded-md mt-1">
-                <a href="/requests/draft">
-                  <i class="bi bi-file-earmark-plus"> Draft Order</i>
+              <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
+                <a href="">
+                  <i class="bi bi-file-earmark-plus"> Approved Orders</i>
               </div>
-              <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 duration-300 rounded-md mt-1">
-                <a href="/requests/submitted">
-                  <i class="bi bi-file-earmark-plus"> Submitted Orders </i>
+              <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
+                <a href="">
+                  <i class="bi bi-file-earmark-plus"> Processed Orders</i>
                 </a>
               </div>
             </div>
           </div>
         </div>
         <a title="Logout" href="/logout">
-          <div class="text-gray-100 px-2 py-1 bg-gray-600 bg-opacity-50 rounded-md cursor-pointer hover:bg-black duration-300
+          <div class="text-gray-100 px-2 py-1 bg-gray-600 bg-opacity-50 rounded-md cursor-pointer hover:bg-black 
             text-white mt-4 ml-0.5 mb-3" id="logoutbutton">
             <i class="bi bi-box-arrow-in-right "></i>
             <span id="logouttext" class="text-[16px] ml-4 text-gray-200">Logout</span>
@@ -92,21 +86,22 @@ datatorage/addnew -->
               <table class="min-w-full text-left text-sm font-light bg-blue-100">
                 <thead class="border-b font-medium dark:border-neutral-500 bg-blue-200 text-center">
                   <tr>
-                    <th scope="col" class="px-6 py-4">Request ID</th>
-                    <th scope="col" class="px-6 py-4">Company Code</th>
-                    <th scope="col" class="px-6 py-4">ProjectName</th>
-                    <th scope="col" class="px-6 py-4">Status</th>
-                    <th scope="col" class="px-6 py-4">Action</th>
+                    <th scope="col" class="px-6 py-4">User ID</th>
+                    <th scope="col" class="px-6 py-4">User Name</th>
+                    <!-- <th scope="col" class="px-6 py-4">ProjectName</th> -->
+                    <th scope="col" class="px-6 py-4">Email</th>
+                    <!-- <th scope="col" class="px-6 py-4">Status</th> -->
+                    <th scope="col" class="px-6 py-4">Action</th> 
                   </tr>
                 </thead>
-                <tbody>
+                <!-- <tbody>
                   <tr th:each="request:${requests}"
-                    th:if="${request.status == 'Submitted' && request.userID == user.id}"
+                    th:if="${request.status == 'submitted' && request.userID == user.id}"
                     class=" font-medium border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600 text-center">
-                    <!-- if the status of the request is draft -->
                     <td class="whitespace-nowrap px-6 py-4 font-medium" th:text="${request.rid}"></td>
                     <td class="whitespace-nowrap px-6 py-4" th:text="${request.companyCode}"></td>
                     <td class="whitespace-nowrap px-6 py-4" th:text="${request.projectName}"></td>
+                    <td class="whitespace-nowrap px-6 py-4" th:text="${request.date}"></td>
                     <td class="whitespace-nowrap px-6 py-4" th:text="${request.status}"></td>
                     <td class="whitespace-nowrap px-6 py-4 flex items-center justify-center">
                       <a th:href="@{/review/{rid}(rid=${request.rid})}"
@@ -114,7 +109,20 @@ datatorage/addnew -->
                         role="button">Review</a>
                     </td>
                   </tr>
-                </tbody>
+                </tbody> -->
+                <tbody>
+                    <tr th:each="user:${usersWithForms}"
+                      class=" font-medium border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600 text-center">
+                      <td class="whitespace-nowrap px-6 py-4 font-medium" th:text="${user.id}"></td>
+                      <td class="whitespace-nowrap px-6 py-4" th:text="${user.name}"></td>
+                      <td class="whitespace-nowrap px-6 py-4" th:text="${user.email}"></td>
+                      <td class="whitespace-nowrap px-6 py-4 flex items-center justify-center">
+                        <a th:href="@{/user-forms(userId=${user.id})}"
+                          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                          role="button">Access all form</a>
+                      </td>
+                    </tr>
+                  </tbody>
               </table>
             </div>
           </div>
