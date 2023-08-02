@@ -31,6 +31,12 @@ datatorage/addnew -->
               class=" w-[150px] ml-[50px]">
           </a>
         </div>
+        <div class="absolute right-1">
+          <a th:href="@{/profile/pr/{id}(id=${user.id})}">
+            <img id="avatar" th:src="${user.avatarImagePath}" alt="Avatar"
+              class=" w-12 h-12 mr-2 rounded-full cursor-pointer bg-opacity-50 hover:bg-black " />
+          </a>
+        </div>
       </div>
 
 
@@ -280,7 +286,7 @@ datatorage/addnew -->
           </label>
           <input
             class="w-3/4 px-4 py-2 text-gray-700 bg-white border rounded-lg focus:outline-none focus:border-blue-500 mx-auto mb-2"
-            type="file" id="sjFile" name="sjFile" accept=".pdf, .doc, .docx" th:field="*{sjFile}" required>
+            type="file" id="sjFile" name="sjFile" accept=".pdf, .doc, .docx" th:field="*{sjFile}">
           <br>
           <span th:if="${hasSavedSJFile}" class="bg-red-500 text-indigo-100 m-2 p-1">
             Previously uploaded document: <a class="underline hover:bg-sky-700"
@@ -296,7 +302,7 @@ datatorage/addnew -->
           </label>
           <input
             class="w-3/4 px-4 py-2 text-gray-700 bg-white border rounded-lg focus:outline-none focus:border-blue-500 mx-auto mb-2"
-            type="file" id="pcFile" name="pcFile" accept=".pdf, .doc, .docx" th:field="*{pcFile}" required>
+            type="file" id="pcFile" name="pcFile" accept=".pdf, .doc, .docx" th:field="*{pcFile}">
           <br>
           <span th:if="${hasSavedPCFile}" class="bg-red-500 text-indigo-100 m-2 p-1">
             Previously uploaded document: <a class="underline hover:bg-sky-700"

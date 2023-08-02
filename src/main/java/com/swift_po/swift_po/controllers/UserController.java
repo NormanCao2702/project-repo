@@ -81,9 +81,8 @@ public class UserController {
                     "Password should be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.");
             return "/users/signup";
         }
-
-        User newUser = new User(newEmail, newName, newCryptedPass, newuserType);
-        newUser.setAvatarImagePath("/uploads/avatar_images/lightning-logo.png");
+        String avatarImagePath = "/uploads/avatar_images/lightning-logo.png";
+        User newUser = new User(newEmail, newName, newCryptedPass, newuserType, avatarImagePath);
 
         // email new user
         UserServices.registerUser(newUser);// call method from user services to send email.

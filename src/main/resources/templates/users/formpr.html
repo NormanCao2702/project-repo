@@ -30,7 +30,7 @@ datatorage/addnew -->
           </a>
           <div class="absolute right-1">
             <a th:href="@{/profile/pr/{id}(id=${user.id})}">
-              <img id="avatar" th:src="@{${user.avatarImagePath}}" alt="Avatar"
+              <img id="avatar" th:src="${user.avatarImagePath}" alt="Avatar"
                 class=" w-12 h-12 mr-2 rounded-full cursor-pointer bg-opacity-50 hover:bg-black " />
             </a>
           </div>
@@ -269,7 +269,7 @@ datatorage/addnew -->
           </label>
           <input
             class="w-3/4 px-4 py-2 text-gray-700 bg-white border rounded-lg focus:outline-none focus:border-blue-500 mx-auto"
-            type="file" id="sjFile" name="sjFile" accept=".pdf, .doc, .docx" required>
+            type="file" id="sjFile" name="sjFile" accept=".pdf, .doc, .docx">
         </div>
 
         <div class="mb-4 text-center mx-auto" id="uploadPR" style="display: none;">
@@ -280,7 +280,7 @@ datatorage/addnew -->
           </label>
           <input
             class="w-3/4 px-4 py-2 text-gray-700 bg-white border rounded-lg focus:outline-none focus:border-blue-500 mx-auto"
-            type="file" id="pcFile" name="pcFile" accept=".pdf, .doc, .docx" required>
+            type="file" id="pcFile" name="pcFile" accept=".pdf, .doc, .docx">
         </div>
 
 

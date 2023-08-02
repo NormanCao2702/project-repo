@@ -31,6 +31,12 @@ datatorage/addnew -->
                             class=" w-[150px] ml-[50px]">
                     </a>
                 </div>
+                <div class="absolute right-1">
+                    <a th:href="@{/profile/pr/{id}(id=${user.id})}">
+                        <img id="avatar" th:src="${user.avatarImagePath}" alt="Avatar"
+                            class=" w-12 h-12 mr-2 rounded-full cursor-pointer bg-opacity-50 hover:bg-black " />
+                    </a>
+                </div>
             </div>
 
 
