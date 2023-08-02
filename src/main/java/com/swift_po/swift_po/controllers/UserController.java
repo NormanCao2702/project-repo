@@ -344,7 +344,7 @@ public class UserController {
             } else {
                 //if they do not match then giev them prompt saying that it does match
                 model.addAttribute("error", "Invalid Username or Password");
-                return "/users/login";
+                return "users/login";
             }
         }
     }

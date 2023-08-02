@@ -8,11 +8,12 @@ datatorage/addnew -->
     <title>Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <script src="/js/pr.js" defer></script>
+    <script  src="/js/script.js" defer></script>
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.core.css">
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
+
   </head>
   <body style="background-repeat: no-repeat; background-attachment: fixed;" class="bg-gradient-to-r from-[rgb(3,45,95)]/95 to-[rgb(6,76,135)]/95 bg-cover">
     <div>
@@ -23,15 +24,6 @@ datatorage/addnew -->
             <a href="/login" class="flex items-center">
               <img src="https://upload.wikimedia.org/wikipedia/en/9/97/FortisBC_logo.svg" alt="Logo" class=" w-[150px] ml-[50px]">
             </a>
-            <div class="absolute right-1">
-              <a th:href="@{/profile/pr/{id}(id=${user.id})}"> 
-                <img
-                  id="avatar"
-                  th:src="@{${user.avatarImagePath}}"
-                  alt="Avatar"
-                  class=" w-12 h-12 mr-2 rounded-full cursor-pointer bg-opacity-50 hover:bg-black "/>
-              </a>
-            </div>
           </div>
         </div>
 
@@ -78,30 +70,30 @@ datatorage/addnew -->
         </div>
       </nav>
       <div class="content">       
-        <form th:action="@{/requests/add}" th:object="${user}" method="post" class="w-5/6 float-right pt-24 pb-20">
+        <form th:action="@{/requests/{rid}(rid=${request.rid})}" th:object="${request}" method="post" class="w-5/6 float-right pt-24 pb-20">
           <div class="mb-4 text-center">
             <label class="block text-gray-200 font-bold mb-2" for="companyCode">Company code<span class="text-red-500">*</span></label>
-            <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="companyCode" name="companyCode" required>
+            <input th:value="${request.companyCode}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="companyCode" name="companyCode" required>
           </div>
 
           <div class="mb-4 text-center">
             <label class="block text-gray-200 font-bold mb-2" for="requestor">Requestor name/IT representative<span class="text-red-500">*</span></label>
-            <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="requestor" name="requestor" th:field="*{name}">
+            <input th:value="${user.name}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="requestor" name="requestor">
           </div>
 
           <div class="mb-4 text-center">
             <label class="block text-gray-200 font-bold mb-2" for="consultant">Consultant<span class="text-red-500">*</span></label>
-            <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="consultant" name="consultant">
+            <input th:field="*{consultant}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="consultant" name="consultant">
           </div>
 
           <div class="mb-4 text-center">
             <label class="block text-gray-200 font-bold mb-2" for="date">Date<span class="text-red-500"> *</span></label>
-            <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date" id="date" name="date" required>
+            <input th:field="*{date}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date" id="date" name="date" required>
           </div>
 
           <div class="mb-4 text-center">
             <label class="block text-gray-200 font-bold mb-2" for="email">Email<span class="text-red-500"> *</span></label>
-            <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="email" id="email" name="email" th:field="*{email}" required>
+            <input th:field="*{email}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="email" id="email" name="email" required>
           </div>
 
           <!-- <div class="mb-4 text-center">
@@ -116,12 +108,12 @@ datatorage/addnew -->
 
           <div class="mb-4 text-center">
             <label class="block text-gray-200 font-bold mb-2" for="projectName">Project Name<span class="text-red-500"> *</span></label>
-            <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="projectName" name="projectName" required>
+            <input th:field="*{projectName}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="projectName" name="projectName" required>
           </div>
 
           <div class="mb-4 text-center">
             <label class="block text-gray-200 font-bold mb-2" for="costElement">Cost Element/GL Account #<span class="text-red-500"> *</span></label>
-            <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="costElement" name="costElement" required>
+            <input th:field="*{costElement}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="costElement" name="costElement" required>
           </div>
 
           <!-- <div class="mb-4 text-center">
@@ -129,36 +121,11 @@ datatorage/addnew -->
             <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="chargeNumber" name="chargeNumber" required>
           </div> -->
 
-          <div class="mb-4 text-center w-3/4 mx-auto">
-            <label class="block text-gray-200 font-bold mb-2" for="statementOfWork">Statement of Work</label>
-            <div class="w-full border border-gray-300 rounded-md bg-white">
-              <div id="rich-text" style="height: 150px;" class="h-40 text-base"></div>
-              <textarea id="statementOfWork" name="statementOfWork" style="display: none;"></textarea>
-            </div>
+          <div class="mb-4 text-center">
+            <label class="block text-gray-200 font-bold mb-2" for="statementOfWork">Statement of Work<span class="text-red-500"> *</span></label>
+            <textarea th:field="*{statementOfWork}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" id="statementOfWork" name="statementOfWork" rows="4" required></textarea>
           </div>
 
-          <script>
-              var editor = new Quill('#rich-text', {
-              theme: 'snow',
-              modules: {
-              toolbar: [
-                  ['bold', 'italic', 'underline', 'strike'], // Text formatting options
-                  ['blockquote', 'code-block'], // Additional formatting options
-                  [{ 'list': 'ordered' }, { 'list': 'bullet' }], // Bullet and numbered lists
-                  ['clean'] // Remove formatting option
-                  ]
-                  }
-                });
-
-              var form = document.querySelector("form")
-              var hiddenInput = document.querySelector('#statementOfWork');
-
-              form.addEventListener('submit', function(e){
-                hiddenInput.value = editor.root.innerHTML;
-              });
-
-              
-          </script>
           <!-- <div class="mb-4 text-center">
             <label class="block text-gray-200 font-bold mb-2" for="commencementDate">Commencement Date</label>
             <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="date" id="commencementDate" name="commencementDate">
@@ -186,7 +153,7 @@ datatorage/addnew -->
 
           <div class="mb-4 text-center">
             <label class="block text-gray-200 font-bold mb-2" for="totalCost">Total Cost<span class="text-red-500"> *</span></label>
-            <input class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="totalCost" name="totalCost" required>
+            <input th:field="*{totalCost}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" type="text" id="totalCost" name="totalCost" required>
           </div>
 
           <!-- <div class="mb-4 text-center">
@@ -229,10 +196,10 @@ datatorage/addnew -->
 
             <div id="explanationModal" class="fixed inset-0 flex items-center justify-center z-50 hidden text-center">
               <div class="bg-white p-4 rounded shadow-md">
-                <p class="text-black">
+                <p class="text-gray-200">
                   Sole/single source justification and the retention of the information is the responsibility of each business unit. The retention of this information is subject to audit.
                 </p>
-                <p class="text-black font-bold">
+                <p class="text-gray-200 font-bold">
                   See FortisBC Policy Procurement Policy and Sourcing justification form.
                 </p>
                 <button id="closeModal" class="mt-4 px-4 py-2 font-semibold text-white bg-blue-500 rounded-md hover:bg-blue-600" type="button">Close</button>
