@@ -1,5 +1,6 @@
 package com.swift_po.swift_po.controllers;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +33,40 @@ public class VMOController {
     @GetMapping("/viewForms")
     public String viewForms(Model model) {
         List<User> usersWithForms = userRepo.findByUserType("IS User");
+        // Create an iterator to safely remove elements from the list
+        Iterator<User> iterator = usersWithForms.iterator();
+        while (iterator.hasNext()) {
+            User user = iterator.next();
+            List<Request> requests = requestRepo.findByUserID(user.getId());
+            if (requests.size() == 0) {
+                iterator.remove();
+            }
+        }
+        boolean hasSubmitted = false;
+        while (iterator.hasNext()) {
+            User user = iterator.next();
+            List<Request> requests = requestRepo.findByUserID(user.getId());
+            for (Request request : requests) {
+                if (request.getStatus().equals("Submitted")) {
+                    hasSubmitted = true;
+                    break;
+                }
+            }
+            if (!hasSubmitted) {
+                iterator.remove();
+            }
+        }
         model.addAttribute("usersWithForms", usersWithForms);
         return "users/pending";
     }
 
     @GetMapping("/user-forms/{id}")
     public String showUserForms(@PathVariable("id") int userId, Model model) {
+        List<Request> requests = requestRepo.findAll();
         List<User> Luser = userRepo.findById(userId);
         User user = Luser.get(0);
         if (user != null) {
+            model.addAttribute("requests", requests);
             model.addAttribute("user", user);
             return "users/vmoFormreview";
         }
@@ -73,15 +99,18 @@ public class VMOController {
 
         int newISUser = request2.getUserID();
 
+        String newComments = request.getComments();
+        request2.setComments(newComments);
+
         request2.setUserID(newUserID);
         requestRepo.save(request2);
 
         List<User> tempt = userRepo.findById(newISUser);
         User temptuser = tempt.get(0);
 
-        if(request2.getStatus().equals("approved"))
+        if (request2.getStatus().equals("approved"))
             UserServices.vmoApprovalnotification(temptuser, request2);
-        else{
+        else {
             UserServices.vmoDenialnotification(temptuser, request2);
         }
         return "users/vmoUser";
@@ -96,7 +125,7 @@ public class VMOController {
 
     @GetMapping("/viewDenial")
     public String viewDenialForms(Model model) {
-        List<Request> deniedForms = requestRepo.findByStatus("denied");
+        List<Request> deniedForms = requestRepo.findByStatus("rejected");
         model.addAttribute("deniedForms", deniedForms);
         return "users/vmoDenial";
     }

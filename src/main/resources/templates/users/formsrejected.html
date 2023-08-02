@@ -9,12 +9,7 @@ datatorage/addnew -->
     <title>Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <script src="/js/script.js" defer></script>
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.core.css">
-    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
-
+    <script src="/js/script.js"></script>
 </head>
 
 <body style="background-repeat: no-repeat; background-attachment: fixed;"
@@ -29,8 +24,15 @@ datatorage/addnew -->
                         <img src="https://upload.wikimedia.org/wikipedia/en/9/97/FortisBC_logo.svg" alt="Logo"
                             class=" w-[150px] ml-[50px]">
                     </a>
+                    <div class="absolute right-1">
+                        <a th:href="@{/profile/pr/{id}(id=${user.id})}">
+                            <img id="avatar" th:src="${user.avatarImagePath}" alt="Avatar"
+                                class=" w-12 h-12 mr-2 rounded-full cursor-pointer bg-opacity-50 hover:bg-black " />
+                        </a>
+                    </div>
                 </div>
             </div>
+
 
 
             <div id="sidenav"
@@ -39,39 +41,48 @@ datatorage/addnew -->
 
                     <div id="navcontent">
                         <hr class=" my-2 ">
-                        <div class="p-2.5 item-center mt-3 flex rounded-md px-4 cursor-pointer hover:bg-gray-700 bg-opacity-50 text-white"
+                        <div class="p-2.5 item-center mt-3 flex rounded-md px-4 cursor-pointer hover:bg-gray-700 duration-300 bg-opacity-50 text-white"
                             onclick="dropdown()">
                             <i class="bi bi-file-earmark"></i>
                             <div class="item-center text-center flex justify-between w-full">
-                                <span class="text-[16px] ml-4 text-gray-200">Stages</span>
+                                <span class="text-[16px] ml-4 text-gray-200">Purchase Order</span>
                                 <span class="text-sm rotate-180" id="arrowdown">
                                     <i class="bi bi-chevron-down p-2.5"></i>
                                 </span>
                             </div>
                         </div>
                         <div class="text-left text-sm font-thin mt-2 w-4/5 max-auto" id="pomenu">
-                            <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
-                                <a href="/viewForms">
-                                    <i class="bi bi-file-earmark-plus"> Pending Orders</i>
+                            <div
+                                class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 duration-300 rounded-md mt-1">
+                                <a th:href="@{/form/pr/{id}(id=${user.id})}">
+                                    <i class="bi bi-file-earmark-plus"> New Purchase Order</i>
                                 </a>
                             </div>
-
-                            <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
-                                <a href="/viewApproval">
-                                    <i class="bi bi-file-earmark-plus"> Approved Orders</i>
+                            <div
+                                class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 duration-300 rounded-md mt-1">
+                                <a href="/requests/draft">
+                                    <i class="bi bi-file-earmark-plus"> Draft Order</i>
                             </div>
-                            <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
-                                <a href="/viewDenial">
-                                    <i class="bi bi-file-earmark-plus"> Denied Orders</i>
+                            <div
+                                class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 duration-300 rounded-md mt-1">
+                                <a href="/requests/submitted">
+                                    <i class="bi bi-file-earmark-plus"> Submitted Orders </i>
+                                </a>
+                            </div>
+                            <div
+                                class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 duration-300 rounded-md mt-1">
+                                <a href="/requests/rejected">
+                                    <i class="bi bi-file-earmark-plus"> Rejected Orders </i>
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <a title="Logout" href="/logout">
-                    <div class="text-gray-100 px-2 py-1 bg-gray-600 bg-opacity-50 rounded-md cursor-pointer hover:bg-black 
-        text-white mt-4 ml-0.5 mb-3" id="logoutbutton">
+                    <div class="text-gray-100 px-2 py-1 bg-gray-600 bg-opacity-50 rounded-md cursor-pointer hover:bg-black duration-300
+            text-white mt-4 ml-0.5 mb-3" id="logoutbutton">
                         <i class="bi bi-box-arrow-in-right "></i>
-                        <span id="logouttext" class="text-[16px] ml-4 text-gray-200">Logout</span>
+                        <span id="logouttext" class="text-[16px] ml-2 text-gray-200">Logout</span>
                     </div>
                 </a>
             </div>
@@ -95,8 +106,10 @@ datatorage/addnew -->
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="request:${deniedForms}"
+                                    <tr th:each="request:${requests}"
+                                        th:if="${request.status == 'rejected' && request.requestor == user.name}"
                                         class=" font-medium border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600 text-center">
+                                        <!-- if the status of the request is draft -->
                                         <td class="whitespace-nowrap px-6 py-4 font-medium" th:text="${request.rid}">
                                         </td>
                                         <td class="whitespace-nowrap px-6 py-4" th:text="${request.companyCode}"></td>
@@ -104,9 +117,9 @@ datatorage/addnew -->
                                         <td class="whitespace-nowrap px-6 py-4" th:text="${request.status}"></td>
                                         <td class="whitespace-nowrap px-6 py-4" th:text="${request.comments}"></td>
                                         <td class="whitespace-nowrap px-6 py-4 flex items-center justify-center">
-                                            <a th:href="@{/VMOviewForm/{rid}(rid=${request.rid})}"
+                                            <a th:href="@{/edit/{rid}(rid=${request.rid})}"
                                                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                                role="button">Review Purchase Requisition</a>
+                                                role="button">Edit</a>
                                         </td>
                                     </tr>
                                 </tbody>
