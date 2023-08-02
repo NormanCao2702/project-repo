@@ -24,6 +24,13 @@ public class UserServices {
         String content = "Dear " + user.getName() + ",\n\nWelcome to Swift Purchase Orders!";
         emailService.sendEmail(to, subject, content);
     }
+    public void resetpassword(User user) {
+        String to = user.getEmail();
+        String token = user.getPasswordResetToken();
+        String subject = " Swift Purchase Orders: Reset Password!";
+        String content = "Dear " + user.getName() + ",\n\n It seems like you have forgotten your password. Don't worry help has arrived!!!\n\n Click the following link to reset your password: http://swiftpo.onrender.com/resetpassword?token=" + token;
+        emailService.sendEmail(to, subject, content);
+    }
 
     public UserServices(BCryptPasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
