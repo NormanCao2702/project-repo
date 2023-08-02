@@ -38,9 +38,11 @@ public class VMOController {
 
     @GetMapping("/user-forms/{id}")
     public String showUserForms(@PathVariable("id") int userId, Model model) {
+        List<Request> requests = requestRepo.findAll();
         List<User> Luser = userRepo.findById(userId);
         User user = Luser.get(0);
         if (user != null) {
+            model.addAttribute("requests", requests);
             model.addAttribute("user", user);
             return "users/vmoFormreview";
         }
@@ -73,15 +75,18 @@ public class VMOController {
 
         int newISUser = request2.getUserID();
 
+        String newComments = request.getComments();
+        request2.setComments(newComments);
+
         request2.setUserID(newUserID);
         requestRepo.save(request2);
 
         List<User> tempt = userRepo.findById(newISUser);
         User temptuser = tempt.get(0);
 
-        if(request2.getStatus().equals("approved"))
+        if (request2.getStatus().equals("approved"))
             UserServices.vmoApprovalnotification(temptuser, request2);
-        else{
+        else {
             UserServices.vmoDenialnotification(temptuser, request2);
         }
         return "users/vmoUser";

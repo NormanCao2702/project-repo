@@ -168,6 +168,22 @@ public class RequestController {
         return "users/formssubmitted";
     }
 
+    @GetMapping("/requests/rejected")
+    public String getRejected(Model model, HttpServletRequest request, HttpSession session) {
+        System.out.println("Getting all rejected requests");
+        // get all requests from database
+        User user = (User) session.getAttribute("session_user");
+        if (user == null) {
+            return "users/login";
+        } else {
+            model.addAttribute("user", user);
+        }
+        List<Request> requests = requestRepo.findAll();
+        // end of database call
+        model.addAttribute("requests", requests);
+        return "users/formsrejected";
+    }
+
     @GetMapping("/edit/{rid}")
     public String editRequestById(Model model, @PathVariable("rid") int rid, HttpSession session) {
 

@@ -61,8 +61,8 @@ datatorage/addnew -->
               </div>
               <div class="cursor-pointer p-2 bg-opacity-50 hover:bg-gray-700 rounded-md mt-1">
                 <a href="/viewDenial">
-                    <i class="bi bi-file-earmark-plus"> Denied Orders</i>
-            </div>
+                  <i class="bi bi-file-earmark-plus"> Denied Orders</i>
+              </div>
             </div>
           </div>
         </div>
@@ -93,7 +93,7 @@ datatorage/addnew -->
                   </tr>
                 </thead>
                 <tbody>
-                  <tr th:each="request:${user.forms}"
+                  <tr th:each="request:${requests}"
                     th:if="${request.status == 'Submitted' && request.userID == user.id}"
                     class=" font-medium border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600 text-center">
                     <td class="whitespace-nowrap px-6 py-4 font-medium" th:text="${request.rid}"></td>
