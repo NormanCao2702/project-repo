@@ -95,6 +95,7 @@ public class UserController {
         userRepo.save(newUser);
 
         response.setStatus(201);
+        System.out.println("User type:" + newuserType);
         return "users/login";
     }
     
@@ -111,9 +112,16 @@ public class UserController {
             return "users/login";
         }
         else {
-            model.addAttribute("user",user);
-            return "users/form";
+            // model.addAttribute("user",user);
+            if ("VMO User".equals(user.getUserType())) {
+                // VMO user, redirect to the VMO user dashboard page
+                return "users/vmoUser";
+            } else if("IS User".equals(user.getUserType())) {
+                // Regular user, redirect to the regular user dashboard page
+                return "users/form";
+            }
         }
+        return null;
     }
 
     @GetMapping("/form")
@@ -322,7 +330,6 @@ public class UserController {
         // processing login
         String uname = formData.get("username");
         String pwd = formData.get("password");
-        
         List<User> userlist = userRepo.findByEmail(uname);
         if (userlist.isEmpty()){
             model.addAttribute("error", "Invalid username or password");
@@ -331,6 +338,7 @@ public class UserController {
         else {
             // success
             User user = userlist.get(0);
+            String type = user.getUserType();
             //get user pass
             String storedHashPass = user.getPassword();
             //check is they match
@@ -339,14 +347,18 @@ public class UserController {
                 //if they match then login
                 request.getSession().setAttribute("session_user", user);
                 model.addAttribute("user", user);
-                return "redirect:/form";
-                
+                if("VMO User".equals(type)){
+                    return "users/vmoUser";
+                } else if("IS User".equals(type)){
+                    return "users/form";
+                } 
             } else {
                 //if they do not match then giev them prompt saying that it does match
                 model.addAttribute("error", "Invalid Username or Password");
                 return "users/login";
             }
         }
+        return null;
     }
 
     @GetMapping("/logout")
