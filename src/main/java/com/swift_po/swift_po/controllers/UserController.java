@@ -1,5 +1,13 @@
 package com.swift_po.swift_po.controllers;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -29,6 +37,7 @@ import com.swift_po.swift_po.services.UserServices;
 
 @Controller
 public class UserController {
+    private static final Logger LOGGER = Logger.getLogger(UserController.class.getName());
     @Autowired
     private userRepo userRepo;
     @Autowired
@@ -140,7 +149,7 @@ public class UserController {
             return "users/profile";
         }
     }
-
+    
     @PostMapping("/profile/pr/{id}")
     public String updateUserProfile(@PathVariable("id") Integer userId,
             @RequestParam Map<String, String> updatedUserData, HttpSession session, Model model) {
@@ -284,8 +293,35 @@ public class UserController {
             return "users/login";
         } else {
             model.addAttribute("user", user);
+            try {
+                List<String> firstColumnData = readOptionsFromFile("options.txt");
+                model.addAttribute("firstColumnData", firstColumnData);
+            } catch (IOException e) {
+                // Handle the exception appropriately
+                System.err.println("Error reading options from file: " + e.getMessage());
+                e.printStackTrace();
+                return "error"; // or some other error template
+            }	
+            LOGGER.info("Exiting vendorList method.");	
             return "users/formpr";
         }
+    }	
+    
+    // Method to read data from the text file	
+    private List<String> readOptionsFromFile(String fileName) throws IOException {	
+        List<String> options = new ArrayList<>();	
+        
+        // Load the file using ClassLoader	
+        ClassLoader classLoader = getClass().getClassLoader();	
+        try (InputStream inputStream = classLoader.getResourceAsStream(fileName);	
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {	
+        
+            String line;	
+            while ((line = reader.readLine()) != null) {	
+                options.add(line.trim());	
+            }	
+        }	
+        return options;
     }
 
     @GetMapping("/pr/{id}")

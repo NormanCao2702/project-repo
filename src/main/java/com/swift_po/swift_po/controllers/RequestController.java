@@ -1,5 +1,14 @@
 package com.swift_po.swift_po.controllers;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,11 +24,26 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+<<<<<<< HEAD
+=======
+
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+>>>>>>> 0e59378 (vendor list added)
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+<<<<<<< HEAD
 // import org.springframework.web.bind.annotation.RequestMapping;
+=======
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+>>>>>>> 0e59378 (vendor list added)
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,6 +59,7 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class RequestController {
+    private static final Logger LOGGER = Logger.getLogger(RequestController.class.getName());
 
     JdbcTemplate jdbcTemplate;
 
@@ -48,6 +73,8 @@ public class RequestController {
 
     @GetMapping(value = "/download_pdf/{rid}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> downloadPdf(@PathVariable int rid) {
+        // Replace "your_table" and "pdf_data_column" with your actual table and column
+        // names in the query below
         String sql = "SELECT sj_file FROM requests WHERE rid = ?;";
         return jdbcTemplate.execute(sql, (PreparedStatement ps) -> {
             ps.setLong(1, rid);
@@ -69,6 +96,8 @@ public class RequestController {
 
     @GetMapping(value = "/download_pc/{rid}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> downloadpc(@PathVariable int rid) {
+        // Replace "your_table" and "pdf_data_column" with your actual table and column
+        // names in the query below
         String sql = "SELECT pc_file FROM requests WHERE rid = ?;";
         return jdbcTemplate.execute(sql, (PreparedStatement ps) -> {
             ps.setLong(1, rid);
@@ -168,6 +197,7 @@ public class RequestController {
         return "users/formssubmitted";
     }
 
+<<<<<<< HEAD
     @GetMapping("/requests/rejected")
     public String getRejected(Model model, HttpServletRequest request, HttpSession session) {
         System.out.println("Getting all rejected requests");
@@ -184,6 +214,10 @@ public class RequestController {
         return "users/formsrejected";
     }
 
+=======
+
+    //edit button
+>>>>>>> 0e59378 (vendor list added)
     @GetMapping("/edit/{rid}")
     public String editRequestById(Model model, @PathVariable("rid") int rid, HttpSession session) {
 
@@ -222,6 +256,16 @@ public class RequestController {
 
         List<Request> request = requestRepo.findById(rid);
         model.addAttribute("request", request.get(0));
+        try {
+            List<String> firstColumnData = readOptionsFromFile("options.txt");
+            model.addAttribute("firstColumnData", firstColumnData);
+        } catch (IOException e) {
+            // Handle the exception appropriately
+            System.err.println("Error reading options from file: " + e.getMessage());
+            e.printStackTrace();
+            return "error"; // or some other error template
+        }
+        LOGGER.info("Exiting vendorList method.");
         return "users/editform";
     }
 
@@ -240,6 +284,26 @@ public class RequestController {
         return "users/reviewform";
     }
 
+     // Method to read data from the text file
+     private List<String> readOptionsFromFile(String fileName) throws IOException {
+        List<String> options = new ArrayList<>();
+    
+        // Load the file using ClassLoader
+        ClassLoader classLoader = getClass().getClassLoader();
+        try (InputStream inputStream = classLoader.getResourceAsStream(fileName);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+    
+            String line;
+            while ((line = reader.readLine()) != null) {
+                options.add(line.trim());
+            }
+        }
+    
+        return options;
+    }
+
+
+    //review button
     @PostMapping("/requests/{rid}")
     public String saveUpdatedrequest(@RequestParam Map<String, String> newRequest, @PathVariable int rid, Model model,
             HttpSession session, @RequestParam("sjFile") MultipartFile sjFile,
@@ -290,7 +354,19 @@ public class RequestController {
         request2.setUserID(newUserID);
         requestRepo.save(request2);
 
+        try {
+            List<String> firstColumnData = readOptionsFromFile("options.txt");
+            model.addAttribute("firstColumnData", firstColumnData);
+        } catch (IOException e) {
+            // Handle the exception appropriately
+            System.err.println("Error reading options from file: " + e.getMessage());
+            e.printStackTrace();
+            return "error"; // or some other error template
+        }
+        LOGGER.info("Exiting vendorList method.");
         return "redirect:/form";
     }
+    
 
 }
+

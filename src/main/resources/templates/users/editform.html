@@ -129,10 +129,10 @@ datatorage/addnew -->
         </div>
 
         <div class="mb-4 text-center">
-          <label class="block text-gray-200 font-bold mb-2" for="consultant">Consultant<span
-              class="text-red-500">*</span></label>
-          <input th:field="*{consultant}" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center"
-            type="text" id="consultant" name="consultant">
+          <label class="block text-gray-200 font-bold mb-2" for="consultant">Consultant<span class="text-red-500">*</span></label>
+        <select class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" id="consultant" name="consultant">
+            <option th:each="option : ${firstColumnData}" th:text="${option}"></option>
+        </select>
         </div>
 
         <div class="mb-4 text-center">
