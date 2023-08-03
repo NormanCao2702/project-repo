@@ -132,10 +132,13 @@ datatorage/addnew -->
 
         <div class="mb-4 text-center">
           <label class="block text-gray-200 font-bold mb-2" for="consultant">Consultant<span class="text-red-500">*</span></label>
-        <select class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" id="consultant" name="consultant">
-            <option th:each="option : ${firstColumnData}" th:text="${option}"></option>
-        </select>
-        </div>
+          <input type="text" class="w-3/4 px-3 py-2 border border-gray-300 rounded-md text-center" id="consultant" name="consultant" list="consultantOptions">
+          <!-- Define the datalist with options -->
+          <datalist id="consultantOptions">
+              <!-- Use Thymeleaf to iterate over firstColumnData and generate options -->
+              <option th:each="option : ${firstColumnData}" th:value="${option}" th:text="${option}"></option>
+          </datalist>
+      </div>
 
         <div class="mb-4 text-center">
           <label class="block text-gray-200 font-bold mb-2" for="sDate">Start Date<span class="text-red-500">
