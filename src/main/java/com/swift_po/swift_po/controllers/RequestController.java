@@ -24,8 +24,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-<<<<<<< HEAD
-=======
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -33,17 +31,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
->>>>>>> 0e59378 (vendor list added)
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-<<<<<<< HEAD
 // import org.springframework.web.bind.annotation.RequestMapping;
-=======
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
->>>>>>> 0e59378 (vendor list added)
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -197,7 +191,6 @@ public class RequestController {
         return "users/formssubmitted";
     }
 
-<<<<<<< HEAD
     @GetMapping("/requests/rejected")
     public String getRejected(Model model, HttpServletRequest request, HttpSession session) {
         System.out.println("Getting all rejected requests");
@@ -214,10 +207,6 @@ public class RequestController {
         return "users/formsrejected";
     }
 
-=======
-
-    //edit button
->>>>>>> 0e59378 (vendor list added)
     @GetMapping("/edit/{rid}")
     public String editRequestById(Model model, @PathVariable("rid") int rid, HttpSession session) {
 
@@ -282,24 +271,6 @@ public class RequestController {
         List<Request> request = requestRepo.findById(rid);
         model.addAttribute("request", request.get(0));
         return "users/reviewform";
-    }
-
-     // Method to read data from the text file
-     private List<String> readOptionsFromFile(String fileName) throws IOException {
-        List<String> options = new ArrayList<>();
-    
-        // Load the file using ClassLoader
-        ClassLoader classLoader = getClass().getClassLoader();
-        try (InputStream inputStream = classLoader.getResourceAsStream(fileName);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-    
-            String line;
-            while ((line = reader.readLine()) != null) {
-                options.add(line.trim());
-            }
-        }
-    
-        return options;
     }
 
 
