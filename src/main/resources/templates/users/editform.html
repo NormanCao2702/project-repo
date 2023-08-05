@@ -15,7 +15,23 @@ datatorage/addnew -->
   <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.core.css">
   <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
-
+  
+  <style>
+      /* Centering the input element */
+      .text-center {
+          text-align: center;
+      }
+  
+      .input-container {
+          display: flex;
+          justify-content: center;
+      }
+  
+      .input-container input {
+          width: 75%; /* Adjust the width as needed */
+          text-align: center;
+      }
+  </style>
 </head>
 
 <body style="background-repeat: no-repeat; background-attachment: fixed;"
@@ -30,18 +46,15 @@ datatorage/addnew -->
             <img src="https://upload.wikimedia.org/wikipedia/en/9/97/FortisBC_logo.svg" alt="Logo"
               class=" w-[150px] ml-[50px]">
           </a>
+          <div class="absolute right-1">
+            <a th:href="@{/profile/pr/{id}(id=${user.id})}">
+              <img id="avatar" th:src="${user.avatarImagePath}" alt="Avatar"
+                class=" w-12 h-12 mr-2 rounded-full cursor-pointer bg-opacity-50 hover:bg-black " />
+            </a>
+          </div>
         </div>
-        <div class="absolute right-1">
-          <a th:href="@{/profile/pr/{id}(id=${user.id})}">
-            <img id="avatar" th:src="${user.avatarImagePath}" alt="Avatar"
-              class=" w-12 h-12 mr-2 rounded-full cursor-pointer bg-opacity-50 hover:bg-black " />
-          </a>
-        </div>
-
-
       <div id="sidenav" class="z-0 fixed bg-sky-950 top-20 p-sm-2 p-2 pt-6 text-center bottom-0 h-screen min-h-fit">
         <div class="text-gray-100 text-xl">
-
           <div id="navcontent">
             <hr class=" my-2 ">
             <div
@@ -86,7 +99,6 @@ datatorage/addnew -->
           </div>
         </a>
       </div>
-
     </nav>
     <div class="content">
       <form th:action="@{/requests/{rid}(rid=${request.rid})}" th:object="${request}" method="post"
